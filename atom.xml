@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Kevin Jern</title>
-  
+  <subtitle>踏破芒鞋，烟雨任平生。</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
+  <link href="https://KevinJe.guthub.io/"/>
   <updated>2017-03-10T13:43:57.275Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>https://KevinJe.guthub.io/</id>
   
   <author>
     <name>Kevin Jern</name>
@@ -17,8 +17,8 @@
   
   <entry>
     <title>Android之旅2-Android四大组件之BroadcastReceiver篇</title>
-    <link href="http://yoursite.com/2017/03/10/Android%E4%B9%8B%E6%97%852-Android%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6%E4%B9%8BBroadcastReceiver%E7%AF%87/"/>
-    <id>http://yoursite.com/2017/03/10/Android之旅2-Android四大组件之BroadcastReceiver篇/</id>
+    <link href="https://KevinJe.guthub.io/2017/03/10/Android%E4%B9%8B%E6%97%852-Android%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6%E4%B9%8BBroadcastReceiver%E7%AF%87/"/>
+    <id>https://KevinJe.guthub.io/2017/03/10/Android之旅2-Android四大组件之BroadcastReceiver篇/</id>
     <published>2017-03-10T13:20:57.000Z</published>
     <updated>2017-03-10T13:43:57.275Z</updated>
     
@@ -95,19 +95,19 @@
     
     </summary>
     
-      <category term="Android基础" scheme="http://yoursite.com/categories/Android%E5%9F%BA%E7%A1%80/"/>
+      <category term="Android基础" scheme="https://KevinJe.guthub.io/categories/Android%E5%9F%BA%E7%A1%80/"/>
     
     
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+      <category term="Android" scheme="https://KevinJe.guthub.io/tags/Android/"/>
     
-      <category term="BroadcastReceiver" scheme="http://yoursite.com/tags/BroadcastReceiver/"/>
+      <category term="BroadcastReceiver" scheme="https://KevinJe.guthub.io/tags/BroadcastReceiver/"/>
     
   </entry>
   
   <entry>
     <title>Android之旅1-Android四大组件之Activity篇</title>
-    <link href="http://yoursite.com/2017/03/10/Android%E4%B9%8B%E6%97%851-Android%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6%E4%B9%8BActivity%E7%AF%87/"/>
-    <id>http://yoursite.com/2017/03/10/Android之旅1-Android四大组件之Activity篇/</id>
+    <link href="https://KevinJe.guthub.io/2017/03/10/Android%E4%B9%8B%E6%97%851-Android%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6%E4%B9%8BActivity%E7%AF%87/"/>
+    <id>https://KevinJe.guthub.io/2017/03/10/Android之旅1-Android四大组件之Activity篇/</id>
     <published>2017-03-10T13:18:14.000Z</published>
     <updated>2017-03-10T13:34:05.240Z</updated>
     
@@ -261,19 +261,19 @@
     
     </summary>
     
-      <category term="Android基础" scheme="http://yoursite.com/categories/Android%E5%9F%BA%E7%A1%80/"/>
+      <category term="Android基础" scheme="https://KevinJe.guthub.io/categories/Android%E5%9F%BA%E7%A1%80/"/>
     
     
-      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+      <category term="Android" scheme="https://KevinJe.guthub.io/tags/Android/"/>
     
-      <category term="Activity" scheme="http://yoursite.com/tags/Activity/"/>
+      <category term="Activity" scheme="https://KevinJe.guthub.io/tags/Activity/"/>
     
   </entry>
   
   <entry>
     <title>Hello World</title>
-    <link href="http://yoursite.com/2017/03/10/hello-world/"/>
-    <id>http://yoursite.com/2017/03/10/hello-world/</id>
+    <link href="https://KevinJe.guthub.io/2017/03/10/hello-world/"/>
+    <id>https://KevinJe.guthub.io/2017/03/10/hello-world/</id>
     <published>2017-03-10T12:45:08.000Z</published>
     <updated>2017-03-10T15:34:55.566Z</updated>
     
@@ -312,10 +312,10 @@
     
     </summary>
     
-      <category term="日记" scheme="http://yoursite.com/categories/%E6%97%A5%E8%AE%B0/"/>
+      <category term="日记" scheme="https://KevinJe.guthub.io/categories/%E6%97%A5%E8%AE%B0/"/>
     
     
-      <category term="随笔" scheme="http://yoursite.com/tags/%E9%9A%8F%E7%AC%94/"/>
+      <category term="随笔" scheme="https://KevinJe.guthub.io/tags/%E9%9A%8F%E7%AC%94/"/>
     
   </entry>
   
