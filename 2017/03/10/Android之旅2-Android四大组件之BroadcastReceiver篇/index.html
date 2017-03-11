@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Android之旅2-Android四大组件之BroadcastReceiver篇 | Kevin Jern | null</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android,BroadcastReceiver">
+    <meta name="description" content="今天继续我们的Android之旅，上一篇写了Android四大组件之一的Activity的知识。今天，我们继续来复习Andorid四大组件之一的BroadcastReceiver。
+何为BroadcastReceiver呢？其实从字面就可以看出了，就是广播接收者。那这个广播的作用是什么呢？其实Android中的广播机制和现实中的广播没有什么差别。想一想现实中的广播，是不是有通知消息的用途啊。同样，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android之旅2-Android四大组件之BroadcastReceiver篇">
+<meta property="og:url" content="http://yoursite.com/2017/03/10/Android之旅2-Android四大组件之BroadcastReceiver篇/index.html">
+<meta property="og:site_name" content="Kevin Jern">
+<meta property="og:description" content="今天继续我们的Android之旅，上一篇写了Android四大组件之一的Activity的知识。今天，我们继续来复习Andorid四大组件之一的BroadcastReceiver。
+何为BroadcastReceiver呢？其实从字面就可以看出了，就是广播接收者。那这个广播的作用是什么呢？其实Android中的广播机制和现实中的广播没有什么差别。想一想现实中的广播，是不是有通知消息的用途啊。同样，">
+<meta property="og:updated_time" content="2017-03-10T13:43:57.275Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android之旅2-Android四大组件之BroadcastReceiver篇">
+<meta name="twitter:description" content="今天继续我们的Android之旅，上一篇写了Android四大组件之一的Activity的知识。今天，我们继续来复习Andorid四大组件之一的BroadcastReceiver。
+何为BroadcastReceiver呢？其实从字面就可以看出了，就是广播接收者。那这个广播的作用是什么呢？其实Android中的广播机制和现实中的广播没有什么差别。想一想现实中的广播，是不是有通知消息的用途啊。同样，">
+    
+        <link rel="alternative" href="/atom.xml" title="Kevin Jern" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.9">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpeg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Jern</h5>
+          <a href="mailto:kevinvin1997@gmail.com" title="kevinvin1997@gmail.com" class="mail">kevinvin1997@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KevinJe" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Android之旅2-Android四大组件之BroadcastReceiver篇</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Android之旅2-Android四大组件之BroadcastReceiver篇</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-03-10T13:20:57.000Z" itemprop="datePublished" class="page-time">
+  2017-03-10
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android基础/">Android基础</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+</header>
+
+
+<div class="container body-wrap">
+    
+<article id="post-Android之旅2-Android四大组件之BroadcastReceiver篇"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Android之旅2-Android四大组件之BroadcastReceiver篇</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017年03月10日 21:20" datetime="2017-03-10T13:20:57.000Z"  itemprop="datePublished">2017-03-10</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android基础/">Android基础</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>今天继续我们的Android之旅，上一篇写了Android四大组件之一的Activity的知识。今天，我们继续来复习Andorid四大组件之一的BroadcastReceiver。</p>
+<p>何为BroadcastReceiver呢？其实从字面就可以看出了，就是广播接收者。那这个广播的作用是什么呢？其实Android中的广播机制和现实中的广播没有什么差别。想一想现实中的广播，是不是有通知消息的用途啊。同样，Android中的广播机制也与此是类似的作用。即，通过发送广播通知系统中的某些组件该干什么了。这干什么的逻辑完全在于你自己想实现什么功能。当然，既然可以发送广播，一定也是有接受广播的功能的。</p>
+<p>在Android中广播有两种类型，标准广播和有序广播。</p>
+<p>标准广播（<strong>Normal broadcasts</strong>，发送方式：Context.sendBroadacst()），这是一种完全异步执行的广播，广播发出后，没有确定的顺序，广播接收者通常会在同一个时刻接收到这条广播消息。这通常意味着是高效的，但也意味着，在广播发出后是无法进行截断的。</p>
+<p>有序广播（<strong>Ordered broadcasts</strong>，发送方式：Context.sendOrderedBroadcast()）,这是一种同步执行的广播，广播发出后，在同一时刻，只会有一个广播接收者接收到这一条广播。每一个广播接收者都是按顺序进行执行的。所以，前一个广播接收者既可以将这条广播传递出去，也可以完全的截断广播，使下一个广播接收者无法接收到广播。可以在AndroidManifest.xml文件中<receiver>标签下设置 android:priority属性，来匹配优先级，优先级越高，就越早接收到广播。</receiver></p>
+<p>在这里要分清楚一点，虽然广播也是通过Intent进行传递的。但是通过Intent发送广播的机制与通过Intent开启另一个Activity的机制是截然不同的。开启的Activity是处于前台并且可以与用户进行交互的。而发送广播是一个后台的操作，用户并不能意识到。</p>
+<p>下面来看一下具体的使用方法：</p>
+<p>##接收广播##<br>如何接收广播呢？想要接收广播就要用到如何注册广播，并且在注册的逻辑中添加想要监听的广播就可以了。</p>
+<p>广播的注册方式有两种，是四大组件中最为特殊的一个。其余的三个组件都必须在AndroidManifest.xml文件中进行注册声明，而BroadcastReceiver既可以在AndroidManifest.xml文件中静态注册，也可以通过代码进行动态的注册。</p>
+<ul>
+<li>静态注册</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">receiver</span> <span class="attr">android:name</span>=<span class="string">"com.example.kevin.receiver.BootReceiver"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.BOOT_COMPLETED"</span>/&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">receiver</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>在AndroidManifest.xml中的注册BroadcastReceiver与注册Activity没有什么太大的区别，只是标签为<receiver>。android:name来指定具体的是注册的哪一个广播。在 <intent-filter>中声明具体想要接收的广播。这里接收的是手机boot加载完成，也就是监听开机这一动作。在Android中，开机时，系统就会发送android.intent.action.BOOT_COMPLETED这条广播。</intent-filter></receiver></p>
+<p>然后在代码中可以像下面这样写：<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">BootReceiver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>&#123;</div><div class="line">   <span class="meta">@Override</span></div><div class="line">    public void onReceive(<span class="type">Context</span> context, <span class="type">Intent</span> intent) &#123;</div><div class="line">        <span class="type">Toast</span>.makeText(context,<span class="string">"Boot加载成功"</span>, <span class="type">Toast</span>.<span class="type">LENGTH_LONG</span>).show();</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>新建一个广播继承自BroadcastReceiver，然后重写其onReceive()方法，只要系统接收到了相应的广播就会执行onReceive()方法。这里只是打印了一句吐司。</p>
+<ul>
+<li>动态注册</li>
+</ul>
+<p>动态注册就要用到registerReceiver(BroadcastReceiver, IntentFilter)这一方法了。可以看到第一个参数就是一个BroadcastReceiver。第二个参数应该也是见过的，在AndroidManifest.xml文件中用来约束具体要监听哪一个广播，同样在这里也是一样的作用。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="type">IntentFilter</span> intentFilter;</div><div class="line">    <span class="keyword">private</span> <span class="type">NetworkChangeReceiver</span> networkChangeReceiver;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">protected</span> void onCreate(<span class="type">Bundle</span> savedInstanceState) &#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        intentFilter = <span class="keyword">new</span> <span class="type">IntentFilter</span>();</div><div class="line">        <span class="comment">//当网络状态改变时，系统会发出下面这条广播</span></div><div class="line">        intentFilter.addAction(<span class="string">"android.net.conn.CONNECTIVITY_CHANGE"</span>);</div><div class="line">        networkChangeReceiver = <span class="keyword">new</span> <span class="type">NetworkChangeReceiver</span>();</div><div class="line">        registerReceiver(networkChangeReceiver, intentFilter);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">NetworkChangeReceiver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        public void onReceive(<span class="type">Context</span> context, <span class="type">Intent</span> intent) &#123;</div><div class="line">            <span class="type">Toast</span>.makeText(context, <span class="string">"网络状态改变了"</span>, <span class="type">Toast</span>.<span class="type">LENGTH_SHORT</span>).show();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">protected</span> void onDestroy() &#123;</div><div class="line">        <span class="keyword">super</span>.onDestroy();</div><div class="line">        <span class="keyword">if</span> (networkChangeReceiver != <span class="literal">null</span>) &#123;</div><div class="line">            unregisterReceiver(networkChangeReceiver);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上就是动态的注册了广播接收者来监听网络状态的改变。现在可以通过手动的改变网络状态，可以发现吐司确实是可以弹出来的，这就是动态注册。最后，记得在onDestroy()中调用unregisterReceiver()方法来取消注册。</p>
+<p>##发送广播##<br>既然我们已经知道了广播分为标准广播和有序广播，那么它们是如何来进行广播的发送的呢？</p>
+<ul>
+<li>发送标准广播</li>
+</ul>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="keyword">protected</span> <span class="function"><span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">       <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">       Button button = (Button) findViewById(R.id.button);</div><div class="line">       button.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</div><div class="line">           <span class="meta">@Override</span></div><div class="line">           <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">               Intent intent = <span class="keyword">new</span> Intent();</div><div class="line">               intent.setAction(<span class="string">"com.coustom.BroadcastReceiver"</span>);</div><div class="line">               <span class="comment">//发送标准广播</span></div><div class="line">               sendBroadcast(intent);</div><div class="line">           &#125;</div><div class="line">       &#125;);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>这里就是点击一下按钮就发送一条com.coustom.BroadcastReceiver这样的广播了，当然既然是通过Intent进行发送广播的操作，就可以用Intent的putExtra()方法来携带一些数据。</p>
+<p>下面再演示一下如何通过静态注册和动态注册来接收上面自定义的广播。<br><strong>1.静态注册</strong></p>
+<ol>
+<li>在清单文件中注册</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">receiver</span> <span class="attr">android:name</span>=<span class="string">".MyBroadcastReceiver"</span>&gt;</span></div><div class="line">           <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></div><div class="line">               <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.coustom.BroadcastReceiver"</span>/&gt;</span></div><div class="line">           <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line"> <span class="tag">&lt;/<span class="name">receiver</span>&gt;</span></div></pre></td></tr></table></figure>
+<ol>
+<li>重写对应的onReceive()方法</li>
+</ol>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyBroadcastReceiver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>&#123;</div><div class="line"></div><div class="line">      <span class="meta">@Override</span></div><div class="line">      public void onReceive(<span class="type">Context</span> context, <span class="type">Intent</span> intent) &#123;</div><div class="line">          <span class="type">Toast</span>.makeText(context, <span class="string">"收到了自定义的广播"</span>, <span class="type">Toast</span>.<span class="type">LENGTH_SHORT</span>).show();</div><div class="line">      &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p><strong>2.动态注册</strong></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"> <span class="keyword">protected</span> void onCreate(<span class="type">Bundle</span> savedInstanceState) &#123;</div><div class="line">     <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">     <span class="type">IntentFilter</span> intentFilter = <span class="keyword">new</span> <span class="type">IntentFilter</span>();</div><div class="line">     intentFilter.addAction(<span class="string">"com.custom.BroadcastReceiver"</span>);</div><div class="line">     <span class="type">MyBroadcastReceiver</span> myBroadcastReceiver = <span class="keyword">new</span> <span class="type">MyBroadcastReceiver</span>();</div><div class="line">     registerReceiver(myBroadcastReceiver,intentFilter);</div><div class="line"> &#125;</div><div class="line"></div><div class="line"> <span class="class"><span class="keyword">class</span> <span class="title">MyBroadcastReceiver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>&#123;</div><div class="line">     <span class="meta">@Override</span></div><div class="line">     public void onReceive(<span class="type">Context</span> context, <span class="type">Intent</span> intent) &#123;</div><div class="line">         <span class="type">Toast</span>.makeText(context, <span class="string">"收到了自定义的广播"</span>, <span class="type">Toast</span>.<span class="type">LENGTH_SHORT</span>).show();</div><div class="line">     &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>就是通过IntentFilter的addAction()方法来监听指定的广播，然后用 registerReceiver()就可以实现动态的注册广播。</p>
+<ul>
+<li>发送有序广播</li>
+</ul>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">  <span class="keyword">protected</span> <span class="function"><span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">      <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">      Button button = (Button) findViewById(R.id.button);</div><div class="line">      button.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</div><div class="line">          <span class="meta">@Override</span></div><div class="line">          <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">              Intent intent = <span class="keyword">new</span> Intent();</div><div class="line">              intent.setAction(<span class="string">"com.coustom.BroadcastReceiver"</span>);</div><div class="line">              <span class="comment">//发送有序广播</span></div><div class="line">              sendOrderedBroadcast(intent,<span class="keyword">null</span>);</div><div class="line">          &#125;</div><div class="line">      &#125;);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>和标准广播最大的不同就是调用了sendOrderedBroadcast()来发送有序广播，第一个参数仍然是Intent，第二个参数与权限有关，传入null就可以了。<br>接收这广播的方法和上面的相同。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"> <span class="tag">&lt;<span class="name">receiver</span> <span class="attr">android:name</span>=<span class="string">".MyBroadcastReceiver"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">intent-filter</span> <span class="attr">android:priority</span>=<span class="string">"100"</span> &gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"com.coustom.BroadcastReceiver"</span>/&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">receiver</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>只是这里多了android:priority=”100”，来设置接收广播的优先级。如果你有创建了另一个BroadcastReceiver，并且设置它的android:priority=”50”。那么，MyBroadcastReceiver就会先接收到广播。并且既然MyBroadcastReceiver可以先接收到广播，那么它就可以决定是否将广播继续传播下去。如下所示，就表示MyBroadcastReceiver调用了 abortBroadcast()，表示不想让广播继续传播。于是，其他优先级低的广播就都接受不到这条广播了。<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyBroadcastReceiver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        public void onReceive(<span class="type">Context</span> context, <span class="type">Intent</span> intent) &#123;</div><div class="line">            <span class="type">Toast</span>.makeText(context, <span class="string">"收到了自定义的广播"</span>, <span class="type">Toast</span>.<span class="type">LENGTH_SHORT</span>).show();</div><div class="line">            <span class="comment">//终止广播的传递</span></div><div class="line">            abortBroadcast();</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>##本地广播##<br> 前面的广播，不论是标准的还是有序的，都面临一个问题。即：我们发出的广播，任何其他的程序都能接收到，我们也可以接收来自其他程序的广播。这样就会带来一些安全上的问题，所以Android中还提供了LocalBroadcastManager来对广播进行管理，也就是本地广播。通过LocalBroadcastManager发送的广播只能在应用程序内部传递，也只能接受程序内部发出的广播。<br>下面来看一下具体的用法：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="type">LocalBroadcastManager</span> localBroadcastManager;</div><div class="line">    <span class="keyword">private</span> <span class="type">LocalBroadcastReceiver</span> localBroadcastReceiver;</div><div class="line">    <span class="keyword">private</span> <span class="type">Context</span> mContext;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">protected</span> void onCreate(<span class="type">Bundle</span> savedInstanceState) &#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        mContext = <span class="keyword">this</span>;</div><div class="line">        <span class="comment">//得到本地广播管理者</span></div><div class="line">        localBroadcastManager = <span class="type">LocalBroadcastManager</span>.getInstance(mContext);</div><div class="line">        <span class="type">Button</span> button = (<span class="type">Button</span>) findViewById(<span class="type">R</span>.id.button);</div><div class="line">        button.setOnClickListener(<span class="keyword">new</span> <span class="type">View</span>.<span class="type">OnClickListener</span>() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            public void onClick(<span class="type">View</span> v) &#123;</div><div class="line">                <span class="type">Intent</span> intent = <span class="keyword">new</span> <span class="type">Intent</span>();</div><div class="line">                intent.setAction(<span class="string">"com.coustom.LocalBroadcastReceiver"</span>);</div><div class="line">                <span class="comment">//利用本地广播管理者发送本地广播</span></div><div class="line">                localBroadcastManager.sendBroadcast(intent);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        <span class="type">IntentFilter</span> intentFilter = <span class="keyword">new</span> <span class="type">IntentFilter</span>();</div><div class="line">        intentFilter.addAction(<span class="string">"com.coustom.LocalBroadcastReceiver"</span>);</div><div class="line">        localBroadcastReceiver = <span class="keyword">new</span> <span class="type">LocalBroadcastReceiver</span>();</div><div class="line">        <span class="comment">//利用本地广播管理者注册本地广播</span></div><div class="line">        localBroadcastManager.registerReceiver(localBroadcastReceiver, intentFilter);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">LocalBroadcastReceiver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        public void onReceive(<span class="type">Context</span> context, <span class="type">Intent</span> intent) &#123;</div><div class="line">            <span class="type">Toast</span>.makeText(context, <span class="string">"收到了本地的自定义的广播"</span>, <span class="type">Toast</span>.<span class="type">LENGTH_SHORT</span>).show();</div><div class="line">            abortBroadcast();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">protected</span> void onDestroy() &#123;</div><div class="line">        <span class="keyword">super</span>.onDestroy();</div><div class="line">        <span class="keyword">if</span> (localBroadcastManager != <span class="literal">null</span>) &#123;</div><div class="line">            <span class="comment">//利用本地广播管理者取消注册本地广播</span></div><div class="line">            localBroadcastManager.unregisterReceiver(localBroadcastReceiver);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到通过<br><code>localBroadcastManager = LocalBroadcastManager.getInstance(mContext);</code><br>获取到了本地广播管理者的实例。<br>之后的发送广播、注册广播、取消注册广播都是通过localBroadcastManager来进行的。这也就是本地广播与普通广播不同的地方。</p>
+<p>以下是官方文档在最后给出的，我的理解还不到位，但还是写出来吧。</p>
+<p>##BroadcastReceiver的生命周期##</p>
+<blockquote>
+<p>一个BroadcastReceiver存在的时期就是在调用onReceive()方法所持续的时间。一旦这个方法返回了，系统就会认为对象已经执行接受，不再活跃了。这对于你在onReceive()中可以执行什么有很大的影响。异步操作在这里执行是不可能的，因为你必须从这个方法中返回并且处理异步操作，但是这时BroadcastReceiver已经不再活跃，它的进程可能再异步操作完成之前被系统杀死。</p>
+</blockquote>
+<p>##进程的生命周期##</p>
+<blockquote>
+<p>一个在执行BroadcastReceiver的方法的进程（也就是在执行其onReceive()<br>方法）被考虑是一种前台的进程，它会在系统中持续的运行除非在系统内存极紧张的情况下才会考虑杀死它。一旦onReceive()这个方法返回了，BroadcastReceiver就不再活跃了。它的宿主的进程此时对于其他正在运行的组件是重要的。这里尤为重要，如果那个进程仅仅维系一个BroadcastReceiver（一个普遍的例子：对于一个应用用户可能从没或者最近没有与之交互），一旦onReceive()这个方法执行完了，系统就会考虑这个进程是空的，就会主动的杀死它。提供可用的资源给其他更重要的进程。</p>
+</blockquote>
+<p>官方文档最后还给出了一条建议：</p>
+<blockquote>
+<p>This means that for longer-running operations you will often use a Service<br> in conjunction with a BroadcastReceiver to keep the containing process active for the entire time of your operation.<br>对于长时间运行的操作，你可以将BroadcastReceiver和Service同时应用，来保证进程在整个你的操作时期都保持活跃状态。<br>这里的建议好像就类似于桌面的小部件的实现方法，就是AppWidget。</p>
+</blockquote>
+<p>##写在最后##<br>上面提到了Service，它也是Android四大组件的一种，关于与Service有关的知识我们以后再来复习吧。BroadcastReceiver也就先说这么多吧，其中的部分理解还是不够深刻，我们今天就到这里了。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-03-10T13:43:57.275Z" itemprop="dateUpdated">2017年3月10日 21:43</time>
+</span><br>
+
+
+        这里写留言或版权声明：<a href="/2017/03/10/Android之旅2-Android四大组件之BroadcastReceiver篇/" target="_blank" rel="external">http://yoursite.com/2017/03/10/Android之旅2-Android四大组件之BroadcastReceiver篇/</a>
+    </div>
+    <footer>
+        <a href="http://yoursite.com">
+            <img src="/img/avatar.jpeg" alt="Kevin Jern">
+            Kevin Jern
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BroadcastReceiver/">BroadcastReceiver</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2017/03/10/Android之旅2-Android四大组件之BroadcastReceiver篇/&title=《Android之旅2-Android四大组件之BroadcastReceiver篇》 — Kevin Jern&pic=http://yoursite.com/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2017/03/10/Android之旅2-Android四大组件之BroadcastReceiver篇/&title=《Android之旅2-Android四大组件之BroadcastReceiver篇》 — Kevin Jern&source=踏破芒鞋，烟雨任平生。" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/03/10/Android之旅2-Android四大组件之BroadcastReceiver篇/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android之旅2-Android四大组件之BroadcastReceiver篇》 — Kevin Jern&url=http://yoursite.com/2017/03/10/Android之旅2-Android四大组件之BroadcastReceiver篇/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2017/03/10/Android之旅2-Android四大组件之BroadcastReceiver篇/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/03/10/Android之旅1-Android四大组件之Activity篇/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Android之旅1-Android四大组件之Activity篇</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+<div class="comments" id="comments">
+    <div class="ds-thread" data-thread-key="Android之旅2-Android四大组件之BroadcastReceiver篇" data-title="Android之旅2-Android四大组件之BroadcastReceiver篇" data-url="http://yoursite.com/2017/03/10/Android之旅2-Android四大组件之BroadcastReceiver篇/"></div>
+</div>
+<script>
+lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
+
+var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
+lazyScripts.push('/js/embed.min.js?v=1.4.9');
+
+
+</script>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.png" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Kevin Jern &copy; 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2017/03/10/Android之旅2-Android四大组件之BroadcastReceiver篇/&title=《Android之旅2-Android四大组件之BroadcastReceiver篇》 — Kevin Jern&pic=http://yoursite.com/img/avatar.jpeg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2017/03/10/Android之旅2-Android四大组件之BroadcastReceiver篇/&title=《Android之旅2-Android四大组件之BroadcastReceiver篇》 — Kevin Jern&source=踏破芒鞋，烟雨任平生。" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/03/10/Android之旅2-Android四大组件之BroadcastReceiver篇/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android之旅2-Android四大组件之BroadcastReceiver篇》 — Kevin Jern&url=http://yoursite.com/2017/03/10/Android之旅2-Android四大组件之BroadcastReceiver篇/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2017/03/10/Android之旅2-Android四大组件之BroadcastReceiver篇/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADI0lEQVR42u3aQW7jQAwEQP//095LDgvsWm6SY8BiSicjUUaq8aFDch6P+Hr+c13f8/dPXv321T3Xn1899/GJCxsbG/sm7Ofldc2+3o6zKyRbmViwsbGxt7Kvg6EaS8lL93hJTEYhh42NjY0dFwN5NM5jDxsbGxs7YfeaTdWf95pK2NjY2L+Znf+7X23f99pP18/Ng+1ALw0bGxv769n5VPT7P39kvo2NjY39xexn8aoemqm2fvLxbe/9f/4WGxsbexG7V0jkBUnvEE+yQrXMwMbGxt7Nzh8wCZtqsOXHMavvjI2Njf3b2NVNyY/m9Ia719uRH9nExsbG3seuDlPnvfdJc6pXhGBjY2PvY/eOziQRUg2wSaVQjj1sbGzsRexT7fhJQfK5BhM2NjY2djXe8g2aRNfkCFH0MGxsbOxbsfOAycuDyfrzzYq+BmxsbOx17OrYNfk8H+VWS4t8LI2NjY29id1ruFfHAL14qx4Jqn4N2NjY2JvYSRt9XgxM2lIHRrnXCmxsbOybs6sLTbagOgbuNY+iMMPGxsZewa6GRBI8vUZSb7VmCwwbGxt7ETuPseqRmmbLvritSbw1b8LGxsa+CbsaCaeGAb3188bTm1DExsbGXsrOSUmbqRpCk3vK5Q02Njb2OnYSMKdKhfnhm6TgaZ5RwsbGxr4hu9ppyV+u3KaPtz6Pq6ijho2NjX1zdi+05mPXXgRWQ+ulDhsbG3sRu7roqaZSXrR8ItKwsbGxd7OrYTBp0+dbk5c01RjGxsbG3squvm71MOWo+1V81rFeGjY2NvYXs6uB1Dtek8TV2WbTGzw2Njb2Onb1kE0CmLz6pIEVRSM2Njb2Onb13/pT0ZKH5WNw/WcdbGxs7BXsSfzMR7C9rUne5M3K2NjY2IvYvQBI2k954FWbU9WNq34N2NjY2Hdknz2O0xvQJneeHSRgY2Nj72PnwZC34KsD3fKwNi5ysLGxsbF7TZn8rybFTP7FYGNjY2PnTZ/e4KHXcsoHD9jY2Ni72XnBkI9me8GTHyHqjYqxsbGx97GrpUJvO3pD3FNj3eYhTmxsbOxvZ/8BWZxdya1hh/8AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.4.9"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.9" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
