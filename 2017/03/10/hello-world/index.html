@@ -33,10 +33,10 @@
 <meta name="twitter:description" content="2016年6月的某一天，对于别人来说可能平淡无奇，但对于我而言，意义很大。这一天，我成功的在terminal中打印出了Hello World。对计算机编程感兴趣的人可能已经知道了我正在做什么。没错，向世界致敬，Hello World。世界，我来了。从这一天开始，我开始了学习Java的旅程，也是我自学Android走出的第一步。彼时，距离Android发布已经满8年了。而我，作为一个初学者，">
 <meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1602023-8bfbf95bb96b95cd.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/320">
     
-        <link rel="alternative" href="/atom.xml" title="Kevin Jern" type="application/atom+xml">
+        <link rel="alternate" type="application/atom+xml" title="Kevin Jern" href="/atom.xml">
     
     <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="stylesheet" href="/css/style.css?v=1.4.9">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
     <script>window.lazyScripts=[]</script>
 </head>
 
@@ -48,7 +48,7 @@
     <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
         <i class="icon icon-lg icon-close"></i>
     </a>
-    <div class="brand-wrap">
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
       <div class="brand">
         <a href="/" class="avatar waves-effect waves-circle waves-light">
           <img src="/img/avatar.jpg">
@@ -128,7 +128,7 @@
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
                 <i class="icon icon-lg icon-chevron-left"></i>
             </a>
-            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
             <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
                 <i class="icon icon-lg icon-search"></i>
             </a>
@@ -160,6 +160,7 @@
 
     
 
+
 </header>
 
 
@@ -171,7 +172,7 @@
     <div class="post-card">
         <h1 class="post-card-title">Hello World</h1>
         <div class="post-meta">
-            <time class="post-time" title="2017年03月10日 20:45" datetime="2017-03-10T12:45:08.000Z"  itemprop="datePublished">2017-03-10</time>
+            <time class="post-time" title="2017-03-10 20:45:08" datetime="2017-03-10T12:45:08.000Z"  itemprop="datePublished">2017-03-10</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/日记/">日记</a></li></ul>
@@ -215,11 +216,13 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-04-07T15:54:50.242Z" itemprop="dateUpdated">2017年4月7日 23:54</time>
+    Last updated: <time datetime="2017-04-07T15:54:50.242Z" itemprop="dateUpdated">2017-04-07 23:54:50</time>
 </span><br>
 
 
-        转载请注明出处：<a href="/2017/03/10/hello-world/" target="_blank" rel="external">https://KevinJe.github.io/2017/03/10/hello-world/</a>
+        
+        这里可以写作者留言，标签和 hexo 中所有变量及辅助函数等均可调用，示例：<a href="/2017/03/10/hello-world/" target="_blank" rel="external">https://KevinJe.github.io/2017/03/10/hello-world/</a>
+        
     </div>
     <footer>
         <a href="https://KevinJe.github.io">
@@ -317,10 +320,19 @@
 lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
 
 var duoshuoQuery = {short_name:'KevinJe', theme: 'none'};
-lazyScripts.push('/js/embed.min.js?v=1.4.9');
+lazyScripts.push('//unpkg.com/hexo-theme-material-indigo@latest/js/embed.min.js');
 
 
 </script>
+
+
+
+
+
+
+
+
+
 
 
 
@@ -372,8 +384,10 @@ lazyScripts.push('/js/embed.min.js?v=1.4.9');
 
 
         <p>
-            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
-            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
         </p>
     </div>
     <div class="bottom">
@@ -443,7 +457,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 </script>
 
-<script src="/js/main.min.js?v=1.4.9"></script>
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
 
 
 <div class="search-panel" id="search-panel">
@@ -463,7 +477,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 </li>
 </template>
 
-<script src="/js/search.min.js?v=1.4.9" async></script>
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
 
 
 
@@ -471,6 +485,26 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 
 <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
 
 
 </body>
