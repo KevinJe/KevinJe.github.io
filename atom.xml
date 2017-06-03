@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://KevinJe.github.io/"/>
-  <updated>2017-03-19T06:51:47.959Z</updated>
+  <updated>2017-06-03T10:10:35.814Z</updated>
   <id>https://KevinJe.github.io/</id>
   
   <author>
@@ -16,11 +16,92 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>大学那些事</title>
-    <link href="https://KevinJe.github.io/2017/03/18/%E5%A4%A7%E5%AD%A6%E9%82%A3%E4%BA%9B%E4%BA%8B/"/>
-    <id>https://KevinJe.github.io/2017/03/18/大学那些事/</id>
+    <title>使用jsoup解析你想要的内容</title>
+    <link href="https://KevinJe.github.io/2017/06/03/%E4%BD%BF%E7%94%A8jsoup%E8%A7%A3%E6%9E%90%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E5%86%85%E5%AE%B9/"/>
+    <id>https://KevinJe.github.io/2017/06/03/使用jsoup解析你想要的内容/</id>
+    <published>2017-06-03T09:52:23.000Z</published>
+    <updated>2017-06-03T10:10:35.814Z</updated>
+    
+    <content type="html"><![CDATA[<p>有些时候，我们做APP时，也许会为没有相应的API而发愁。看到某些网站上某些内容很好，却没有办法获取到。最近，接触到了jsoup，用它就可以轻松获取到网站上的内容了。jsoup是什么呢？jsoup 是一款<a href="http://lib.csdn.net/base/javase" target="_blank" rel="external">Java</a> 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于<a href="http://lib.csdn.net/base/jquery" target="_blank" rel="external">jQuery</a>的操作方法来取出和操作数据。</p>
+<p>jsoup的主要功能如下：</p>
+<ol>
+<li>从一个URL，文件或字符串中解析HTML；</li>
+<li>使用DOM或CSS选择器来查找、取出数据；</li>
+<li>可操作HTML元素、属性、文本。</li>
+</ol>
+<blockquote>
+<p><strong>jsoup官方文档</strong>：<a href="https://jsoup.org/cookbook/" target="_blank" rel="external">https://jsoup.org/cookbook/</a><br><strong>中文文档</strong>：<a href="http://www.open-open.com/jsoup/" target="_blank" rel="external">http://www.open-open.com/jsoup/</a></p>
+</blockquote>
+<p>在Android Studio中直接在Gradle中加入以下依赖</p>
+<blockquote>
+<p>compile ‘org.jsoup:jsoup:1.10.2’</p>
+</blockquote>
+<p>然后，你就可以找到一个喜欢的网站去解析你想要的内容了。</p>
+<p>下面简单说一下如何使用，因为自己之前听过，但是最近采用，把自己使用的一些心得写出来。</p>
+<p>我们以泡在网上的日子的<a href="http://www.jcodecraeer.com/plus/list.php?tid=4" target="_blank" rel="external">综合资讯</a>栏目做一个例子。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1602023-28401489a064eb2a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="泡在网上的日子"></p>
+<p>在浏览器中点击查看网页源代码，查看整个网页的源代码。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1602023-85f541366babcc41.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="网页源代码"></p>
+<p>可以看到，全都是标签。所以，最好懂一点点前端的知识，使用起来会更容易。下面来看简单的应用。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//从一个URL加载一个Document对象。</span></div><div class="line">Document <span class="built_in">document</span> = Jsoup.connect(<span class="string">"http://www.jcodecraeer.com/plus/list.php?tid=4"</span>).<span class="keyword">get</span>();</div><div class="line"><span class="comment">//选择整个文章列表所在的节点</span></div><div class="line"><span class="built_in">Element</span> element = <span class="built_in">document</span>.select(<span class="string">"div.col-md-9"</span>).first();</div><div class="line"><span class="comment">//选择文章列表下每一篇文章所在的详情页的节点</span></div><div class="line">Elements detailElements = element.select(<span class="string">"div.archive-detail"</span>);</div><div class="line">Log.d(TAG, <span class="string">"文章总数 "</span> + detailElements.size());</div></pre></td></tr></table></figure>
+<p>上面在<code>Element element = document.select(&quot;div.col-md-9&quot;).first();</code>最后接了一个<code>first();</code>方法，意思就是找出第一个<code>class = div.col-md-9</code>的div的那一项。然后，找到了<code>class = div.col-md-9</code>的div，也就找到了文章列表。所以，就要选择文章的详情。<code>select(&quot;div.archive-detail&quot;)</code>就会去找到div下的所有名字为<code>archive-detail</code>的div。用<code>size()</code>看一下有多少条数据。</p>
+<p>看一下，打印的日志：</p>
+<blockquote>
+<p>05-25 20:47:22.881 22784-22865/com.example.jsouptest D/MainActivity: 文章总数 15</p>
+</blockquote>
+<p>没错，每一页最多15条数据。</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//循环遍历每一项</span></div><div class="line">for (int i = <span class="number">0</span>; i &lt; detailElements.size(); i++) &#123;</div><div class="line">     <span class="comment">//循环遍历详情中的一项</span></div><div class="line">     Element detailElement = detailElements.get(i);</div><div class="line">     <span class="comment">//选择一项中的标题所在的节点</span></div><div class="line">     Element articleTitle = detailElement.<span class="keyword">select</span>(<span class="string">"h3 a"</span>).first();</div><div class="line">     <span class="comment">//选择一项中内容所在的节点</span></div><div class="line">     Elements articleContent = detailElement.<span class="keyword">select</span>(<span class="string">"p"</span>);</div><div class="line">     <span class="comment">//得到标题所对应的链接</span></div><div class="line">     <span class="keyword">Log</span>.d(<span class="built_in">TAG</span>, <span class="string">"article href "</span> +articleTitle.attr(<span class="string">"href"</span>));</div><div class="line">     <span class="comment">//得到文章标题</span></div><div class="line">     <span class="keyword">Log</span>.d(<span class="built_in">TAG</span>, <span class="string">"articleTitle title "</span> +articleTitle.text());</div><div class="line">     <span class="comment">//得到文章内容</span></div><div class="line">     <span class="keyword">Log</span>.d(<span class="built_in">TAG</span>, <span class="string">"articleContent  "</span> + articleContent.text());</div><div class="line">     <span class="comment">//必须使用这种索引的方式取得值，因为有的文章没有图片</span></div><div class="line">     Elements elements = element.getElementsByIndexEquals(i).<span class="keyword">select</span>(<span class="string">"div.covercon"</span>);</div><div class="line">     <span class="comment">//选择文章图片所在的节点，并且取得图片的值</span></div><div class="line">     <span class="keyword">Log</span>.d(<span class="built_in">TAG</span>, <span class="string">"articleImage "</span>+elements.<span class="keyword">select</span>(<span class="string">"img"</span>).attr(<span class="string">"src"</span>));</div><div class="line">     <span class="keyword">Log</span>.d(<span class="built_in">TAG</span>, <span class="string">"getData: ==========================================================="</span>);</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>最后的打印结果：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.881</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> article href <span class="regexp">/a/</span>wangzhantuijian<span class="regexp">/waiwenfanyi/</span><span class="number">2017</span><span class="regexp">/0523/</span><span class="number">7968.</span>html</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.881</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> articleTitle title Java 之父 James Gosling 宣布加入亚马逊 AWS</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.881</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> articleContent  著名计算机科学家、Java 之父 James Gosling 宣布 加盟亚马逊 AWS 服务，成为云计算巨头的杰出工程师。James Gosling 也在其 Facebook 主页上确认了这一消息。 亚马逊证实 Gosling 已加入了公司，但没有对他将要做的工作提出任何进一步的说明。尽管目前尚不</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.911</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> <span class="string">getData:</span> <span class="regexp">/uploads/</span><span class="number">20170523</span>/<span class="number">1495549009281427</span>-lp.jpg</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.911</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> <span class="string">getData:</span> ===========================================================</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.911</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> article href <span class="regexp">/a/</span>anzhuokaifa<span class="regexp">/anzhuozixun/</span><span class="number">2017</span><span class="regexp">/0515/</span><span class="number">7947.</span>html</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.911</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> articleTitle title 绿色守护作者发起Android 绿色应用公约</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.911</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> articleContent  安卓最大的问题，不是系统本身，而是第三方app毫无节制的消耗系统资源。比如无休止的唤醒，各种不必要的通知等。而往往规模越大的公司，在这方面做得越差，这些应用往往属于必备应用，导致装完这些应用之后，几乎无法在保证流畅性的前提下继续安装其它应用了</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.921</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> <span class="string">getData:</span> <span class="regexp">/uploads/</span><span class="number">170515</span>/<span class="number">1</span><span class="number">-1</span>F5151TG3334.png</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.921</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> <span class="string">getData:</span> ===========================================================</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.921</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> article href <span class="regexp">/a/</span>anzhuokaifa<span class="regexp">/anzhuozixun/</span><span class="number">2017</span><span class="regexp">/0515/</span><span class="number">7945.</span>html</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.921</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> articleTitle title Google 推出新的 Android 系统更新方案，碎片化问题有救了？</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.921</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> articleContent  Android 已经是世界上第一大移动设备操作系统，但对于很多 Android 手机用户来说，他们手上的“第一大”操作系统，却并不是最新版本的，用户在抱怨得不到更新，Android 的所有者 Google 当然也在发愁。 （图自： Android ） 根据 Google 官方最新的统计显示</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.931</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> <span class="string">getData:</span> <span class="regexp">/uploads/</span>allimg<span class="regexp">/170515/</span><span class="number">1</span><span class="number">-1</span>F5151403080-L.png</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.931</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> <span class="string">getData:</span> ===========================================================</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.931</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> article href <span class="regexp">/a/</span>wangzhantuijian<span class="regexp">/waiwenfanyi/</span><span class="number">2017</span><span class="regexp">/0511/</span><span class="number">7937.</span>html</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.931</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> articleTitle title Windows 商店封杀 Chrome 和 Firefox 等第三方浏览器</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.931</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> articleContent  微软上周正式宣布Windows <span class="number">10</span> S时，很多人都想知道Windows <span class="number">10</span>的这个版本是否真的是对消费者友好。 Windows <span class="number">10</span> S绝对不是Windows RT，但是，Windows <span class="number">10</span> S用户将不得不使用微软Edge和Bing作为其默认的浏览器和搜索引擎，我们不太可能看到Google Chrome或其他流</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.941</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> <span class="string">getData:</span> </div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.941</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> <span class="string">getData:</span> ===========================================================</div></pre></td></tr></table></figure>
+<p>可以看到已经将文章解析出来了，第一条就是Java之父Gosling去亚马逊的事，哈哈。</p>
+<p>其实，注释已经很清楚了。下面说一下使用的细节。</p>
+<ol>
+<li><p>首先，要先找到你想要内容在网页源代码的位置。然后，就可以用Document对象进行<code>select(&quot;div.className&quot;)</code>。当然，你也可以偷懒，直接就<code>select(&quot;.className&quot;)</code>也是一样可以的。其实，class并不一定要放div<br>标签的。假如，有这样的<code>&lt;article class=&quot;article-content&quot;&gt;</code>那你就要<code>select(&quot;article.article-content&quot;)</code>了，当然也可以<code>select(&quot;.article-content&quot;)</code>。不过不推荐偷懒的写法，毕竟以后看起来会好理解，学会变通吧。</p>
+</li>
+<li><p>取值的过程中一定，先要选择<code>select()</code>值外面的class，然后在<code>attr(&quot;key&quot;)</code>。这样就可以得到键key所对应的值value了。</p>
+</li>
+<li><p>只想得到每一个纯文本，像上面的标题一样。<code>&lt;h3&gt;&lt;a href=&quot;/a/wangzhantuijian/waiwenfanyi/2017/0523/7968.html&quot; title=&quot;Java 之父 James Gosling 宣布加入亚马逊 AWS&quot; &gt;Java 之父 James Gosling 宣布加入亚马逊 AWS&lt;/a&gt;&lt;/h3&gt;</code>。源代码是这个样子的。可以看到，标题横跨两个标签，这时可以<code>select(“h3 a”)</code>两个标签间以空格间隔。就选择了标题所在的标签。然后可以调用<code>text()</code>方法就会返回一个纯文本。</p>
+</li>
+<li><p>和上面一样如果外面还包裹一个 div名字叫做article-detail 就要<code>select(&quot;div.article-detail h3 a&quot;)</code>这样就可以选择到标题所在的节点了，这是一步到位。</p>
+</li>
+<li><p>上面的文章中有些是有图片的，有些没有，我们在用时如果不处理，就会造成错误。因为，你解析出的文章数是15，而图片数是10。这样，你如果不处理，就会造成前十篇文章都有图片，但事实上前十篇文章有的不一定有图片。刚开始，我就是没处理，就一直报角标越界异常 ArrayIndexOutOfBoundsException 。因为在第十一篇文章时没有图片了，你还去试图访问自然就出问题了。所以我们不应该提前将每一个图片拿出来，我们应该根据索引加载对应文章的图片就行了。也就是<code>element.getElementsByIndexEquals(i)</code>的作用。<br><strong>这个问题在于文章的图片标签不在文章详情标签里，而是自己单独一个标签，所以我们应该按照索引去取。</strong> 上面的源代码有体现他们两者的位置。</p>
+</li>
+<li><p>如果像要获得某一节点下的html代码，只需要调用<code>html()</code>就能给你返回对应的html代码。假如网页文字是粗体显示的，你也想在APP中实现和网页一样的效果，你只要调用<code>html()</code>，然后就可以使用<code>TextView.setText(Html.fromHtml(articleContent))</code>。这样，就可以在Android显示粗体了。</p>
+</li>
+<li><p>上面在去对应的链接过程中，有的直接在html中返回的是相对路径。这时，如果你想取到绝对路径。可以这样：<code>link.attr(&quot;abs:href&quot;)</code>，就是在链接标签<code>href</code>前加上<code>abs:</code>。当然，不想自己拼接，也有对应的方法， <a href="http://jsoup.org/apidocs/org/jsoup/nodes/Node.html#absUrl(java.lang.String" target="_blank" rel="external">Node.absUrl(String key)</a>)。</p>
+</li>
+</ol>
+<p>总结一下，使用方法：</p>
+<ol>
+<li>找到心仪的网页</li>
+<li>用Jsoup.connect()获取网页的document</li>
+<li>查看网页源码，找到你想要的地方，使用Element.select(String<br>selector)</li>
+<li>用Node.attr(String key)或者Element.text()方法把数据抽出来</li>
+</ol>
+<p>最后，不会的地方，要学会勤奋的去查文档，或者利用好Google。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;有些时候，我们做APP时，也许会为没有相应的API而发愁。看到某些网站上某些内容很好，却没有办法获取到。最近，接触到了jsoup，用它就可以轻松获取到网站上的内容了。jsoup是什么呢？jsoup 是一款&lt;a href=&quot;http://lib.csdn.net/base/j
+    
+    </summary>
+    
+      <category term="Android" scheme="https://KevinJe.github.io/categories/Android/"/>
+    
+    
+      <category term="Android" scheme="https://KevinJe.github.io/tags/Android/"/>
+    
+      <category term="Jsoup" scheme="https://KevinJe.github.io/tags/Jsoup/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>大学那些事儿</title>
+    <link href="https://KevinJe.github.io/2017/03/18/%E5%A4%A7%E5%AD%A6%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/"/>
+    <id>https://KevinJe.github.io/2017/03/18/大学那些事儿/</id>
     <published>2017-03-18T02:27:40.000Z</published>
-    <updated>2017-03-19T06:51:47.959Z</updated>
+    <updated>2017-06-03T10:09:47.355Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>开头，先放上我最喜欢的BGM，是链接到Youtube的。Youtube，已经被墙了，需要翻墙才能看到。什么？不会翻墙，好吧，真是我国的合格好公民。老哥，那你只能自己想办法，或者选择不看了。毕竟，你不一定喜欢。<br><a href="https://www.youtube.com/watch?v=qycqF1CWcXg" target="_blank" rel="external">Background Music Instrumentals - relaxdaily - B-Sides N°1</a></p>

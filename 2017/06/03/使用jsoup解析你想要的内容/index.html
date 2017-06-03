@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>使用jsoup解析你想要的内容 | Kevin Jern | 踏破芒鞋，烟雨任平生。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android,Jsoup">
+    <meta name="description" content="有些时候，我们做APP时，也许会为没有相应的API而发愁。看到某些网站上某些内容很好，却没有办法获取到。最近，接触到了jsoup，用它就可以轻松获取到网站上的内容了。jsoup是什么呢？jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。
+jsoup的主要功能如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用jsoup解析你想要的内容">
+<meta property="og:url" content="https://KevinJe.github.io/2017/06/03/使用jsoup解析你想要的内容/index.html">
+<meta property="og:site_name" content="Kevin Jern">
+<meta property="og:description" content="有些时候，我们做APP时，也许会为没有相应的API而发愁。看到某些网站上某些内容很好，却没有办法获取到。最近，接触到了jsoup，用它就可以轻松获取到网站上的内容了。jsoup是什么呢？jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。
+jsoup的主要功能如">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1602023-28401489a064eb2a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1602023-85f541366babcc41.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-06-03T10:10:35.814Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用jsoup解析你想要的内容">
+<meta name="twitter:description" content="有些时候，我们做APP时，也许会为没有相应的API而发愁。看到某些网站上某些内容很好，却没有办法获取到。最近，接触到了jsoup，用它就可以轻松获取到网站上的内容了。jsoup是什么呢？jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。
+jsoup的主要功能如">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1602023-28401489a064eb2a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+    
+        <link rel="alternate" type="application/atom+xml" title="Kevin Jern" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Jern</h5>
+          <a href="mailto:kevinvin1997@gmail.com" title="kevinvin1997@gmail.com" class="mail">kevinvin1997@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KevinJe" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/KevinJe" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">使用jsoup解析你想要的内容</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">使用jsoup解析你想要的内容</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-06-03T09:52:23.000Z" itemprop="datePublished" class="page-time">
+  2017-06-03
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/">Android</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+<article id="post-使用jsoup解析你想要的内容"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">使用jsoup解析你想要的内容</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-06-03 17:52:23" datetime="2017-06-03T09:52:23.000Z"  itemprop="datePublished">2017-06-03</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/">Android</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>有些时候，我们做APP时，也许会为没有相应的API而发愁。看到某些网站上某些内容很好，却没有办法获取到。最近，接触到了jsoup，用它就可以轻松获取到网站上的内容了。jsoup是什么呢？jsoup 是一款<a href="http://lib.csdn.net/base/javase" target="_blank" rel="external">Java</a> 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于<a href="http://lib.csdn.net/base/jquery" target="_blank" rel="external">jQuery</a>的操作方法来取出和操作数据。</p>
+<p>jsoup的主要功能如下：</p>
+<ol>
+<li>从一个URL，文件或字符串中解析HTML；</li>
+<li>使用DOM或CSS选择器来查找、取出数据；</li>
+<li>可操作HTML元素、属性、文本。</li>
+</ol>
+<blockquote>
+<p><strong>jsoup官方文档</strong>：<a href="https://jsoup.org/cookbook/" target="_blank" rel="external">https://jsoup.org/cookbook/</a><br><strong>中文文档</strong>：<a href="http://www.open-open.com/jsoup/" target="_blank" rel="external">http://www.open-open.com/jsoup/</a></p>
+</blockquote>
+<p>在Android Studio中直接在Gradle中加入以下依赖</p>
+<blockquote>
+<p>compile ‘org.jsoup:jsoup:1.10.2’</p>
+</blockquote>
+<p>然后，你就可以找到一个喜欢的网站去解析你想要的内容了。</p>
+<p>下面简单说一下如何使用，因为自己之前听过，但是最近采用，把自己使用的一些心得写出来。</p>
+<p>我们以泡在网上的日子的<a href="http://www.jcodecraeer.com/plus/list.php?tid=4" target="_blank" rel="external">综合资讯</a>栏目做一个例子。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1602023-28401489a064eb2a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="泡在网上的日子"></p>
+<p>在浏览器中点击查看网页源代码，查看整个网页的源代码。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1602023-85f541366babcc41.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="网页源代码"></p>
+<p>可以看到，全都是标签。所以，最好懂一点点前端的知识，使用起来会更容易。下面来看简单的应用。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//从一个URL加载一个Document对象。</span></div><div class="line">Document <span class="built_in">document</span> = Jsoup.connect(<span class="string">"http://www.jcodecraeer.com/plus/list.php?tid=4"</span>).<span class="keyword">get</span>();</div><div class="line"><span class="comment">//选择整个文章列表所在的节点</span></div><div class="line"><span class="built_in">Element</span> element = <span class="built_in">document</span>.select(<span class="string">"div.col-md-9"</span>).first();</div><div class="line"><span class="comment">//选择文章列表下每一篇文章所在的详情页的节点</span></div><div class="line">Elements detailElements = element.select(<span class="string">"div.archive-detail"</span>);</div><div class="line">Log.d(TAG, <span class="string">"文章总数 "</span> + detailElements.size());</div></pre></td></tr></table></figure>
+<p>上面在<code>Element element = document.select(&quot;div.col-md-9&quot;).first();</code>最后接了一个<code>first();</code>方法，意思就是找出第一个<code>class = div.col-md-9</code>的div的那一项。然后，找到了<code>class = div.col-md-9</code>的div，也就找到了文章列表。所以，就要选择文章的详情。<code>select(&quot;div.archive-detail&quot;)</code>就会去找到div下的所有名字为<code>archive-detail</code>的div。用<code>size()</code>看一下有多少条数据。</p>
+<p>看一下，打印的日志：</p>
+<blockquote>
+<p>05-25 20:47:22.881 22784-22865/com.example.jsouptest D/MainActivity: 文章总数 15</p>
+</blockquote>
+<p>没错，每一页最多15条数据。</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//循环遍历每一项</span></div><div class="line">for (int i = <span class="number">0</span>; i &lt; detailElements.size(); i++) &#123;</div><div class="line">     <span class="comment">//循环遍历详情中的一项</span></div><div class="line">     Element detailElement = detailElements.get(i);</div><div class="line">     <span class="comment">//选择一项中的标题所在的节点</span></div><div class="line">     Element articleTitle = detailElement.<span class="keyword">select</span>(<span class="string">"h3 a"</span>).first();</div><div class="line">     <span class="comment">//选择一项中内容所在的节点</span></div><div class="line">     Elements articleContent = detailElement.<span class="keyword">select</span>(<span class="string">"p"</span>);</div><div class="line">     <span class="comment">//得到标题所对应的链接</span></div><div class="line">     <span class="keyword">Log</span>.d(<span class="built_in">TAG</span>, <span class="string">"article href "</span> +articleTitle.attr(<span class="string">"href"</span>));</div><div class="line">     <span class="comment">//得到文章标题</span></div><div class="line">     <span class="keyword">Log</span>.d(<span class="built_in">TAG</span>, <span class="string">"articleTitle title "</span> +articleTitle.text());</div><div class="line">     <span class="comment">//得到文章内容</span></div><div class="line">     <span class="keyword">Log</span>.d(<span class="built_in">TAG</span>, <span class="string">"articleContent  "</span> + articleContent.text());</div><div class="line">     <span class="comment">//必须使用这种索引的方式取得值，因为有的文章没有图片</span></div><div class="line">     Elements elements = element.getElementsByIndexEquals(i).<span class="keyword">select</span>(<span class="string">"div.covercon"</span>);</div><div class="line">     <span class="comment">//选择文章图片所在的节点，并且取得图片的值</span></div><div class="line">     <span class="keyword">Log</span>.d(<span class="built_in">TAG</span>, <span class="string">"articleImage "</span>+elements.<span class="keyword">select</span>(<span class="string">"img"</span>).attr(<span class="string">"src"</span>));</div><div class="line">     <span class="keyword">Log</span>.d(<span class="built_in">TAG</span>, <span class="string">"getData: ==========================================================="</span>);</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>最后的打印结果：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.881</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> article href <span class="regexp">/a/</span>wangzhantuijian<span class="regexp">/waiwenfanyi/</span><span class="number">2017</span><span class="regexp">/0523/</span><span class="number">7968.</span>html</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.881</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> articleTitle title Java 之父 James Gosling 宣布加入亚马逊 AWS</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.881</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> articleContent  著名计算机科学家、Java 之父 James Gosling 宣布 加盟亚马逊 AWS 服务，成为云计算巨头的杰出工程师。James Gosling 也在其 Facebook 主页上确认了这一消息。 亚马逊证实 Gosling 已加入了公司，但没有对他将要做的工作提出任何进一步的说明。尽管目前尚不</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.911</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> <span class="string">getData:</span> <span class="regexp">/uploads/</span><span class="number">20170523</span>/<span class="number">1495549009281427</span>-lp.jpg</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.911</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> <span class="string">getData:</span> ===========================================================</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.911</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> article href <span class="regexp">/a/</span>anzhuokaifa<span class="regexp">/anzhuozixun/</span><span class="number">2017</span><span class="regexp">/0515/</span><span class="number">7947.</span>html</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.911</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> articleTitle title 绿色守护作者发起Android 绿色应用公约</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.911</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> articleContent  安卓最大的问题，不是系统本身，而是第三方app毫无节制的消耗系统资源。比如无休止的唤醒，各种不必要的通知等。而往往规模越大的公司，在这方面做得越差，这些应用往往属于必备应用，导致装完这些应用之后，几乎无法在保证流畅性的前提下继续安装其它应用了</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.921</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> <span class="string">getData:</span> <span class="regexp">/uploads/</span><span class="number">170515</span>/<span class="number">1</span><span class="number">-1</span>F5151TG3334.png</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.921</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> <span class="string">getData:</span> ===========================================================</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.921</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> article href <span class="regexp">/a/</span>anzhuokaifa<span class="regexp">/anzhuozixun/</span><span class="number">2017</span><span class="regexp">/0515/</span><span class="number">7945.</span>html</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.921</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> articleTitle title Google 推出新的 Android 系统更新方案，碎片化问题有救了？</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.921</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> articleContent  Android 已经是世界上第一大移动设备操作系统，但对于很多 Android 手机用户来说，他们手上的“第一大”操作系统，却并不是最新版本的，用户在抱怨得不到更新，Android 的所有者 Google 当然也在发愁。 （图自： Android ） 根据 Google 官方最新的统计显示</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.931</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> <span class="string">getData:</span> <span class="regexp">/uploads/</span>allimg<span class="regexp">/170515/</span><span class="number">1</span><span class="number">-1</span>F5151403080-L.png</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.931</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> <span class="string">getData:</span> ===========================================================</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.931</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> article href <span class="regexp">/a/</span>wangzhantuijian<span class="regexp">/waiwenfanyi/</span><span class="number">2017</span><span class="regexp">/0511/</span><span class="number">7937.</span>html</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.931</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> articleTitle title Windows 商店封杀 Chrome 和 Firefox 等第三方浏览器</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.931</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> articleContent  微软上周正式宣布Windows <span class="number">10</span> S时，很多人都想知道Windows <span class="number">10</span>的这个版本是否真的是对消费者友好。 Windows <span class="number">10</span> S绝对不是Windows RT，但是，Windows <span class="number">10</span> S用户将不得不使用微软Edge和Bing作为其默认的浏览器和搜索引擎，我们不太可能看到Google Chrome或其他流</div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.941</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> <span class="string">getData:</span> </div><div class="line"><span class="number">05</span><span class="number">-25</span> <span class="number">20</span>:<span class="number">47</span>:<span class="number">22.941</span> <span class="number">22784</span><span class="number">-22865</span><span class="regexp">/com.example.jsouptest D/</span><span class="string">MainActivity:</span> <span class="string">getData:</span> ===========================================================</div></pre></td></tr></table></figure>
+<p>可以看到已经将文章解析出来了，第一条就是Java之父Gosling去亚马逊的事，哈哈。</p>
+<p>其实，注释已经很清楚了。下面说一下使用的细节。</p>
+<ol>
+<li><p>首先，要先找到你想要内容在网页源代码的位置。然后，就可以用Document对象进行<code>select(&quot;div.className&quot;)</code>。当然，你也可以偷懒，直接就<code>select(&quot;.className&quot;)</code>也是一样可以的。其实，class并不一定要放div<br>标签的。假如，有这样的<code>&lt;article class=&quot;article-content&quot;&gt;</code>那你就要<code>select(&quot;article.article-content&quot;)</code>了，当然也可以<code>select(&quot;.article-content&quot;)</code>。不过不推荐偷懒的写法，毕竟以后看起来会好理解，学会变通吧。</p>
+</li>
+<li><p>取值的过程中一定，先要选择<code>select()</code>值外面的class，然后在<code>attr(&quot;key&quot;)</code>。这样就可以得到键key所对应的值value了。</p>
+</li>
+<li><p>只想得到每一个纯文本，像上面的标题一样。<code>&lt;h3&gt;&lt;a href=&quot;/a/wangzhantuijian/waiwenfanyi/2017/0523/7968.html&quot; title=&quot;Java 之父 James Gosling 宣布加入亚马逊 AWS&quot; &gt;Java 之父 James Gosling 宣布加入亚马逊 AWS&lt;/a&gt;&lt;/h3&gt;</code>。源代码是这个样子的。可以看到，标题横跨两个标签，这时可以<code>select(“h3 a”)</code>两个标签间以空格间隔。就选择了标题所在的标签。然后可以调用<code>text()</code>方法就会返回一个纯文本。</p>
+</li>
+<li><p>和上面一样如果外面还包裹一个 div名字叫做article-detail 就要<code>select(&quot;div.article-detail h3 a&quot;)</code>这样就可以选择到标题所在的节点了，这是一步到位。</p>
+</li>
+<li><p>上面的文章中有些是有图片的，有些没有，我们在用时如果不处理，就会造成错误。因为，你解析出的文章数是15，而图片数是10。这样，你如果不处理，就会造成前十篇文章都有图片，但事实上前十篇文章有的不一定有图片。刚开始，我就是没处理，就一直报角标越界异常 ArrayIndexOutOfBoundsException 。因为在第十一篇文章时没有图片了，你还去试图访问自然就出问题了。所以我们不应该提前将每一个图片拿出来，我们应该根据索引加载对应文章的图片就行了。也就是<code>element.getElementsByIndexEquals(i)</code>的作用。<br><strong>这个问题在于文章的图片标签不在文章详情标签里，而是自己单独一个标签，所以我们应该按照索引去取。</strong> 上面的源代码有体现他们两者的位置。</p>
+</li>
+<li><p>如果像要获得某一节点下的html代码，只需要调用<code>html()</code>就能给你返回对应的html代码。假如网页文字是粗体显示的，你也想在APP中实现和网页一样的效果，你只要调用<code>html()</code>，然后就可以使用<code>TextView.setText(Html.fromHtml(articleContent))</code>。这样，就可以在Android显示粗体了。</p>
+</li>
+<li><p>上面在去对应的链接过程中，有的直接在html中返回的是相对路径。这时，如果你想取到绝对路径。可以这样：<code>link.attr(&quot;abs:href&quot;)</code>，就是在链接标签<code>href</code>前加上<code>abs:</code>。当然，不想自己拼接，也有对应的方法， <a href="http://jsoup.org/apidocs/org/jsoup/nodes/Node.html#absUrl(java.lang.String" target="_blank" rel="external">Node.absUrl(String key)</a>)。</p>
+</li>
+</ol>
+<p>总结一下，使用方法：</p>
+<ol>
+<li>找到心仪的网页</li>
+<li>用Jsoup.connect()获取网页的document</li>
+<li>查看网页源码，找到你想要的地方，使用Element.select(String<br>selector)</li>
+<li>用Node.attr(String key)或者Element.text()方法把数据抽出来</li>
+</ol>
+<p>最后，不会的地方，要学会勤奋的去查文档，或者利用好Google。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-06-03T10:10:35.814Z" itemprop="dateUpdated">2017-06-03 18:10:35</time>
+</span><br>
+
+
+        
+        转载请注明出处：<a href="/2017/06/03/使用jsoup解析你想要的内容/" target="_blank" rel="external">https://KevinJe.github.io/2017/06/03/使用jsoup解析你想要的内容/</a>
+        
+    </div>
+    <footer>
+        <a href="https://KevinJe.github.io">
+            <img src="/img/avatar.jpg" alt="Kevin Jern">
+            Kevin Jern
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jsoup/">Jsoup</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KevinJe.github.io/2017/06/03/使用jsoup解析你想要的内容/&title=《使用jsoup解析你想要的内容》 — Kevin Jern&pic=https://KevinJe.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KevinJe.github.io/2017/06/03/使用jsoup解析你想要的内容/&title=《使用jsoup解析你想要的内容》 — Kevin Jern&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KevinJe.github.io/2017/06/03/使用jsoup解析你想要的内容/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《使用jsoup解析你想要的内容》 — Kevin Jern&url=https://KevinJe.github.io/2017/06/03/使用jsoup解析你想要的内容/&via=https://KevinJe.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KevinJe.github.io/2017/06/03/使用jsoup解析你想要的内容/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/03/18/大学那些事儿/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">大学那些事儿</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢打赏~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Kevin Jern &copy; 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KevinJe.github.io/2017/06/03/使用jsoup解析你想要的内容/&title=《使用jsoup解析你想要的内容》 — Kevin Jern&pic=https://KevinJe.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KevinJe.github.io/2017/06/03/使用jsoup解析你想要的内容/&title=《使用jsoup解析你想要的内容》 — Kevin Jern&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KevinJe.github.io/2017/06/03/使用jsoup解析你想要的内容/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《使用jsoup解析你想要的内容》 — Kevin Jern&url=https://KevinJe.github.io/2017/06/03/使用jsoup解析你想要的内容/&via=https://KevinJe.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KevinJe.github.io/2017/06/03/使用jsoup解析你想要的内容/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACvElEQVR42u3awW7cMAwE0Pz/T6dAr+muZyix3QLPp2CTtfx8kJghv77i6/v39fOTn9fP376/26vvvlrla+PCw8PDGz16+7jvF37/OvInyVd/eX88PDy8NV6+fbeHxK0j59Xh8WDBw8PD+6e82dafF9zJsYGHh4f3P/KKcnZUKL+/Ax4eHt7n8PISdnZgtFnrtVeMh4eHt8BrI4NP+Hmxv4eHh4d30FVPSuGT5fMj5Ht04eHh4W3wZo/bhq1Ji6u9QxJY4OHh4W3wZlFCGwokIW8ecxTRCR4eHt4ar21BzYaiktL8VgSMh4eHt8ebNfjPj4e2hZasWA8Q4OHh4R3w2tb7rHTO44Z2IOBhRTw8PLyrvGTIaRbsJvi2gG7DXzw8PLw93q3WfrKtJy80f2UPZwEeHh7eAq+Na0+GA4oxqVGMW8x54eHh4R3wkodrA4iTkGK2+sO5h4eHh7fMyxtd7ahB3uyflfJ/+BwPDw9vgZczZoHF7Dhpi+9i6AoPDw/vmNdGovUkV3y1gGggDA8PD2+BN2ss5fFrHnO0f1M0yfDw8PCu8vKC9eRgyIcDZqs8lNR4eHh4a7y2VZ8ME7Tl73nJjoeHh7fNOxmcyrfptkyf3acOI/Dw8PCOecnm2y42ex15wFFkLXh4eHhXee0owK2C+GTrb1fHw8PDu8VrN+XZ4dG2svKY4yHywMPDw1vm5WXx+SFxqxB/+C4eHh7eAi//N/4kZp2NYeV3jhR4eHh4l3jf5XUS6ebleHvY1DNleHh4eAe8dsPNo9Vk1GDWTpvdBw8PD+8ur41H91pit0rtlzNleHh4eFd5502vZESgSEeCdYdnGh4eHt5f5OVtqrykzqPetnzHw8PD+2Revq2frDVrp+Hh4eHt8dowYrbkreOkeB14eHh4C7yNwOJkeCsvrC909vDw8PA63i9VSwMnV50nfQAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Kevin Jern';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Kevin Jern';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
