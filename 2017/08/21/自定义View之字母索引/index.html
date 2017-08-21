@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>自定义View之字母索引 | Kevin Jern | 踏破芒鞋，烟雨任平生。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android,自定义View">
+    <meta name="description" content="在Android中，字母索引这一设计在很多App中都有体现。手机联系人、微信、支付宝等在联系人一栏都会有这种设计。这种设计的便捷之处就是可以快捷的查找联系人。所以，我们今天也来打造这么一个自定义View的效果。注意，这里仅仅是模仿UI效果，不会实现功能。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义View之字母索引">
+<meta property="og:url" content="https://KevinJe.github.io/2017/08/21/自定义View之字母索引/index.html">
+<meta property="og:site_name" content="Kevin Jern">
+<meta property="og:description" content="在Android中，字母索引这一设计在很多App中都有体现。手机联系人、微信、支付宝等在联系人一栏都会有这种设计。这种设计的便捷之处就是可以快捷的查找联系人。所以，我们今天也来打造这么一个自定义View的效果。注意，这里仅仅是模仿UI效果，不会实现功能。">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1602023-7286240a2d48c2d7.gif?imageMogr2/auto-orient/strip">
+<meta property="og:updated_time" content="2017-08-21T13:13:46.504Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义View之字母索引">
+<meta name="twitter:description" content="在Android中，字母索引这一设计在很多App中都有体现。手机联系人、微信、支付宝等在联系人一栏都会有这种设计。这种设计的便捷之处就是可以快捷的查找联系人。所以，我们今天也来打造这么一个自定义View的效果。注意，这里仅仅是模仿UI效果，不会实现功能。">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1602023-7286240a2d48c2d7.gif?imageMogr2/auto-orient/strip">
+    
+        <link rel="alternate" type="application/atom+xml" title="Kevin Jern" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Jern</h5>
+          <a href="mailto:kevinvin1997@gmail.com" title="kevinvin1997@gmail.com" class="mail">kevinvin1997@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KevinJe" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/KevinJe" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">自定义View之字母索引</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">自定义View之字母索引</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-08-21T13:08:32.000Z" itemprop="datePublished" class="page-time">
+  2017-08-21
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/">Android</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/自定义View/">自定义View</a></li></ul></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+<article id="post-自定义View之字母索引"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">自定义View之字母索引</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-08-21 21:08:32" datetime="2017-08-21T13:08:32.000Z"  itemprop="datePublished">2017-08-21</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/">Android</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/自定义View/">自定义View</a></li></ul></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>在Android中，字母索引这一设计在很多App中都有体现。手机联系人、微信、支付宝等在联系人一栏都会有这种设计。这种设计的便捷之处就是可以快捷的查找联系人。所以，我们今天也来打造这么一个自定义View的效果。注意，这里仅仅是模仿UI效果，不会实现功能。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://upload-images.jianshu.io/upload_images/1602023-7286240a2d48c2d7.gif?imageMogr2/auto-orient/strip" alt="字母索引" title="">
+                </div>
+                <div class="image-caption">字母索引</div>
+            </figure>
+<p>这里只是谈一下实现的思路，不再详细的说明各个流程。详细的流程请看上两篇自定义View的文章，那两篇我流程写的很详细。</p>
+<p>由于现在只想要这个IndexBar显示的宽度为字母的宽度+padding。也就是在这里我们的布局width为wrap_content，而height为match_parent。所以，在绘制竖排竖排字母前，我们还是要测量一下View。</p>
+<p><code>onMeasure()</code>中：</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">@Override</div><div class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> onMeasure(<span class="built_in">int</span> widthMeasureSpec, <span class="built_in">int</span> heightMeasureSpec) &#123;</div><div class="line">        <span class="keyword">super</span>.onMeasure(widthMeasureSpec, heightMeasureSpec);</div><div class="line">        <span class="built_in">int</span> <span class="built_in">height</span> = MeasureSpec.getSize(heightMeasureSpec);</div><div class="line">        <span class="comment">//测量文字宽度</span></div><div class="line">        mTextWidth = (<span class="built_in">int</span>) mPaint.measureText(<span class="string">"A"</span>);</div><div class="line">        <span class="comment">//view的宽 = 左边padding + 右边padding　+ 文字大小</span></div><div class="line">        <span class="built_in">int</span> <span class="built_in">width</span> = getPaddingLeft() + getPaddingRight() + mTextWidth;</div><div class="line">        setMeasuredDimension(<span class="built_in">width</span>, <span class="built_in">height</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>这里很好理解，由于高度是match_parent，所以直接不用处理高度。这里只要处理宽度就可以了。通过计算得到View的宽，之后只需要使用<code>setMeasuredDimension(width, height)</code>就完成了整个View的测量。</p>
+<p>接下来，就可以进行View的绘制了。</p>
+<p><code>onDraw()</code>中：</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">   <span class="keyword">protected</span> <span class="keyword">void</span> onDraw(Canvas canvas) &#123;</div><div class="line">       <span class="comment">//每个字母x坐标的起始位置 = View的宽度 - 字母宽度 - 右边的padding</span></div><div class="line">       <span class="built_in">int</span> x = getWidth() - mTextWidth - getPaddingRight();</div><div class="line">       <span class="comment">//单个字母的高度 = View的高度 / 字母总数</span></div><div class="line">       <span class="built_in">float</span> singleLetterHeight = (getHeight()) / letters.length;</div><div class="line">       <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; letters.length; i++) &#123;</div><div class="line">           <span class="comment">//得到具体的字母</span></div><div class="line">           <span class="keyword">String</span> letter = letters[i];</div><div class="line">           <span class="comment">//拿到当前画笔的 Paint.FontMetrics</span></div><div class="line">           Paint.FontMetrics metrics = mLetterPaint.getFontMetrics();</div><div class="line">           <span class="comment">//第一个字母的基线位置（y坐标）</span></div><div class="line">           <span class="built_in">int</span> y = (<span class="built_in">int</span>) ((metrics.bottom - metrics.top) / <span class="number">2</span> - metrics.bottom);</div><div class="line">           <span class="comment">//每一个字母的基线y坐标 = 单个字母高度/2 + 第i个字母的高度 + 第一个字母的基线坐标</span></div><div class="line">           <span class="comment">//这里之所以加上 singleLetterHeight / 2 是为了让字母整体向下移动，因为第一个字母会显示不全</span></div><div class="line">           <span class="built_in">int</span> baseLine = (<span class="built_in">int</span>) ((singleLetterHeight / <span class="number">2</span> + singleLetterHeight * i) + y);</div><div class="line">           <span class="comment">//通过上面计算的坐标，开始绘制每个字母</span></div><div class="line">           canvas.drawText(letter, x, baseLine, mLetterPaint);</div><div class="line">       &#125;</div><div class="line">       <span class="comment">//手指触摸时出现的覆盖在字母上的深颜色的矩形框的位置</span></div><div class="line">       Rect <span class="built_in">rect</span> = <span class="keyword">new</span> Rect(x / <span class="number">2</span>, <span class="number">0</span>, getWidth(), getHeight());</div><div class="line">       <span class="keyword">if</span> (isDown) &#123;</div><div class="line">           <span class="comment">//绘制那个矩形框</span></div><div class="line">           canvas.drawRect(<span class="built_in">rect</span>, mPaint);</div><div class="line">           <span class="comment">//为了让手指离开时，矩形框也消失的一个flag</span></div><div class="line">           isDown = <span class="keyword">false</span>;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>当然下面这样进行坐标的计算也是可以的,是利用getTextBounds()：</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">   <span class="keyword">protected</span> <span class="keyword">void</span> onDraw(Canvas canvas) &#123;</div><div class="line">       <span class="comment">//每个字母x坐标的起始位置 = View的宽度 - 字母宽度 - 右边的padding</span></div><div class="line">       <span class="built_in">int</span> x = getWidth() - mTextWidth - getPaddingRight();</div><div class="line">       <span class="comment">//单个字母的高度 = View的高度 / 字母总数</span></div><div class="line">       <span class="built_in">float</span> singleLetterHeight = (getHeight()) / letters.length;</div><div class="line">       <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; letters.length; i++) &#123;</div><div class="line">           <span class="comment">//得到具体的字母</span></div><div class="line">           <span class="keyword">String</span> letter = letters[i];</div><div class="line">           Rect <span class="built_in">rect</span> = <span class="keyword">new</span> Rect();</div><div class="line">           mLetterPaint.getTextBounds(letter,<span class="number">0</span>,letter.length(),<span class="built_in">rect</span>);</div><div class="line">           <span class="comment">//第一个字母的基线位置</span></div><div class="line">           <span class="built_in">int</span> y = <span class="built_in">rect</span>.bottom - <span class="built_in">rect</span>.top;</div><div class="line">           Log.d(TAG, <span class="string">"onDraw: "</span>+y);</div><div class="line">           Log.d(TAG, <span class="string">"onDraw: "</span>+<span class="built_in">rect</span>.bottom);</div><div class="line">           Log.d(TAG, <span class="string">"onDraw: "</span>+<span class="built_in">rect</span>.top);</div><div class="line">           <span class="comment">//每一个字母的基线y坐标 = 单个字母高度/2 + 第i个字母的高度 + 第一个字母的基线坐标</span></div><div class="line">           <span class="comment">//这里之所以加上 singleLetterHeight / 2 是为了让字母整体向下移动</span></div><div class="line">           <span class="built_in">int</span> baseLine = (<span class="built_in">int</span>) ((singleLetterHeight / <span class="number">2</span> + singleLetterHeight * i) + y);</div><div class="line">           <span class="comment">//通过上面计算的坐标，开始绘制每个字母</span></div><div class="line">           canvas.drawText(letter, x, baseLine, mLetterPaint);</div><div class="line">       &#125;</div><div class="line">       <span class="comment">//手指触摸时出现的覆盖在字母上的深颜色的矩形框的位置</span></div><div class="line">       Rect <span class="built_in">rect</span> = <span class="keyword">new</span> Rect(x / <span class="number">2</span>, <span class="number">0</span>, getWidth(), getHeight());</div><div class="line">       <span class="keyword">if</span> (isDown) &#123;</div><div class="line">           <span class="comment">//绘制那个矩形框</span></div><div class="line">           canvas.drawRect(<span class="built_in">rect</span>, mPaint);</div><div class="line">           <span class="comment">//为了让手指离开时，矩形框也消失的一个flag</span></div><div class="line">           isDown = <span class="keyword">false</span>;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>绘制矩形框时，发现矩形框与字母颜色类似，做了如下处理：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">private void init(<span class="built_in">Context</span> <span class="built_in">context</span>, AttributeSet attrs) &#123;</div><div class="line">        TypedArray array = <span class="built_in">context</span>.obtainStyledAttributes(attrs, R.styleable.LetterSiderBar)<span class="comment">;</span></div><div class="line">        mLetterColor = array.getColor(R.styleable.LetterSiderBar_letterTextColor, mLetterColor)<span class="comment">;</span></div><div class="line">        mLetterSize = array.getDimension(R.styleable.LetterSiderBar_letterTextSize, mLetterSize)<span class="comment">;</span></div><div class="line">        mPaint = new Paint()<span class="comment">;</span></div><div class="line">        mPaint.setAntiAlias(true)<span class="comment">;</span></div><div class="line">        mPaint.setColor(Color.DKGRAY)<span class="comment">;</span></div><div class="line">        mPaint.setAlpha(<span class="number">127</span>)<span class="comment">;</span></div><div class="line">        mPaint.setStyle(Paint.Style.FILL)<span class="comment">;</span></div><div class="line"></div><div class="line">        mLetterPaint = new Paint()<span class="comment">;</span></div><div class="line">        mLetterPaint.setAntiAlias(true)<span class="comment">;</span></div><div class="line">        mLetterPaint.setTextSize(sp2px(<span class="number">15</span>))<span class="comment">;</span></div><div class="line">        mLetterPaint.setColor(Color.GRAY)<span class="comment">;</span></div><div class="line">        mLetterPaint.setStyle(Paint.Style.STROKE)<span class="comment">;</span></div><div class="line">        mLetterPaint.setTypeface(Typeface.DEFAULT_BOLD)<span class="comment">;</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>setAlpha(127)</code>，允许传入0~255之间的一个值，0为全透明，255为不同明。这里传入127表示半透明。这样就解决了同是灰色显示不清的问题。</p>
+<p>绘制完字母之后，就需要进行触摸手势的处理了，这里只需要重写<code>onTouchEvent()</code>方法：</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</div><div class="line">        <span class="keyword">switch</span> (event.getAction()) &#123;</div><div class="line">            <span class="comment">//手指按下</span></div><div class="line">            <span class="keyword">case</span> MotionEvent.ACTION_DOWN:</div><div class="line">            //手指滑动</div><div class="line">            <span class="keyword">case</span> MotionEvent.ACTION_MOVE:</div><div class="line">                //当前位置</div><div class="line">                <span class="keyword">float</span> currentMoveY = event.getY();</div><div class="line">                <span class="comment">//单个字母高度</span></div><div class="line">                <span class="keyword">float</span> singleLetterHeight = (getHeight() - getPaddingTop() - getPaddingBottom()) / letters.length;</div><div class="line">                <span class="comment">//当前字母所在位置</span></div><div class="line">                <span class="keyword">int</span> currentPosition = (<span class="keyword">int</span>) (currentMoveY / singleLetterHeight);</div><div class="line">                <span class="comment">//当前的位置&lt;0，就代表手指滑到了View之外，View最上面</span></div><div class="line">                <span class="comment">//直接将当前位置置为第一个字母位置</span></div><div class="line">                <span class="keyword">if</span> (currentPosition &lt; <span class="number">0</span>) &#123;</div><div class="line">                    currentPosition = <span class="number">0</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="comment">//当前位置 &gt; 所有字母数，手指在View之外，View最下面</span></div><div class="line">                <span class="comment">//直接将当前位置置为最后一个字母位置</span></div><div class="line">                <span class="keyword">if</span> (currentPosition &gt; letters.length - <span class="number">1</span>) &#123;</div><div class="line">                    currentPosition = letters.length - <span class="number">1</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="comment">//得到当前字母</span></div><div class="line">                mCurrentLetter = letters[currentPosition];</div><div class="line">                <span class="keyword">if</span> (mListener != <span class="keyword">null</span>) &#123;</div><div class="line">                    isTouch = <span class="keyword">true</span>;</div><div class="line">                    mListener.onTouch(mCurrentLetter, isTouch);</div><div class="line">                &#125;</div><div class="line">                isDown = <span class="keyword">true</span>;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="comment">//手指抬起</span></div><div class="line">            <span class="keyword">case</span> MotionEvent.ACTION_UP:</div><div class="line">                postDelayed(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">                    <span class="meta">@Override</span></div><div class="line">                    <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                        <span class="keyword">if</span> (mListener != <span class="keyword">null</span>) &#123;</div><div class="line">                            isTouch = <span class="keyword">false</span>;</div><div class="line">                            mListener.onTouch(mCurrentLetter, isTouch);</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                &#125;, <span class="number">500</span>);</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">default</span>:</div><div class="line">        &#125;</div><div class="line">        invalidate();</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>为了在触摸同时屏幕中心显示当前字母，就需要将当前字母传递出去。所以，这里用了java中的接口回调将当前字母传给调用者。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOnSlideLetterBarTochListener</span><span class="params">(OnSlideLetterBarTochListener listener)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.mListener = listener;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OnSlideLetterBarTochListener</span> </span>&#123;</div><div class="line">        <span class="function"><span class="keyword">void</span> <span class="title">onTouch</span><span class="params">(String letter, <span class="keyword">boolean</span> isToch)</span></span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>最后，布局文件：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">&lt;RelativeLayout xmlns:android=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line">                android:layout_width=<span class="string">"match_parent"</span></div><div class="line">                android:layout_height=<span class="string">"match_parent"</span></div><div class="line">    &gt;</div><div class="line"></div><div class="line">    &lt;com<span class="selector-class">.example</span><span class="selector-class">.letterindexview</span><span class="selector-class">.LetterSiderBar</span></div><div class="line">        android:id=<span class="string">"@+id/slide"</span></div><div class="line">        android:layout_width=<span class="string">"match_parent"</span></div><div class="line">        android:layout_height=<span class="string">"match_parent"</span></div><div class="line">        android:layout_alignParentRight=<span class="string">"true"</span></div><div class="line">        android:<span class="attribute">padding</span>=<span class="string">"15dp"</span></div><div class="line">        /&gt;</div><div class="line"></div><div class="line">    &lt;TextView</div><div class="line">        android:id=<span class="string">"@+id/text"</span></div><div class="line">        android:layout_width=<span class="string">"wrap_content"</span></div><div class="line">        android:layout_height=<span class="string">"wrap_content"</span></div><div class="line">        android:layout_centerInParent=<span class="string">"true"</span></div><div class="line">        android:<span class="attribute">background</span>=<span class="string">"@drawable/shape_text"</span></div><div class="line">        android:gravity=<span class="string">"center"</span></div><div class="line">        android:textColor=<span class="string">"#fff"</span></div><div class="line">        android:textSize=<span class="string">"30sp"</span></div><div class="line">        android:<span class="attribute">visibility</span>=<span class="string">"gone"</span></div><div class="line">        /&gt;</div><div class="line">&lt;/RelativeLayout&gt;</div></pre></td></tr></table></figure>
+<p>屏幕中心圆形文字，是一个TextView，背景是一个shape。<br><figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="built_in">shape</span> xmlns:android=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line">       android:<span class="built_in">shape</span>=<span class="string">"oval"</span></div><div class="line">    &gt;</div><div class="line">    &lt;solid android:<span class="built_in">color</span>=<span class="string">"@color/colorPrimary"</span>/&gt;</div><div class="line">    &lt;<span class="built_in">size</span> android:<span class="built_in">width</span>=<span class="string">"60dp"</span>/&gt;</div><div class="line">    &lt;<span class="built_in">size</span> android:<span class="built_in">height</span>=<span class="string">"60dp"</span>/&gt;</div><div class="line">&lt;/<span class="built_in">shape</span>&gt;</div></pre></td></tr></table></figure></p>
+<p>最后在Activity中处理：</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line"><span class="keyword">protected</span> <span class="keyword">void</span> onCreate(Bundle savedInstanceState) &#123;</div><div class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">    setContentView(R.layout.activity_main);</div><div class="line">    <span class="keyword">final</span> TextView <span class="built_in">text</span> = (TextView) findViewById(R.id.<span class="built_in">text</span>);</div><div class="line">    LetterSiderBar letter = (LetterSiderBar) findViewById(R.id.slide);</div><div class="line">    letter.setOnSlideLetterBarTochListener(<span class="keyword">new</span> LetterSiderBar.OnSlideLetterBarTochListener() &#123;</div><div class="line">        @Override</div><div class="line">        <span class="keyword">public</span> <span class="keyword">void</span> onTouch(<span class="keyword">final</span> <span class="keyword">String</span> letter, <span class="built_in">boolean</span> isToch) &#123;</div><div class="line">            <span class="keyword">if</span> (isToch) &#123;</div><div class="line">                <span class="built_in">text</span>.setVisibility(View.VISIBLE);</div><div class="line">                <span class="built_in">text</span>.setText(letter);</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="built_in">text</span>.setVisibility(View.GONE);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样字母索引就完成了。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-08-21T13:13:46.504Z" itemprop="dateUpdated">2017-08-21 21:13:46</time>
+</span><br>
+
+
+        
+        转载请注明出处：<a href="/2017/08/21/自定义View之字母索引/" target="_blank" rel="external">https://KevinJe.github.io/2017/08/21/自定义View之字母索引/</a>
+        
+    </div>
+    <footer>
+        <a href="https://KevinJe.github.io">
+            <img src="/img/avatar.jpg" alt="Kevin Jern">
+            Kevin Jern
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自定义View/">自定义View</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KevinJe.github.io/2017/08/21/自定义View之字母索引/&title=《自定义View之字母索引》 — Kevin Jern&pic=https://KevinJe.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KevinJe.github.io/2017/08/21/自定义View之字母索引/&title=《自定义View之字母索引》 — Kevin Jern&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KevinJe.github.io/2017/08/21/自定义View之字母索引/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《自定义View之字母索引》 — Kevin Jern&url=https://KevinJe.github.io/2017/08/21/自定义View之字母索引/&via=https://KevinJe.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KevinJe.github.io/2017/08/21/自定义View之字母索引/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/21/Android中dp、sp与px之间的换算/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Android中dp、sp与px之间的换算</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢打赏~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Jern &copy; 2017</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KevinJe.github.io/2017/08/21/自定义View之字母索引/&title=《自定义View之字母索引》 — Kevin Jern&pic=https://KevinJe.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KevinJe.github.io/2017/08/21/自定义View之字母索引/&title=《自定义View之字母索引》 — Kevin Jern&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KevinJe.github.io/2017/08/21/自定义View之字母索引/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《自定义View之字母索引》 — Kevin Jern&url=https://KevinJe.github.io/2017/08/21/自定义View之字母索引/&via=https://KevinJe.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KevinJe.github.io/2017/08/21/自定义View之字母索引/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACo0lEQVR42u3aQW7CQAwFUO5/6XZbqSX8P44RlV5WCEKYN4uxsf14xNfXj+vZ+7/v+f06ua6/+9i48PDw8AZLv/6xa96zp13fmayt3Sw8PDy89/DyR1/f2W7cJMxEK8HDw8P7MF4SKnJAcj8eHh7e/+UlgDw5zpNmPDw8vM/hzdPZPGDkjOsNurnWgoeHh9fVAR75cj/h9Up/Dw8PD2/cVZ8UXvOGWRtsitXi4eHhLfDufXSS/k4S9MM78fDw8G7ltYXRu0ay5gXcaJQBDw8Pb5nXFluv328P+mSD6qQfDw8Pb43XJsdJ0tymwkkgqQca8PDw8NZ4+RGfB5Kk0NCWGNqNwMPDw9vj5YnsZIhqkkAnifgfVDw8PLwFXnIEz4/p0YLKoPUi2ODh4eGNeWeLmKfdOTJvd72YicDDw8Nb4CXJ7iQM5IFnvil4eHh427yzBljblJok02dbg4eHh7fBmxQI5pjDUaq2kYaHh4e3wJssLh+NahtmZ+XdF0g8PDy8Ma8tp56l0ZMxr9H24eHh4b2Flx/NZ2WLuz6NmnN4eHh4C7yzMDAZw2oHts5GFvDw8PD2eDksWe5ZEbYtzhaFYzw8PLw1Xnt8502s5OjPv9UWJvDw8PA2eJOWfNska8e22i2oAxIeHh7egNcWbfNDP3/CRjkYDw8Pb5t3Fk/OhrSSJ7Sl4Wj0Cg8PD+9WXjtK1bay7hq3yoMcHh4e3gbvq7wmx33e3Jp8WsQcPDw8vCPeRiM/DzZ56XbyHDw8PLwN3jwYnLXzzwYO6rCBh4eHt8abN73a8kQ+ptDWV/Dw8PD+C++sPDEpZ9RVajw8PLwP5uWYSdIcNdLw8PDw1niT0kA+EHBWmEi2/um38PDw8BZ4N/zhj38yDyH17NjkwsPDw0t53/q9sYZ6xmuNAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Kevin Jern';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Kevin Jern';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
