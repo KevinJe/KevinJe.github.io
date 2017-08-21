@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>Android中dp、sp与px之间的换算 | Kevin Jern | 踏破芒鞋，烟雨任平生。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android,dp、sp、px">
+    <meta name="description" content="在Android中我们常见的尺寸单位有dp、sp、px。
+
+px通常我们会以手机对角线的长度来定义吋。比如：5.5吋，5.7吋。而分辨率则是手机的像素点数。如：1920*1080，就是高1920个像素，宽1080像素。像素点数就决定我们屏幕的细腻程度，现在有的机器已经上了2k的屏幕了。而这里的像素点数的单位就是px。
+
+dp但是Android设备的屏幕大小不，这就对屏幕设配增加了难度。所以，为了满">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android中dp、sp与px之间的换算">
+<meta property="og:url" content="https://KevinJe.github.io/2017/08/21/Android中dp、sp与px之间的换算/index.html">
+<meta property="og:site_name" content="Kevin Jern">
+<meta property="og:description" content="在Android中我们常见的尺寸单位有dp、sp、px。
+
+px通常我们会以手机对角线的长度来定义吋。比如：5.5吋，5.7吋。而分辨率则是手机的像素点数。如：1920*1080，就是高1920个像素，宽1080像素。像素点数就决定我们屏幕的细腻程度，现在有的机器已经上了2k的屏幕了。而这里的像素点数的单位就是px。
+
+dp但是Android设备的屏幕大小不，这就对屏幕设配增加了难度。所以，为了满">
+<meta property="og:updated_time" content="2017-08-21T08:13:36.559Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android中dp、sp与px之间的换算">
+<meta name="twitter:description" content="在Android中我们常见的尺寸单位有dp、sp、px。
+
+px通常我们会以手机对角线的长度来定义吋。比如：5.5吋，5.7吋。而分辨率则是手机的像素点数。如：1920*1080，就是高1920个像素，宽1080像素。像素点数就决定我们屏幕的细腻程度，现在有的机器已经上了2k的屏幕了。而这里的像素点数的单位就是px。
+
+dp但是Android设备的屏幕大小不，这就对屏幕设配增加了难度。所以，为了满">
+    
+        <link rel="alternate" type="application/atom+xml" title="Kevin Jern" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Jern</h5>
+          <a href="mailto:kevinvin1997@gmail.com" title="kevinvin1997@gmail.com" class="mail">kevinvin1997@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KevinJe" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/KevinJe" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Android中dp、sp与px之间的换算</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Android中dp、sp与px之间的换算</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-08-21T08:11:01.000Z" itemprop="datePublished" class="page-time">
+  2017-08-21
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/">Android</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+<article id="post-Android中dp、sp与px之间的换算"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Android中dp、sp与px之间的换算</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-08-21 16:11:01" datetime="2017-08-21T08:11:01.000Z"  itemprop="datePublished">2017-08-21</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/">Android</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>在Android中我们常见的尺寸单位有dp、sp、px。</p>
+<ul>
+<li><p>px<br>通常我们会以手机对角线的长度来定义吋。比如：5.5吋，5.7吋。<br>而分辨率则是手机的像素点数。如：1920*1080，就是高1920个像素，宽1080像素。像素点数就决定我们屏幕的细腻程度，现在有的机器已经上了2k的屏幕了。而这里的像素点数的单位就是px。</p>
+</li>
+<li><p>dp<br>但是Android设备的屏幕大小不，这就对屏幕设配增加了难度。所以，为了满足不同分辨率的设备。Android使用了dp，dp是一种相对单位（根据屏幕的像素密度，也就是每英寸像素数的不同而调整），能够尽量保证相同数值的dp长度在不同的设备上显示的实际尺寸大致一样。</p>
+</li>
+<li><p>sp<br>同样的，sp是针对于文字的一种相对尺寸单位，其也会根据屏幕的像素密度的不同而调整，并考虑了字体不同的影响。</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">密度</th>
+<th style="text-align:center">ldpi</th>
+<th style="text-align:center">mdpi</th>
+<th style="text-align:center">hdpi</th>
+<th style="text-align:center">xhdpi</th>
+<th style="text-align:center">xxhdpi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">密度值</td>
+<td style="text-align:center">120</td>
+<td style="text-align:center">160</td>
+<td style="text-align:center">240</td>
+<td style="text-align:center">320</td>
+<td style="text-align:center">480</td>
+</tr>
+<tr>
+<td style="text-align:left">分辨率</td>
+<td style="text-align:center">240*320</td>
+<td style="text-align:center">320*480</td>
+<td style="text-align:center">480*800</td>
+<td style="text-align:center">720*1280</td>
+<td style="text-align:center">1080*1920</td>
+</tr>
+<tr>
+<td style="text-align:left">dp、px的关系</td>
+<td style="text-align:center">1dp = 0.75px</td>
+<td style="text-align:center">1dp = 1px</td>
+<td style="text-align:center">1dp = 1.5px</td>
+<td style="text-align:center">1dp = 2.0px</td>
+<td style="text-align:center">1dp = 3.0px</td>
+</tr>
+</tbody>
+</table>
+<p>在Android中使用mdpi，即密度值为160的屏幕为标准。在这样的屏幕下，1dp = 1px。所以，可以参照上表得到换算比例。</p>
+<p><code>ldpi:mdpi:hdpi:xhdpi:xxhdpi = 3:4:6:8:12</code></p>
+<p>所以就有了dp、sp、px之间的转换，为了方便使用，我们可以单独抽出一个类，进行封装。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DisplayUtil</span></span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * px转化为dp或者dip</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> context</div><div class="line">     * <span class="doctag">@param</span> pxValue</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">px2dip</span><span class="params">(Context context, <span class="keyword">float</span> pxValue)</span> </span>&#123;</div><div class="line">        <span class="comment">//得到换算比例</span></div><div class="line">        <span class="keyword">float</span> scale = context.getResources().getDisplayMetrics().density;</div><div class="line">        <span class="keyword">return</span> (<span class="keyword">int</span>) (pxValue / scale + <span class="number">0.5f</span>); <span class="comment">//加上0.5f是为了结果四舍五入</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * dip或者dp转换为px</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> context</div><div class="line">     * <span class="doctag">@param</span> dpValue</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">dip2px</span><span class="params">(Context context, <span class="keyword">float</span> dpValue)</span> </span>&#123;</div><div class="line">        <span class="comment">//得到换算比例</span></div><div class="line">        <span class="keyword">float</span> scale = context.getResources().getDisplayMetrics().density;</div><div class="line">        <span class="keyword">return</span> (<span class="keyword">int</span>) (dpValue * scale + <span class="number">0.5f</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * px转换为sp</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> context</div><div class="line">     * <span class="doctag">@param</span> pxValue</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">px2sp</span><span class="params">(Context context, <span class="keyword">float</span> pxValue)</span> </span>&#123;</div><div class="line">        <span class="comment">//得到换算比例</span></div><div class="line">        <span class="keyword">float</span> scale = context.getResources().getDisplayMetrics().density;</div><div class="line">        <span class="keyword">return</span> (<span class="keyword">int</span>) (pxValue / scale + <span class="number">0.5f</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * sp转化为px</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> context</div><div class="line">     * <span class="doctag">@param</span> spValue</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">sp2px</span><span class="params">(Context context, <span class="keyword">float</span> spValue)</span> </span>&#123;</div><div class="line">        <span class="comment">//得到换算比例</span></div><div class="line">        <span class="keyword">float</span> fontScale = context.getResources().getDisplayMetrics().density;</div><div class="line">        <span class="keyword">return</span> (<span class="keyword">int</span>) (spValue * fontScale + <span class="number">0.5f</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然，系统也是提供好了一个TypedValue类帮助我们转换单位。</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">    * dip或者dp转换为px</div><div class="line">    *</div><div class="line">    * <span class="doctag">@param</span> context</div><div class="line">    * <span class="doctag">@param</span> dpValue</div><div class="line">    * <span class="doctag">@return</span></div><div class="line">    */</div><div class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">int</span> <span class="title">dip2px</span><span class="params">(Context context, <span class="keyword">float</span> dpValue)</span> </span>&#123;</div><div class="line">       <span class="keyword">return</span> (<span class="keyword">int</span>) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());</div><div class="line">   &#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line">    * sp转化为px</div><div class="line">    *</div><div class="line">    * <span class="doctag">@param</span> context</div><div class="line">    * <span class="doctag">@param</span> spValue</div><div class="line">    * <span class="doctag">@return</span></div><div class="line">    */</div><div class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">int</span> <span class="title">sp2px</span><span class="params">(Context context, <span class="keyword">float</span> spValue)</span> </span>&#123;</div><div class="line">     <span class="keyword">return</span> (<span class="keyword">int</span>) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, context.getResources().getDisplayMetrics());</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>看一下，<code>applyDimension</code>方法内部实现：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">float</span> <span class="title">applyDimension</span>(<span class="params"><span class="keyword">int</span> unit, <span class="keyword">float</span> <span class="keyword">value</span>,</span></span></div><div class="line">                                      DisplayMetrics metrics)</div><div class="line">   &#123;</div><div class="line">       <span class="keyword">switch</span> (unit) &#123;</div><div class="line">       <span class="keyword">case</span> COMPLEX_UNIT_PX:</div><div class="line">           <span class="keyword">return</span> <span class="keyword">value</span>;</div><div class="line">       <span class="keyword">case</span> COMPLEX_UNIT_DIP:</div><div class="line">           <span class="keyword">return</span> <span class="keyword">value</span> * metrics.density;</div><div class="line">       <span class="keyword">case</span> COMPLEX_UNIT_SP:</div><div class="line">           <span class="keyword">return</span> <span class="keyword">value</span> * metrics.scaledDensity;</div><div class="line">       <span class="keyword">case</span> COMPLEX_UNIT_PT:</div><div class="line">           <span class="keyword">return</span> <span class="keyword">value</span> * metrics.xdpi * (<span class="number">1.0</span>f/<span class="number">72</span>);</div><div class="line">       <span class="keyword">case</span> COMPLEX_UNIT_IN:</div><div class="line">           <span class="keyword">return</span> <span class="keyword">value</span> * metrics.xdpi;</div><div class="line">       <span class="keyword">case</span> COMPLEX_UNIT_MM:</div><div class="line">           <span class="keyword">return</span> <span class="keyword">value</span> * metrics.xdpi * (<span class="number">1.0</span>f/<span class="number">25.4</span>f);</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>看到了吧，其实和我们上面的写法一致，只不过是系统帮助我们封装好的。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-08-21T08:13:36.559Z" itemprop="dateUpdated">2017-08-21 16:13:36</time>
+</span><br>
+
+
+        
+        转载请注明出处：<a href="/2017/08/21/Android中dp、sp与px之间的换算/" target="_blank" rel="external">https://KevinJe.github.io/2017/08/21/Android中dp、sp与px之间的换算/</a>
+        
+    </div>
+    <footer>
+        <a href="https://KevinJe.github.io">
+            <img src="/img/avatar.jpg" alt="Kevin Jern">
+            Kevin Jern
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dp、sp、px/">dp、sp、px</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KevinJe.github.io/2017/08/21/Android中dp、sp与px之间的换算/&title=《Android中dp、sp与px之间的换算》 — Kevin Jern&pic=https://KevinJe.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KevinJe.github.io/2017/08/21/Android中dp、sp与px之间的换算/&title=《Android中dp、sp与px之间的换算》 — Kevin Jern&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KevinJe.github.io/2017/08/21/Android中dp、sp与px之间的换算/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android中dp、sp与px之间的换算》 — Kevin Jern&url=https://KevinJe.github.io/2017/08/21/Android中dp、sp与px之间的换算/&via=https://KevinJe.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KevinJe.github.io/2017/08/21/Android中dp、sp与px之间的换算/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/20/自定义View之运动步数/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">自定义View之运动步数</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢打赏~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Jern &copy; 2017</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KevinJe.github.io/2017/08/21/Android中dp、sp与px之间的换算/&title=《Android中dp、sp与px之间的换算》 — Kevin Jern&pic=https://KevinJe.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KevinJe.github.io/2017/08/21/Android中dp、sp与px之间的换算/&title=《Android中dp、sp与px之间的换算》 — Kevin Jern&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KevinJe.github.io/2017/08/21/Android中dp、sp与px之间的换算/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android中dp、sp与px之间的换算》 — Kevin Jern&url=https://KevinJe.github.io/2017/08/21/Android中dp、sp与px之间的换算/&via=https://KevinJe.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KevinJe.github.io/2017/08/21/Android中dp、sp与px之间的换算/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACp0lEQVR42u3aQXLjMAwEQP//084DHFsDgHCUqtZpKytLbB5IaIjHI76eL1d+/+vf82e+3v/YuPDw8PDGQ399ZfXvnweXT9O7+5Mx4+Hh4W3zeoty/ttTmPJ48PDw8G7D+/yrpFCeFOh4eHh4/4uXLNlJgZ4/GQ8PD++evPmAJjFEEiusZy14eHh4MS8PCO7z75XzPTw8PLzxqXqyTPcOyarbQHO0eHh4eAu8fMGdY6otWflh28WT8fDw8I7yJs1Mp+6sTlweJePh4eFt8Kof//O2gFPtCPmRGB4eHt5ZXn581dsAqvFr8ttChIGHh4f3FV4vis1jiMk2U254xcPDw/sj3iTAzYvpvEW1MOl4eHh4a7x8ga5GqPm2kZfRhbYwPDw8vDVer9tzEhbkyFFpjoeHh7fA67VA5XdWSZNpqrSZ4eHh4U151VL4VAhbDSl65TUeHh7eNi+PJPJH50FG7yAtGhseHh7eIV61YJ3Er71Dr2qw+0vWgoeHh7fM60UG1WDibFH+9n48PDy8L/I+v6A6Hb1WgGrpf9F0hYeHh3eUl7xy0gg1D2qPJdN4eHh4Y17vm33SBHA2FI7weHh4eF/hTUrn6maTXMlG8vaNeHh4eMu8fLi9krcaf+T34+Hh4X2fl8Sv+RFXHuz2tpZCYxYeHh7eMi//ih8t1q1mgrz4frsx4OHh4R3lVR+dbwzVOHhyRV8MeHh4eAPes3j1lulqlZuHFBf/i4eHh7fA6y2483I5j2urccaB/QQPDw8v4FU/7ydLfzWKrUYVhTACDw8Pb8zrNTZVp2PSfJBPJR4eHt49eXlJ3TseO7Vh4OHh4d2HlzQQ5E1ak9aBi7fg4eHhrfF6oWq+MfSQk+nGw8PD2+NVP/iT11cPwPInLJ7v4eHh4V3zfgBhJ9B1uVd7RQAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Kevin Jern';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Kevin Jern';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

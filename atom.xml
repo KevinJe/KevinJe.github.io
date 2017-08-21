@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://KevinJe.github.io/"/>
-  <updated>2017-08-20T12:29:15.451Z</updated>
+  <updated>2017-08-21T08:13:36.559Z</updated>
   <id>https://KevinJe.github.io/</id>
   
   <author>
@@ -14,6 +14,88 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android中dp、sp与px之间的换算</title>
+    <link href="https://KevinJe.github.io/2017/08/21/Android%E4%B8%ADdp%E3%80%81sp%E4%B8%8Epx%E4%B9%8B%E9%97%B4%E7%9A%84%E6%8D%A2%E7%AE%97/"/>
+    <id>https://KevinJe.github.io/2017/08/21/Android中dp、sp与px之间的换算/</id>
+    <published>2017-08-21T08:11:01.000Z</published>
+    <updated>2017-08-21T08:13:36.559Z</updated>
+    
+    <content type="html"><![CDATA[<p>在Android中我们常见的尺寸单位有dp、sp、px。</p>
+<ul>
+<li><p>px<br>通常我们会以手机对角线的长度来定义吋。比如：5.5吋，5.7吋。<br>而分辨率则是手机的像素点数。如：1920*1080，就是高1920个像素，宽1080像素。像素点数就决定我们屏幕的细腻程度，现在有的机器已经上了2k的屏幕了。而这里的像素点数的单位就是px。</p>
+</li>
+<li><p>dp<br>但是Android设备的屏幕大小不，这就对屏幕设配增加了难度。所以，为了满足不同分辨率的设备。Android使用了dp，dp是一种相对单位（根据屏幕的像素密度，也就是每英寸像素数的不同而调整），能够尽量保证相同数值的dp长度在不同的设备上显示的实际尺寸大致一样。</p>
+</li>
+<li><p>sp<br>同样的，sp是针对于文字的一种相对尺寸单位，其也会根据屏幕的像素密度的不同而调整，并考虑了字体不同的影响。</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">密度</th>
+<th style="text-align:center">ldpi</th>
+<th style="text-align:center">mdpi</th>
+<th style="text-align:center">hdpi</th>
+<th style="text-align:center">xhdpi</th>
+<th style="text-align:center">xxhdpi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">密度值</td>
+<td style="text-align:center">120</td>
+<td style="text-align:center">160</td>
+<td style="text-align:center">240</td>
+<td style="text-align:center">320</td>
+<td style="text-align:center">480</td>
+</tr>
+<tr>
+<td style="text-align:left">分辨率</td>
+<td style="text-align:center">240*320</td>
+<td style="text-align:center">320*480</td>
+<td style="text-align:center">480*800</td>
+<td style="text-align:center">720*1280</td>
+<td style="text-align:center">1080*1920</td>
+</tr>
+<tr>
+<td style="text-align:left">dp、px的关系</td>
+<td style="text-align:center">1dp = 0.75px</td>
+<td style="text-align:center">1dp = 1px</td>
+<td style="text-align:center">1dp = 1.5px</td>
+<td style="text-align:center">1dp = 2.0px</td>
+<td style="text-align:center">1dp = 3.0px</td>
+</tr>
+</tbody>
+</table>
+<p>在Android中使用mdpi，即密度值为160的屏幕为标准。在这样的屏幕下，1dp = 1px。所以，可以参照上表得到换算比例。</p>
+<p><code>ldpi:mdpi:hdpi:xhdpi:xxhdpi = 3:4:6:8:12</code></p>
+<p>所以就有了dp、sp、px之间的转换，为了方便使用，我们可以单独抽出一个类，进行封装。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DisplayUtil</span></span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * px转化为dp或者dip</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> context</div><div class="line">     * <span class="doctag">@param</span> pxValue</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">px2dip</span><span class="params">(Context context, <span class="keyword">float</span> pxValue)</span> </span>&#123;</div><div class="line">        <span class="comment">//得到换算比例</span></div><div class="line">        <span class="keyword">float</span> scale = context.getResources().getDisplayMetrics().density;</div><div class="line">        <span class="keyword">return</span> (<span class="keyword">int</span>) (pxValue / scale + <span class="number">0.5f</span>); <span class="comment">//加上0.5f是为了结果四舍五入</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * dip或者dp转换为px</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> context</div><div class="line">     * <span class="doctag">@param</span> dpValue</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">dip2px</span><span class="params">(Context context, <span class="keyword">float</span> dpValue)</span> </span>&#123;</div><div class="line">        <span class="comment">//得到换算比例</span></div><div class="line">        <span class="keyword">float</span> scale = context.getResources().getDisplayMetrics().density;</div><div class="line">        <span class="keyword">return</span> (<span class="keyword">int</span>) (dpValue * scale + <span class="number">0.5f</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * px转换为sp</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> context</div><div class="line">     * <span class="doctag">@param</span> pxValue</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">px2sp</span><span class="params">(Context context, <span class="keyword">float</span> pxValue)</span> </span>&#123;</div><div class="line">        <span class="comment">//得到换算比例</span></div><div class="line">        <span class="keyword">float</span> scale = context.getResources().getDisplayMetrics().density;</div><div class="line">        <span class="keyword">return</span> (<span class="keyword">int</span>) (pxValue / scale + <span class="number">0.5f</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * sp转化为px</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> context</div><div class="line">     * <span class="doctag">@param</span> spValue</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">sp2px</span><span class="params">(Context context, <span class="keyword">float</span> spValue)</span> </span>&#123;</div><div class="line">        <span class="comment">//得到换算比例</span></div><div class="line">        <span class="keyword">float</span> fontScale = context.getResources().getDisplayMetrics().density;</div><div class="line">        <span class="keyword">return</span> (<span class="keyword">int</span>) (spValue * fontScale + <span class="number">0.5f</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然，系统也是提供好了一个TypedValue类帮助我们转换单位。</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">    * dip或者dp转换为px</div><div class="line">    *</div><div class="line">    * <span class="doctag">@param</span> context</div><div class="line">    * <span class="doctag">@param</span> dpValue</div><div class="line">    * <span class="doctag">@return</span></div><div class="line">    */</div><div class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">int</span> <span class="title">dip2px</span><span class="params">(Context context, <span class="keyword">float</span> dpValue)</span> </span>&#123;</div><div class="line">       <span class="keyword">return</span> (<span class="keyword">int</span>) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());</div><div class="line">   &#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line">    * sp转化为px</div><div class="line">    *</div><div class="line">    * <span class="doctag">@param</span> context</div><div class="line">    * <span class="doctag">@param</span> spValue</div><div class="line">    * <span class="doctag">@return</span></div><div class="line">    */</div><div class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">int</span> <span class="title">sp2px</span><span class="params">(Context context, <span class="keyword">float</span> spValue)</span> </span>&#123;</div><div class="line">     <span class="keyword">return</span> (<span class="keyword">int</span>) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, context.getResources().getDisplayMetrics());</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>看一下，<code>applyDimension</code>方法内部实现：</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">float</span> <span class="title">applyDimension</span>(<span class="params"><span class="keyword">int</span> unit, <span class="keyword">float</span> <span class="keyword">value</span>,</span></span></div><div class="line">                                      DisplayMetrics metrics)</div><div class="line">   &#123;</div><div class="line">       <span class="keyword">switch</span> (unit) &#123;</div><div class="line">       <span class="keyword">case</span> COMPLEX_UNIT_PX:</div><div class="line">           <span class="keyword">return</span> <span class="keyword">value</span>;</div><div class="line">       <span class="keyword">case</span> COMPLEX_UNIT_DIP:</div><div class="line">           <span class="keyword">return</span> <span class="keyword">value</span> * metrics.density;</div><div class="line">       <span class="keyword">case</span> COMPLEX_UNIT_SP:</div><div class="line">           <span class="keyword">return</span> <span class="keyword">value</span> * metrics.scaledDensity;</div><div class="line">       <span class="keyword">case</span> COMPLEX_UNIT_PT:</div><div class="line">           <span class="keyword">return</span> <span class="keyword">value</span> * metrics.xdpi * (<span class="number">1.0</span>f/<span class="number">72</span>);</div><div class="line">       <span class="keyword">case</span> COMPLEX_UNIT_IN:</div><div class="line">           <span class="keyword">return</span> <span class="keyword">value</span> * metrics.xdpi;</div><div class="line">       <span class="keyword">case</span> COMPLEX_UNIT_MM:</div><div class="line">           <span class="keyword">return</span> <span class="keyword">value</span> * metrics.xdpi * (<span class="number">1.0</span>f/<span class="number">25.4</span>f);</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>看到了吧，其实和我们上面的写法一致，只不过是系统帮助我们封装好的。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在Android中我们常见的尺寸单位有dp、sp、px。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;px&lt;br&gt;通常我们会以手机对角线的长度来定义吋。比如：5.5吋，5.7吋。&lt;br&gt;而分辨率则是手机的像素点数。如：1920*1080，就是高1920个像素，宽1080像素。像素点数就
+    
+    </summary>
+    
+      <category term="Android" scheme="https://KevinJe.github.io/categories/Android/"/>
+    
+    
+      <category term="Android" scheme="https://KevinJe.github.io/tags/Android/"/>
+    
+      <category term="dp、sp、px" scheme="https://KevinJe.github.io/tags/dp%E3%80%81sp%E3%80%81px/"/>
+    
+  </entry>
   
   <entry>
     <title>自定义View之运动步数</title>
