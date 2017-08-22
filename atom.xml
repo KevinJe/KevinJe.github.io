@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://KevinJe.github.io/"/>
-  <updated>2017-08-21T13:13:46.504Z</updated>
+  <updated>2017-08-22T09:39:21.066Z</updated>
   <id>https://KevinJe.github.io/</id>
   
   <author>
@@ -14,6 +14,65 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>自定义View之简易时钟</title>
+    <link href="https://KevinJe.github.io/2017/08/22/%E8%87%AA%E5%AE%9A%E4%B9%89View%E4%B9%8B%E7%AE%80%E6%98%93%E6%97%B6%E9%92%9F/"/>
+    <id>https://KevinJe.github.io/2017/08/22/自定义View之简易时钟/</id>
+    <published>2017-08-22T09:38:19.000Z</published>
+    <updated>2017-08-22T09:39:21.066Z</updated>
+    
+    <content type="html"><![CDATA[<p>今天要实现的是自定义View实现一款简易时钟，主要就是练习如何进行自定义View，所以基本上没有什么美感可言。下面，我们就开始了。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://upload-images.jianshu.io/upload_images/1602023-a530916976b8ccc9.gif?imageMogr2/auto-orient/strip" alt="简易时钟" title="">
+                </div>
+                <div class="image-caption">简易时钟</div>
+            </figure>
+<p>要实现这款简易时钟，我们还是要先分析出它所包含的元素。就以上面的效果图来说，基本上包括了：最外圈大表盘以及内部中间两个小圆圈，刻度线，刻度文字，表针，数字时间以及上方作者名称。OK，一共就这么多的元素，下面我们就可以开始了。</p>
+<p>第一步，绘制表盘以及最中间的两个小圆圈：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//半径</span></div><div class="line">radius = mWidth / <span class="number">2</span> - <span class="number">20</span>;</div><div class="line"><span class="comment">//坐标移动到中心位置</span></div><div class="line">canvas.translate(mWidth / <span class="number">2</span>, mHeight / <span class="number">2</span>);</div><div class="line"><span class="comment">//绘制表盘</span></div><div class="line">canvas.drawCircle(<span class="number">0</span>, <span class="number">0</span>, radius, mOuterPaint);</div><div class="line"><span class="comment">//绘制中间的两个小圆圈</span></div><div class="line">canvas.drawCircle(<span class="number">0</span>, <span class="number">0</span>, radius / <span class="number">32</span>, mOuterPaint);</div><div class="line">canvas.drawCircle(<span class="number">0</span>, <span class="number">0</span>, radius / <span class="number">64</span>, mOuterPaint);</div></pre></td></tr></table></figure>
+<p>很简单，就是直接绘制三个圆，半径大小不一致罢了。</p>
+<p>第二步，绘制刻度线：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//刻度线的高度</span></div><div class="line">timeHeight = radius - <span class="number">15</span>;</div><div class="line"><span class="comment">// 绘制刻度线</span></div><div class="line">for (int i = <span class="number">0</span>; i &lt; <span class="number">60</span>; i++) &#123;</div><div class="line">    <span class="comment">//整点刻度线</span></div><div class="line">    if (i % <span class="number">5</span> == <span class="number">0</span>) &#123;</div><div class="line">        canvas.drawLine(radius, <span class="number">0</span>, timeHeight - <span class="number">15</span>, <span class="number">0</span>, mTimePaint);</div><div class="line">    &#125; else &#123;</div><div class="line">        <span class="comment">//普通刻度线</span></div><div class="line">        canvas.drawLine(radius, <span class="number">0</span>, timeHeight, <span class="number">0</span>, mTimePaint);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//每一次循环，画布旋转 6 度</span></div><div class="line">    <span class="comment">//一个整点包含一小时，角度：360/12 = 30</span></div><div class="line">    <span class="comment">//一个整点包含5分钟，每分钟的角度：30/5 = 6</span></div><div class="line">    canvas.rotate(<span class="number">360</span> / <span class="number">60</span>, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里面用到了<code>canvas.rotate(360 / 60, 0, 0)</code>，rotate表示的是画布旋转，后面的参数是旋转中心点的x以及y坐标。这样，每次画布旋转6度，进行刻度的绘制。</p>
+<p>第三步，绘制刻度线的文字：</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//12次循环，绘制12次</span></div><div class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">12</span>; i++) &#123;</div><div class="line">    Rect <span class="built_in">rect</span> = <span class="keyword">new</span> Rect();</div><div class="line">    <span class="comment">//绘制的刻度文字</span></div><div class="line">    <span class="keyword">String</span> <span class="built_in">text</span> = i + <span class="string">""</span>;</div><div class="line">    <span class="comment">//测量出文字的宽度</span></div><div class="line">    <span class="built_in">float</span> measureText = mTextPaint.measureText(<span class="built_in">text</span>);</div><div class="line">    mTextPaint.getTextBounds(<span class="built_in">text</span>, <span class="number">0</span>, <span class="built_in">text</span>.length(), <span class="built_in">rect</span>);</div><div class="line">    <span class="comment">//刻度文字起始的 x 坐标  -10 是为了让文字和刻度之间留一些空隙</span></div><div class="line">    <span class="built_in">float</span> x = timeHeight - <span class="number">10</span> - measureText;</div><div class="line">    <span class="comment">//得到文字宽的的 1/2</span></div><div class="line">    <span class="built_in">float</span> xText = measureText / <span class="number">2</span>;</div><div class="line">    <span class="comment">//得到的是文字的中间的高度值</span></div><div class="line">    <span class="built_in">float</span> y = (<span class="built_in">rect</span>.bottom - <span class="built_in">rect</span>.top) / <span class="number">2</span>;</div><div class="line">    <span class="comment">//这里是以 1 点为基准，利用三角函数计算得到全部的坐标值</span></div><div class="line">    <span class="built_in">float</span> dx = (<span class="built_in">float</span>) ((x) * Math.<span class="built_in">sin</span>(i * <span class="number">30</span> * Math.<span class="literal">PI</span> / <span class="number">180</span>));</div><div class="line">    <span class="built_in">float</span> dy = (<span class="built_in">float</span>) ((x) * Math.<span class="built_in">cos</span>(i * <span class="number">30</span> * Math.<span class="literal">PI</span> / <span class="number">180</span>));</div><div class="line">    <span class="comment">//绘制刻度文字，在 x 方向上 - 文字宽的的 1/2</span></div><div class="line">    <span class="comment">//在 基线方向上 + 文字的中间的高度值</span></div><div class="line">    canvas.drawText(<span class="built_in">text</span>, dx - xText, -dy + y, mTextPaint);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样，就绘制出了刻度文字。其实，绘制刻度文字是可以利用<code>rotate()</code>，只不过这样利用画布旋转绘制出的文字有的是倒立的。似乎是我以3点为基准出现的问题。最后，没办法，就利用三角函数，以1点为基准绘制完成了。为何以1点为基准呢？因为循环从1开始啊。。。</p>
+<p>第四步，绘制指针并让其动起来：</p>
+<p>在绘制指针之前我们是要得到当前的时间的，然后，指针顺着当前时间运动。所以，先要获取当前时间：<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">        Calendar mCalendar = Calendar.getInstance();</div><div class="line">        mTempHour = mCalendar.get(Calendar.HOUR);</div><div class="line">        mTempMinute = mCalendar.get(Calendar.MINUTE);</div><div class="line">        mTempSecond = mCalendar.get(Calendar.SECOND);</div><div class="line"><span class="comment">//                    Log.d(TAG, "handleMessage: " + tempSecond);</span></div><div class="line"><span class="comment">//                    Log.d(TAG, "refreshTime: " + tempHour + tempMinute + tempSecond);</span></div><div class="line">        <span class="comment">//计算出秒指针旋转的角度</span></div><div class="line">        mSecondRotate = mTempSecond * <span class="number">360</span> / <span class="number">60</span>;</div><div class="line"><span class="comment">//                    Log.d(TAG, "handleMessage: " + mSecondRotate);</span></div><div class="line">        <span class="comment">//计算出分指针的旋转的角度</span></div><div class="line">        mMinuteRotate = (<span class="type">float</span>) (mTempMinute * <span class="number">360</span> / <span class="number">60</span> + mTempSecond * <span class="number">0.1</span>);</div><div class="line"><span class="comment">//                    Log.d(TAG, "handleMessage: "+tempMinute);</span></div><div class="line">        <span class="comment">//计算出时针需要旋转的角度</span></div><div class="line">        mHourRotate = (<span class="type">float</span>) (mTempHour * <span class="number">30</span> + mTempMinute * <span class="number">0.5</span>);</div></pre></td></tr></table></figure></p>
+<p>这里利用了Calendar，得到当前的时间。然后，计算出各个指针需要旋转的角度。这里，注意，秒针走一秒，分针走当前秒数 <em> 0.1（6/60 = 0.1）度。而分针走0.1度，时针走当前分钟数 </em> 0.5（6*30/360 = 0.5）度。</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">canvas.save();</div><div class="line">canvas.save();</div><div class="line">canvas.rotate(hourRotate, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">canvas.drawLine(<span class="number">0</span>, <span class="number">10</span>, <span class="number">0</span>, -(radius - <span class="number">160</span>), mHourPoint);</div><div class="line">canvas.restore();</div><div class="line">canvas.save();</div><div class="line">canvas.rotate(minuteRotate, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">canvas.drawLine(<span class="number">0</span>, <span class="number">20</span>, <span class="number">0</span>, -(radius - <span class="number">120</span>), mMinutePaint);</div><div class="line">canvas.restore();</div><div class="line">canvas.save();</div><div class="line">canvas.rotate(secondRotate, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">canvas.drawLine(<span class="number">0</span>, <span class="number">30</span>, <span class="number">0</span>, -(radius - <span class="number">80</span>), mSecondPoint);</div><div class="line">canvas.restore();</div><div class="line">canvas.restore();</div></pre></td></tr></table></figure>
+<p>这里先用<code>save()</code>方法保存整个画布状态，在每次绘制指针前，再次保存画布状态。然后，在绘制指针前都旋转相应的角度。一次次旋转，看起来就像指针在动。之所以每次绘制指针前都保存画布是为了不让三个指针互相干扰。每一个指针都在一层独立的画布上。当然，这一步，一定要将指针绘制到12点的位置，3个指针都是。因为你算出的旋转角度就是从12点起，到12点结束，360度。</p>
+<p>第五步，绘制数字时间：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Rect <span class="built_in">rect</span> = <span class="keyword">new</span> Rect();</div><div class="line"><span class="comment">//当前的时间</span></div><div class="line"><span class="keyword">String</span> time = mTempHour + <span class="string">" : "</span> + mTempMinute + <span class="string">" : "</span> + mTempSecond;</div><div class="line"><span class="comment">//测量文字</span></div><div class="line">mNumberPaint.getTextBounds(time, <span class="number">0</span>, time.length(), <span class="built_in">rect</span>);</div><div class="line"><span class="comment">//其实 x 坐标为 文字宽度的一半</span></div><div class="line"><span class="keyword">int</span> dx =<span class="built_in">rect</span>.<span class="built_in">width</span>() / <span class="number">2</span>;</div><div class="line"><span class="comment">//基准线就定为 半径的一半</span></div><div class="line"><span class="keyword">int</span> baseLine = radius / <span class="number">2</span>;</div><div class="line"><span class="comment">//绘制文字</span></div><div class="line">canvas.drawText(time, dx, baseLine, mNumberPaint);</div></pre></td></tr></table></figure>
+<p>第六步，绘制作者名字：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Rect <span class="built_in">rect</span> = <span class="keyword">new</span> Rect();</div><div class="line"><span class="comment">//文字</span></div><div class="line"><span class="keyword">String</span> author = <span class="string">"By Kevin"</span>;</div><div class="line"><span class="comment">//测量文字</span></div><div class="line">mNumberPaint.getTextBounds(author, <span class="number">0</span>, author.length(), <span class="built_in">rect</span>);</div><div class="line"><span class="comment">//起始 x 坐标为文字的一半 ，为负值是在 左方 ，因为原点在屏幕中心</span></div><div class="line"><span class="keyword">int</span> dx = -<span class="built_in">rect</span>.<span class="built_in">width</span>() / <span class="number">2</span>;</div><div class="line"><span class="comment">//基准线就定为 半径的一半 ，为负值在 上方 ，因为原点在屏幕中心</span></div><div class="line"><span class="keyword">int</span> y = -radius / <span class="number">2</span>;</div><div class="line">canvas.drawText(author, dx, y, mAuthorPaint);</div></pre></td></tr></table></figure>
+<p>这两步代码基本一样，只是方向相反，也是很简单。</p>
+<p>最后，给出<code>onDraw()</code>中的代码：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"> @Override</div><div class="line">    protected void onDraw(Canvas canvas) &#123;</div><div class="line">        <span class="comment">//半径</span></div><div class="line">        radius = mWidth / <span class="number">2</span> - <span class="number">20</span>;</div><div class="line">        <span class="comment">//刻度线的高度</span></div><div class="line">        timeHeight = radius - <span class="number">15</span>;</div><div class="line">        <span class="comment">//坐标移动到中心位置</span></div><div class="line">        canvas.translate(mWidth / <span class="number">2</span>, mHeight / <span class="number">2</span>);</div><div class="line">        <span class="comment">//绘制表盘</span></div><div class="line">        canvas.drawCircle(<span class="number">0</span>, <span class="number">0</span>, radius, mOuterPaint);</div><div class="line">        <span class="comment">//绘制中间的两个小圆圈</span></div><div class="line">        canvas.drawCircle(<span class="number">0</span>, <span class="number">0</span>, radius / <span class="number">32</span>, mOuterPaint);</div><div class="line">        canvas.drawCircle(<span class="number">0</span>, <span class="number">0</span>, radius / <span class="number">64</span>, mOuterPaint);</div><div class="line">        <span class="comment">//绘制作者名字</span></div><div class="line">        drawAuthor(canvas);</div><div class="line"><span class="comment">//        mHandler.sendEmptyMessage(HANDLER_MSG);</span></div><div class="line">        <span class="comment">//延时1s绘制，会不停的执行onDraw()方法，从而实现指针的动态效果</span></div><div class="line">        <span class="comment">//这里利用Handler也是可以的</span></div><div class="line">        postInvalidateDelayed(<span class="number">1000</span>);</div><div class="line">        <span class="comment">//绘制刻度</span></div><div class="line">        drawScale(canvas);</div><div class="line">        <span class="comment">//绘制刻度文字</span></div><div class="line">        drawScaleText(canvas);</div><div class="line">        <span class="comment">//得到当前时间</span></div><div class="line">        refreshTime();</div><div class="line">        <span class="comment">//绘制数字时间</span></div><div class="line">        drawNumberTime(canvas);</div><div class="line">        <span class="comment">//绘制指针</span></div><div class="line">        drawPoints(canvas, mHourRotate, mMinuteRotate, mSecondRotate);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>到此为止，就完成了这个简易时钟的绘制。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;今天要实现的是自定义View实现一款简易时钟，主要就是练习如何进行自定义View，所以基本上没有什么美感可言。下面，我们就开始了。&lt;/p&gt;
+&lt;figure class=&quot;image-bubble&quot;&gt;
+                &lt;div class=&quot;img-light
+    
+    </summary>
+    
+      <category term="Android" scheme="https://KevinJe.github.io/categories/Android/"/>
+    
+      <category term="自定义View" scheme="https://KevinJe.github.io/categories/Android/%E8%87%AA%E5%AE%9A%E4%B9%89View/"/>
+    
+    
+      <category term="Android" scheme="https://KevinJe.github.io/tags/Android/"/>
+    
+      <category term="自定义View" scheme="https://KevinJe.github.io/tags/%E8%87%AA%E5%AE%9A%E4%B9%89View/"/>
+    
+  </entry>
   
   <entry>
     <title>自定义View之字母索引</title>
@@ -393,9 +452,9 @@
       <category term="日记" scheme="https://KevinJe.github.io/categories/%E6%97%A5%E8%AE%B0/"/>
     
     
-      <category term="随笔" scheme="https://KevinJe.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
-    
       <category term="生活" scheme="https://KevinJe.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="随笔" scheme="https://KevinJe.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
     
       <category term="感悟" scheme="https://KevinJe.github.io/tags/%E6%84%9F%E6%82%9F/"/>
     
@@ -475,9 +534,9 @@
       <category term="日记" scheme="https://KevinJe.github.io/categories/%E6%97%A5%E8%AE%B0/"/>
     
     
-      <category term="随笔" scheme="https://KevinJe.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
-    
       <category term="生活" scheme="https://KevinJe.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="随笔" scheme="https://KevinJe.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
     
       <category term="感悟" scheme="https://KevinJe.github.io/tags/%E6%84%9F%E6%82%9F/"/>
     
@@ -621,9 +680,9 @@
       <category term="日记" scheme="https://KevinJe.github.io/categories/%E6%97%A5%E8%AE%B0/"/>
     
     
-      <category term="随笔" scheme="https://KevinJe.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
-    
       <category term="生活" scheme="https://KevinJe.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="随笔" scheme="https://KevinJe.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
     
       <category term="感悟" scheme="https://KevinJe.github.io/tags/%E6%84%9F%E6%82%9F/"/>
     

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>自定义View之简易时钟 | Kevin Jern | 踏破芒鞋，烟雨任平生。</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android,自定义View">
+    <meta name="description" content="今天要实现的是自定义View实现一款简易时钟，主要就是练习如何进行自定义View，所以基本上没有什么美感可言。下面，我们就开始了。
+
+                
+                    
+                    
+                
+                简易时钟
+            
+要实现这款简易时钟，我们还是要先分析出它所包含">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义View之简易时钟">
+<meta property="og:url" content="https://KevinJe.github.io/2017/08/22/自定义View之简易时钟/index.html">
+<meta property="og:site_name" content="Kevin Jern">
+<meta property="og:description" content="今天要实现的是自定义View实现一款简易时钟，主要就是练习如何进行自定义View，所以基本上没有什么美感可言。下面，我们就开始了。
+
+                
+                    
+                    
+                
+                简易时钟
+            
+要实现这款简易时钟，我们还是要先分析出它所包含">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1602023-a530916976b8ccc9.gif?imageMogr2/auto-orient/strip">
+<meta property="og:updated_time" content="2017-08-22T09:39:21.066Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义View之简易时钟">
+<meta name="twitter:description" content="今天要实现的是自定义View实现一款简易时钟，主要就是练习如何进行自定义View，所以基本上没有什么美感可言。下面，我们就开始了。
+
+                
+                    
+                    
+                
+                简易时钟
+            
+要实现这款简易时钟，我们还是要先分析出它所包含">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1602023-a530916976b8ccc9.gif?imageMogr2/auto-orient/strip">
+    
+        <link rel="alternate" type="application/atom+xml" title="Kevin Jern" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Kevin Jern</h5>
+          <a href="mailto:kevinvin1997@gmail.com" title="kevinvin1997@gmail.com" class="mail">kevinvin1997@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Home
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KevinJe" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/KevinJe" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-link"></i>
+                About
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">自定义View之简易时钟</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">自定义View之简易时钟</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-08-22T09:38:19.000Z" itemprop="datePublished" class="page-time">
+  2017-08-22
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/">Android</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/自定义View/">自定义View</a></li></ul></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+<article id="post-自定义View之简易时钟"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">自定义View之简易时钟</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-08-22 17:38:19" datetime="2017-08-22T09:38:19.000Z"  itemprop="datePublished">2017-08-22</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/">Android</a><ul class="article-category-list-child"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/自定义View/">自定义View</a></li></ul></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>今天要实现的是自定义View实现一款简易时钟，主要就是练习如何进行自定义View，所以基本上没有什么美感可言。下面，我们就开始了。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://upload-images.jianshu.io/upload_images/1602023-a530916976b8ccc9.gif?imageMogr2/auto-orient/strip" alt="简易时钟" title="">
+                </div>
+                <div class="image-caption">简易时钟</div>
+            </figure>
+<p>要实现这款简易时钟，我们还是要先分析出它所包含的元素。就以上面的效果图来说，基本上包括了：最外圈大表盘以及内部中间两个小圆圈，刻度线，刻度文字，表针，数字时间以及上方作者名称。OK，一共就这么多的元素，下面我们就可以开始了。</p>
+<p>第一步，绘制表盘以及最中间的两个小圆圈：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//半径</span></div><div class="line">radius = mWidth / <span class="number">2</span> - <span class="number">20</span>;</div><div class="line"><span class="comment">//坐标移动到中心位置</span></div><div class="line">canvas.translate(mWidth / <span class="number">2</span>, mHeight / <span class="number">2</span>);</div><div class="line"><span class="comment">//绘制表盘</span></div><div class="line">canvas.drawCircle(<span class="number">0</span>, <span class="number">0</span>, radius, mOuterPaint);</div><div class="line"><span class="comment">//绘制中间的两个小圆圈</span></div><div class="line">canvas.drawCircle(<span class="number">0</span>, <span class="number">0</span>, radius / <span class="number">32</span>, mOuterPaint);</div><div class="line">canvas.drawCircle(<span class="number">0</span>, <span class="number">0</span>, radius / <span class="number">64</span>, mOuterPaint);</div></pre></td></tr></table></figure>
+<p>很简单，就是直接绘制三个圆，半径大小不一致罢了。</p>
+<p>第二步，绘制刻度线：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//刻度线的高度</span></div><div class="line">timeHeight = radius - <span class="number">15</span>;</div><div class="line"><span class="comment">// 绘制刻度线</span></div><div class="line">for (int i = <span class="number">0</span>; i &lt; <span class="number">60</span>; i++) &#123;</div><div class="line">    <span class="comment">//整点刻度线</span></div><div class="line">    if (i % <span class="number">5</span> == <span class="number">0</span>) &#123;</div><div class="line">        canvas.drawLine(radius, <span class="number">0</span>, timeHeight - <span class="number">15</span>, <span class="number">0</span>, mTimePaint);</div><div class="line">    &#125; else &#123;</div><div class="line">        <span class="comment">//普通刻度线</span></div><div class="line">        canvas.drawLine(radius, <span class="number">0</span>, timeHeight, <span class="number">0</span>, mTimePaint);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//每一次循环，画布旋转 6 度</span></div><div class="line">    <span class="comment">//一个整点包含一小时，角度：360/12 = 30</span></div><div class="line">    <span class="comment">//一个整点包含5分钟，每分钟的角度：30/5 = 6</span></div><div class="line">    canvas.rotate(<span class="number">360</span> / <span class="number">60</span>, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里面用到了<code>canvas.rotate(360 / 60, 0, 0)</code>，rotate表示的是画布旋转，后面的参数是旋转中心点的x以及y坐标。这样，每次画布旋转6度，进行刻度的绘制。</p>
+<p>第三步，绘制刻度线的文字：</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//12次循环，绘制12次</span></div><div class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">12</span>; i++) &#123;</div><div class="line">    Rect <span class="built_in">rect</span> = <span class="keyword">new</span> Rect();</div><div class="line">    <span class="comment">//绘制的刻度文字</span></div><div class="line">    <span class="keyword">String</span> <span class="built_in">text</span> = i + <span class="string">""</span>;</div><div class="line">    <span class="comment">//测量出文字的宽度</span></div><div class="line">    <span class="built_in">float</span> measureText = mTextPaint.measureText(<span class="built_in">text</span>);</div><div class="line">    mTextPaint.getTextBounds(<span class="built_in">text</span>, <span class="number">0</span>, <span class="built_in">text</span>.length(), <span class="built_in">rect</span>);</div><div class="line">    <span class="comment">//刻度文字起始的 x 坐标  -10 是为了让文字和刻度之间留一些空隙</span></div><div class="line">    <span class="built_in">float</span> x = timeHeight - <span class="number">10</span> - measureText;</div><div class="line">    <span class="comment">//得到文字宽的的 1/2</span></div><div class="line">    <span class="built_in">float</span> xText = measureText / <span class="number">2</span>;</div><div class="line">    <span class="comment">//得到的是文字的中间的高度值</span></div><div class="line">    <span class="built_in">float</span> y = (<span class="built_in">rect</span>.bottom - <span class="built_in">rect</span>.top) / <span class="number">2</span>;</div><div class="line">    <span class="comment">//这里是以 1 点为基准，利用三角函数计算得到全部的坐标值</span></div><div class="line">    <span class="built_in">float</span> dx = (<span class="built_in">float</span>) ((x) * Math.<span class="built_in">sin</span>(i * <span class="number">30</span> * Math.<span class="literal">PI</span> / <span class="number">180</span>));</div><div class="line">    <span class="built_in">float</span> dy = (<span class="built_in">float</span>) ((x) * Math.<span class="built_in">cos</span>(i * <span class="number">30</span> * Math.<span class="literal">PI</span> / <span class="number">180</span>));</div><div class="line">    <span class="comment">//绘制刻度文字，在 x 方向上 - 文字宽的的 1/2</span></div><div class="line">    <span class="comment">//在 基线方向上 + 文字的中间的高度值</span></div><div class="line">    canvas.drawText(<span class="built_in">text</span>, dx - xText, -dy + y, mTextPaint);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样，就绘制出了刻度文字。其实，绘制刻度文字是可以利用<code>rotate()</code>，只不过这样利用画布旋转绘制出的文字有的是倒立的。似乎是我以3点为基准出现的问题。最后，没办法，就利用三角函数，以1点为基准绘制完成了。为何以1点为基准呢？因为循环从1开始啊。。。</p>
+<p>第四步，绘制指针并让其动起来：</p>
+<p>在绘制指针之前我们是要得到当前的时间的，然后，指针顺着当前时间运动。所以，先要获取当前时间：<br><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">        Calendar mCalendar = Calendar.getInstance();</div><div class="line">        mTempHour = mCalendar.get(Calendar.HOUR);</div><div class="line">        mTempMinute = mCalendar.get(Calendar.MINUTE);</div><div class="line">        mTempSecond = mCalendar.get(Calendar.SECOND);</div><div class="line"><span class="comment">//                    Log.d(TAG, "handleMessage: " + tempSecond);</span></div><div class="line"><span class="comment">//                    Log.d(TAG, "refreshTime: " + tempHour + tempMinute + tempSecond);</span></div><div class="line">        <span class="comment">//计算出秒指针旋转的角度</span></div><div class="line">        mSecondRotate = mTempSecond * <span class="number">360</span> / <span class="number">60</span>;</div><div class="line"><span class="comment">//                    Log.d(TAG, "handleMessage: " + mSecondRotate);</span></div><div class="line">        <span class="comment">//计算出分指针的旋转的角度</span></div><div class="line">        mMinuteRotate = (<span class="type">float</span>) (mTempMinute * <span class="number">360</span> / <span class="number">60</span> + mTempSecond * <span class="number">0.1</span>);</div><div class="line"><span class="comment">//                    Log.d(TAG, "handleMessage: "+tempMinute);</span></div><div class="line">        <span class="comment">//计算出时针需要旋转的角度</span></div><div class="line">        mHourRotate = (<span class="type">float</span>) (mTempHour * <span class="number">30</span> + mTempMinute * <span class="number">0.5</span>);</div></pre></td></tr></table></figure></p>
+<p>这里利用了Calendar，得到当前的时间。然后，计算出各个指针需要旋转的角度。这里，注意，秒针走一秒，分针走当前秒数 <em> 0.1（6/60 = 0.1）度。而分针走0.1度，时针走当前分钟数 </em> 0.5（6*30/360 = 0.5）度。</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">canvas.save();</div><div class="line">canvas.save();</div><div class="line">canvas.rotate(hourRotate, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">canvas.drawLine(<span class="number">0</span>, <span class="number">10</span>, <span class="number">0</span>, -(radius - <span class="number">160</span>), mHourPoint);</div><div class="line">canvas.restore();</div><div class="line">canvas.save();</div><div class="line">canvas.rotate(minuteRotate, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">canvas.drawLine(<span class="number">0</span>, <span class="number">20</span>, <span class="number">0</span>, -(radius - <span class="number">120</span>), mMinutePaint);</div><div class="line">canvas.restore();</div><div class="line">canvas.save();</div><div class="line">canvas.rotate(secondRotate, <span class="number">0</span>, <span class="number">0</span>);</div><div class="line">canvas.drawLine(<span class="number">0</span>, <span class="number">30</span>, <span class="number">0</span>, -(radius - <span class="number">80</span>), mSecondPoint);</div><div class="line">canvas.restore();</div><div class="line">canvas.restore();</div></pre></td></tr></table></figure>
+<p>这里先用<code>save()</code>方法保存整个画布状态，在每次绘制指针前，再次保存画布状态。然后，在绘制指针前都旋转相应的角度。一次次旋转，看起来就像指针在动。之所以每次绘制指针前都保存画布是为了不让三个指针互相干扰。每一个指针都在一层独立的画布上。当然，这一步，一定要将指针绘制到12点的位置，3个指针都是。因为你算出的旋转角度就是从12点起，到12点结束，360度。</p>
+<p>第五步，绘制数字时间：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Rect <span class="built_in">rect</span> = <span class="keyword">new</span> Rect();</div><div class="line"><span class="comment">//当前的时间</span></div><div class="line"><span class="keyword">String</span> time = mTempHour + <span class="string">" : "</span> + mTempMinute + <span class="string">" : "</span> + mTempSecond;</div><div class="line"><span class="comment">//测量文字</span></div><div class="line">mNumberPaint.getTextBounds(time, <span class="number">0</span>, time.length(), <span class="built_in">rect</span>);</div><div class="line"><span class="comment">//其实 x 坐标为 文字宽度的一半</span></div><div class="line"><span class="keyword">int</span> dx =<span class="built_in">rect</span>.<span class="built_in">width</span>() / <span class="number">2</span>;</div><div class="line"><span class="comment">//基准线就定为 半径的一半</span></div><div class="line"><span class="keyword">int</span> baseLine = radius / <span class="number">2</span>;</div><div class="line"><span class="comment">//绘制文字</span></div><div class="line">canvas.drawText(time, dx, baseLine, mNumberPaint);</div></pre></td></tr></table></figure>
+<p>第六步，绘制作者名字：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Rect <span class="built_in">rect</span> = <span class="keyword">new</span> Rect();</div><div class="line"><span class="comment">//文字</span></div><div class="line"><span class="keyword">String</span> author = <span class="string">"By Kevin"</span>;</div><div class="line"><span class="comment">//测量文字</span></div><div class="line">mNumberPaint.getTextBounds(author, <span class="number">0</span>, author.length(), <span class="built_in">rect</span>);</div><div class="line"><span class="comment">//起始 x 坐标为文字的一半 ，为负值是在 左方 ，因为原点在屏幕中心</span></div><div class="line"><span class="keyword">int</span> dx = -<span class="built_in">rect</span>.<span class="built_in">width</span>() / <span class="number">2</span>;</div><div class="line"><span class="comment">//基准线就定为 半径的一半 ，为负值在 上方 ，因为原点在屏幕中心</span></div><div class="line"><span class="keyword">int</span> y = -radius / <span class="number">2</span>;</div><div class="line">canvas.drawText(author, dx, y, mAuthorPaint);</div></pre></td></tr></table></figure>
+<p>这两步代码基本一样，只是方向相反，也是很简单。</p>
+<p>最后，给出<code>onDraw()</code>中的代码：</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"> @Override</div><div class="line">    protected void onDraw(Canvas canvas) &#123;</div><div class="line">        <span class="comment">//半径</span></div><div class="line">        radius = mWidth / <span class="number">2</span> - <span class="number">20</span>;</div><div class="line">        <span class="comment">//刻度线的高度</span></div><div class="line">        timeHeight = radius - <span class="number">15</span>;</div><div class="line">        <span class="comment">//坐标移动到中心位置</span></div><div class="line">        canvas.translate(mWidth / <span class="number">2</span>, mHeight / <span class="number">2</span>);</div><div class="line">        <span class="comment">//绘制表盘</span></div><div class="line">        canvas.drawCircle(<span class="number">0</span>, <span class="number">0</span>, radius, mOuterPaint);</div><div class="line">        <span class="comment">//绘制中间的两个小圆圈</span></div><div class="line">        canvas.drawCircle(<span class="number">0</span>, <span class="number">0</span>, radius / <span class="number">32</span>, mOuterPaint);</div><div class="line">        canvas.drawCircle(<span class="number">0</span>, <span class="number">0</span>, radius / <span class="number">64</span>, mOuterPaint);</div><div class="line">        <span class="comment">//绘制作者名字</span></div><div class="line">        drawAuthor(canvas);</div><div class="line"><span class="comment">//        mHandler.sendEmptyMessage(HANDLER_MSG);</span></div><div class="line">        <span class="comment">//延时1s绘制，会不停的执行onDraw()方法，从而实现指针的动态效果</span></div><div class="line">        <span class="comment">//这里利用Handler也是可以的</span></div><div class="line">        postInvalidateDelayed(<span class="number">1000</span>);</div><div class="line">        <span class="comment">//绘制刻度</span></div><div class="line">        drawScale(canvas);</div><div class="line">        <span class="comment">//绘制刻度文字</span></div><div class="line">        drawScaleText(canvas);</div><div class="line">        <span class="comment">//得到当前时间</span></div><div class="line">        refreshTime();</div><div class="line">        <span class="comment">//绘制数字时间</span></div><div class="line">        drawNumberTime(canvas);</div><div class="line">        <span class="comment">//绘制指针</span></div><div class="line">        drawPoints(canvas, mHourRotate, mMinuteRotate, mSecondRotate);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>到此为止，就完成了这个简易时钟的绘制。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-08-22T09:39:21.066Z" itemprop="dateUpdated">2017-08-22 17:39:21</time>
+</span><br>
+
+
+        
+        转载请注明出处：<a href="/2017/08/22/自定义View之简易时钟/" target="_blank" rel="external">https://KevinJe.github.io/2017/08/22/自定义View之简易时钟/</a>
+        
+    </div>
+    <footer>
+        <a href="https://KevinJe.github.io">
+            <img src="/img/avatar.jpg" alt="Kevin Jern">
+            Kevin Jern
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自定义View/">自定义View</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KevinJe.github.io/2017/08/22/自定义View之简易时钟/&title=《自定义View之简易时钟》 — Kevin Jern&pic=https://KevinJe.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KevinJe.github.io/2017/08/22/自定义View之简易时钟/&title=《自定义View之简易时钟》 — Kevin Jern&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KevinJe.github.io/2017/08/22/自定义View之简易时钟/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《自定义View之简易时钟》 — Kevin Jern&url=https://KevinJe.github.io/2017/08/22/自定义View之简易时钟/&via=https://KevinJe.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KevinJe.github.io/2017/08/22/自定义View之简易时钟/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/21/自定义View之字母索引/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">自定义View之字母索引</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢打赏~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Kevin Jern &copy; 2017</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KevinJe.github.io/2017/08/22/自定义View之简易时钟/&title=《自定义View之简易时钟》 — Kevin Jern&pic=https://KevinJe.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KevinJe.github.io/2017/08/22/自定义View之简易时钟/&title=《自定义View之简易时钟》 — Kevin Jern&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KevinJe.github.io/2017/08/22/自定义View之简易时钟/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《自定义View之简易时钟》 — Kevin Jern&url=https://KevinJe.github.io/2017/08/22/自定义View之简易时钟/&via=https://KevinJe.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KevinJe.github.io/2017/08/22/自定义View之简易时钟/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACr0lEQVR42u3aQW7DMAwEwPz/0+kHYntXlIIUGJ+KxJU5KmCqJF+v+HpfXPk97/i6f/rrxIWHh4e3KfSr4JLH55+0seUx4+Hh4Z3mXS19dU+SGPKkkq+Qx4yHh4f3y7z7sNqjeQ7Gw8PD+1+8e2S+WluwwMPDw/sdXrtcfoCefJ6nog21Fjw8PLyuxxR1kX7n5yP9PTw8PLxxV31eVM2HANaaYQ/R4uHh4R3grS2dt8SS3223pt4+PDw8vK28+xLDpFTRwvLEk7fN8PDw8M7x1l7Nk0JqckwfHaPzncDDw8MreZOgk6XXtq9tgxWTEXh4eHhjXv6Cbtv8SfmgTSTtRuDh4eGd4+UhJiWDtRba/Qr5Ey9rLXh4eHibePkRuU0YyabkbbD2+I6Hh4d3jrcWdDsE0CaMnPRwJx4eHt4BXl4gSNJGOwSQh7s2uICHh4d3gjcvs669uNvDdPtX+lBrwcPDw9vKa8cF9qaQ0UDV/Rbj4eHhHeZNGPO2WR5PnnLw8PDwTvDW2ktrBd8ckw9d1X9DPDw8vK2877esJt9eRYKHh4d3mjdva+W7uHY0b1PXQxkXDw8P7wAvL7NuGIHKW1nBJ1FiwMPDwxvz9i7dfrL2H8CuAgceHh7ehJenhLxkkG9QMlw1Sl14eHh4X+S1R968OLsrjxX5DQ8PD+8YL7/ax+ch5s+qEwMeHh7eVl6eBiav+Lbw2haCP9yPh4eHt5W3NxnkDbN8hfbb0WEaDw8Pb6XuWqSEfGgg/7lNLaP+Hh4eHt5gnTwZTEjtsFQ+TPDwLR4eHt4x3lrLai3EtcSzOKCAh4eH9wO8/OW+1taalB6KKjUeHh7eF3n5/UlimByak23Fw8PDO8fLD8e7EkmCTI7RD7Hh4eHhHeC1//C3wwF5eTcJbsTAw8PDm/L+AMeg+T4Pm971AAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Kevin Jern';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Kevin Jern';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
