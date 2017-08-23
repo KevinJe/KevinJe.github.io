@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://KevinJe.github.io/"/>
-  <updated>2017-08-22T09:39:21.066Z</updated>
+  <updated>2017-08-23T09:11:13.348Z</updated>
   <id>https://KevinJe.github.io/</id>
   
   <author>
@@ -14,6 +14,74 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Android测量文本的宽与高</title>
+    <link href="https://KevinJe.github.io/2017/08/23/Android%E6%B5%8B%E9%87%8F%E6%96%87%E6%9C%AC%E7%9A%84%E5%AE%BD%E4%B8%8E%E9%AB%98/"/>
+    <id>https://KevinJe.github.io/2017/08/23/Android测量文本的宽与高/</id>
+    <published>2017-08-23T09:09:32.000Z</published>
+    <updated>2017-08-23T09:11:13.348Z</updated>
+    
+    <content type="html"><![CDATA[<p>在自定义View的时候，绘制文字往往需要我们测量出文字的宽高值。以此宽高值，我们才能绘制相应的文字。于是，记录一下经常使用的几种方法。</p>
+<h4 id="measureText"><a href="#measureText" class="headerlink" title="measureText"></a>measureText</h4><blockquote>
+<p>Return the width of the text</p>
+</blockquote>
+<p>利用Paint的<code>measureText()</code>方法可以轻松的测量出文字的宽的。当然，<code>measureText()</code>有好四个重载方法，可以根据需要使用。</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Paint mPaint = <span class="keyword">new</span> Paint();</div><div class="line"><span class="keyword">String</span> <span class="built_in">text</span> = <span class="string">"Hello World"</span>;</div><div class="line"><span class="built_in">float</span> <span class="built_in">textWidth</span> = mPaint.measureText(<span class="built_in">text</span>, <span class="number">0</span>, <span class="built_in">text</span>.length());</div></pre></td></tr></table></figure>
+<h4 id="getTextBounds"><a href="#getTextBounds" class="headerlink" title="getTextBounds()"></a>getTextBounds()</h4><blockquote>
+<p>Return in bounds (allocated by the caller) the smallest rectangle that encloses all of the characters, with an implied origin at (0,0)<br>返回边界（由调用者分配）包含所有字符的最小矩形，隐含原点（0,0）</p>
+</blockquote>
+<p>这一方法也是Paint中的，获得文本所在矩形区域，从而得到文本的宽高。</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">Paint mPaint = <span class="keyword">new</span> Paint();</div><div class="line">Rect <span class="built_in">rect</span> = <span class="keyword">new</span> Rect();</div><div class="line"><span class="comment">//文本</span></div><div class="line"><span class="keyword">String</span> <span class="built_in">text</span>= <span class="string">"Kevin"</span>;</div><div class="line"><span class="comment">//测量文字</span></div><div class="line">mPaint.getTextBounds(<span class="built_in">text</span>, <span class="number">0</span>, <span class="built_in">text</span>.length(), <span class="built_in">rect</span>);</div><div class="line"><span class="keyword">int</span> <span class="built_in">width</span> = <span class="built_in">rect</span>.<span class="built_in">width</span>();</div><div class="line"><span class="keyword">int</span> <span class="built_in">height</span> = <span class="built_in">rect</span>.<span class="built_in">height</span>();</div><div class="line"><span class="keyword">int</span> left = <span class="built_in">rect</span>.left;</div><div class="line"><span class="keyword">int</span> right = <span class="built_in">rect</span>.right;</div><div class="line"><span class="comment">//width也可以这样计算出来</span></div><div class="line"><span class="comment">//width = right - left;</span></div><div class="line"><span class="keyword">int</span> bottom = <span class="built_in">rect</span>.bottom;</div><div class="line"><span class="keyword">int</span> top = <span class="built_in">rect</span>.top;</div><div class="line"><span class="comment">//height也可以这样计算出来</span></div><div class="line"><span class="comment">//height = top - bottom;</span></div><div class="line">canvas.drawText(<span class="built_in">text</span>, <span class="built_in">width</span>, <span class="built_in">height</span>, mPaint);</div></pre></td></tr></table></figure>
+<h4 id="getFontMetrics-amp-getFontMetricsInt"><a href="#getFontMetrics-amp-getFontMetricsInt" class="headerlink" title="getFontMetrics &amp; getFontMetricsInt"></a>getFontMetrics &amp; getFontMetricsInt</h4><p>两者类似，只是返回的经度不同。前者float，后者int。<br>FontMetrics其中定义了五个成员变量：</p>
+<blockquote>
+<p>ascent<br>The recommended distance above the baseline for singled spaced text.</p>
+<p>bottom<br>The maximum distance below the baseline for the lowest glyph in the font at a given text size.</p>
+<p>descent<br>The recommended distance below the baseline for singled spaced text.</p>
+<p>leading<br>The recommended additional space to add between lines of text.</p>
+<p>top<br>The maximum distance above the baseline for the tallest glyph in the font at a given text size. </p>
+</blockquote>
+<p>ascent和descent是一对，以baseLine为基础，baseLine以上到字符最高处为ascent，到最低出则为descent。</p>
+<p>top和bottom是一对，以baseLine为基础，baseLine以上到字符最高处为top，到最低出则为bottom。只不过，top和bottom还要包含一些预留的内边距。所以，通常，top值要比ascent大、bottom值要比descent大。</p>
+<p>leading是两行文字之间的行间距。即上一行的descent到下一行的ascent的距离。</p>
+<p>更详细的，请参考：</p>
+<p><a href="https://www.cnblogs.com/tianzhijiexian/p/4297664.html" target="_blank" rel="external">用TextPaint来绘制文字</a></p>
+<p><a href="http://mikewang.blog.51cto.com/3826268/871765" target="_blank" rel="external">Android字符串进阶之三：字体属性及测量（FontMetrics)</a></p>
+<p>所以，一下就是获得文本的高度：</p>
+<figure class="highlight protobuf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Paint paint = new Paint();</div><div class="line">Paint.FontMetrics fontMetrics= mPaint.getFontMetrics();</div><div class="line"><span class="comment">//不包括文本预留的边距</span></div><div class="line"><span class="built_in">float</span> height1 = fontMetrics.descent - fontMetrics.ascent;</div><div class="line"><span class="comment">//包括文本预留的边距</span></div><div class="line"><span class="built_in">float</span> height2 = fontMetrics.bottom - fontMetrics.top;</div></pre></td></tr></table></figure>
+<h4 id="getTextWidths"><a href="#getTextWidths" class="headerlink" title="getTextWidths()"></a>getTextWidths()</h4><blockquote>
+<p>　Return the advance widths for the characters in the string</p>
+</blockquote>
+<p>这个方法返回的是单个字符的宽度，所以这种方法应该是最精确的了。</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">float</span> <span class="built_in">width</span> = <span class="number">0</span>;</div><div class="line"><span class="built_in">int</span> len = <span class="built_in">str</span>.length();  </div><div class="line">Paint paint = <span class="keyword">new</span> Paint();</div><div class="line"><span class="built_in">float</span>[] widths = <span class="keyword">new</span> <span class="built_in">float</span>[len];  </div><div class="line">paint.getTextWidths(<span class="built_in">str</span>, widths);  </div><div class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;  </div><div class="line">     <span class="built_in">width</span> += widths[i];  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="Layout-getDesiredWidth"><a href="#Layout-getDesiredWidth" class="headerlink" title="Layout.getDesiredWidth()"></a>Layout.getDesiredWidth()</h4><blockquote>
+<p>Return how wide a layout must be in order to display the specified<br> text with one line per paragraph</p>
+</blockquote>
+<pre><code>TextPaint textPaint = new TextPaint();
+paint.setTextSize(size);//设置字体大小
+paint.setTypeface(Typeface.xx);//设置字体
+float width = Layout.getDesiredWidth(str,textPaint);
+</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在自定义View的时候，绘制文字往往需要我们测量出文字的宽高值。以此宽高值，我们才能绘制相应的文字。于是，记录一下经常使用的几种方法。&lt;/p&gt;
+&lt;h4 id=&quot;measureText&quot;&gt;&lt;a href=&quot;#measureText&quot; class=&quot;headerlink&quot; ti
+    
+    </summary>
+    
+      <category term="Android" scheme="https://KevinJe.github.io/categories/Android/"/>
+    
+      <category term="自定义View" scheme="https://KevinJe.github.io/categories/Android/%E8%87%AA%E5%AE%9A%E4%B9%89View/"/>
+    
+    
+      <category term="Android" scheme="https://KevinJe.github.io/tags/Android/"/>
+    
+      <category term="width &amp; height" scheme="https://KevinJe.github.io/tags/width-height/"/>
+    
+      <category term="text" scheme="https://KevinJe.github.io/tags/text/"/>
+    
+  </entry>
   
   <entry>
     <title>自定义View之简易时钟</title>
@@ -452,9 +520,9 @@
       <category term="日记" scheme="https://KevinJe.github.io/categories/%E6%97%A5%E8%AE%B0/"/>
     
     
-      <category term="生活" scheme="https://KevinJe.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
-    
       <category term="随笔" scheme="https://KevinJe.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+      <category term="生活" scheme="https://KevinJe.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
     
       <category term="感悟" scheme="https://KevinJe.github.io/tags/%E6%84%9F%E6%82%9F/"/>
     
@@ -534,9 +602,9 @@
       <category term="日记" scheme="https://KevinJe.github.io/categories/%E6%97%A5%E8%AE%B0/"/>
     
     
-      <category term="生活" scheme="https://KevinJe.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
-    
       <category term="随笔" scheme="https://KevinJe.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+      <category term="生活" scheme="https://KevinJe.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
     
       <category term="感悟" scheme="https://KevinJe.github.io/tags/%E6%84%9F%E6%82%9F/"/>
     
@@ -680,9 +748,9 @@
       <category term="日记" scheme="https://KevinJe.github.io/categories/%E6%97%A5%E8%AE%B0/"/>
     
     
-      <category term="生活" scheme="https://KevinJe.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
-    
       <category term="随笔" scheme="https://KevinJe.github.io/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+      <category term="生活" scheme="https://KevinJe.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
     
       <category term="感悟" scheme="https://KevinJe.github.io/tags/%E6%84%9F%E6%82%9F/"/>
     
