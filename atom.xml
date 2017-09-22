@@ -905,7 +905,7 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <link href="https://KevinJe.github.io/2017/06/03/%E4%BD%BF%E7%94%A8jsoup%E8%A7%A3%E6%9E%90%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E5%86%85%E5%AE%B9/"/>
     <id>https://KevinJe.github.io/2017/06/03/使用jsoup解析你想要的内容/</id>
     <published>2017-06-03T09:52:23.000Z</published>
-    <updated>2017-09-22T12:56:27.950Z</updated>
+    <updated>2017-09-22T13:30:26.264Z</updated>
     
     <content type="html"><![CDATA[<p>有些时候，我们做APP时，也许会为没有相应的API而发愁。看到某些网站上某些内容很好，却没有办法获取到。最近，接触到了jsoup，用它就可以轻松获取到网站上的内容了。jsoup是什么呢？jsoup 是一款<a href="http://lib.csdn.net/base/javase" target="_blank" rel="external">Java</a> 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于<a href="http://lib.csdn.net/base/jquery" target="_blank" rel="external">jQuery</a>的操作方法来取出和操作数据。</p>
 <a id="more"></a>
