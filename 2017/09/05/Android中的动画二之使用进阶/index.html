@@ -21,7 +21,7 @@ TypeEvaluator当我们使用ValueAnimator或者ObjectAnimator时，会有一个o
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1602023-cd64dc5a628d7ddc.gif?imageMogr2/auto-orient/strip">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1602023-b27a900b32e9bf64.gif?imageMogr2/auto-orient/strip">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1602023-59e4a7ce18d03740.gif?imageMogr2/auto-orient/strip">
-<meta property="og:updated_time" content="2017-09-05T12:36:25.581Z">
+<meta property="og:updated_time" content="2017-09-22T12:57:56.348Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android中的动画二之使用进阶">
 <meta name="twitter:description" content="上一篇文章，大概介绍了一下View Animation以及Property Animation的使用。这一篇，在简单使用的基础之上，进行一点高级的技巧。
@@ -188,6 +188,7 @@ TypeEvaluator当我们使用ValueAnimator或者ObjectAnimator时，会有一个o
       
         <p>上一篇文章，大概介绍了一下View Animation以及Property Animation的使用。这一篇，在简单使用的基础之上，进行一点高级的技巧。</p>
 <h4 id="TypeEvaluator"><a href="#TypeEvaluator" class="headerlink" title="TypeEvaluator"></a>TypeEvaluator</h4><p>当我们使用ValueAnimator或者ObjectAnimator时，会有一个ofObject()方法和setEvaluator()。在这个方法中是有一个TypeEvaluator参数的。。那么这个TypeEvaluator的作用到底是什么呢？我们在使用ValueAnimator.ofFloat()时是会向其中传入开始值以及结束值的。然后系统就会帮助我们平滑计算出整个过程的数值。</p>
+<a id="more"></a>
 <p>我们可以看一下系统中的实现，系统中其实实现了几个TypeEvaluator。当我们使用ofFloat()时调用的默认是FloatEvaluator。使用ofInt()默认的是IntEvaluator。使用ofArgb()默认的是ArgbEvaluator。</p>
 <figure class="highlight zephir"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * This evaluator can be used to perform type interpolation between float values.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FloatEvaluator</span> <span class="keyword">implements</span> <span class="title">TypeEvaluator</span>&lt;<span class="title">Number</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * This function returns the result of linearly interpolating the start and end values, with</div><div class="line">     * fraction representing the proportion between the start and end values. The</div><div class="line">     * calculation is a simple parametric calculation: result = x0 + t * (v1 - v0),</div><div class="line">     * where x0 is startValue, x1 is endValue,and t is fraction.</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> fraction   The fraction from the starting to the ending values</div><div class="line">     * <span class="doctag">@param</span> startValue The start value; should be of type float or Float</div><div class="line">     * <span class="doctag">@param</span> endValue   The end value; should be of type float or Float</div><div class="line">     * <span class="doctag">@return</span> A linear interpolation between the start and end values, given the fraction parameter.</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="keyword">Float</span> evaluate(<span class="keyword">float</span> fraction, Number startValue, Number endValue) &#123;</div><div class="line">        <span class="comment">//开始值</span></div><div class="line">        <span class="keyword">float</span> startFloat = startValue.floatValue();</div><div class="line">        <span class="comment">//开始值 + 当前进度 *（结束值 - 开始值）</span></div><div class="line">        <span class="keyword">return</span> startFloat + fraction * (endValue.floatValue() - startFloat);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>可以看到FloatEvaluator实现了TypeEvaluator，并且TypeEvaluator其中只有一个方法<code>evaluate(float fraction, Number startValue, Number endValue)</code>。这个方法中有三个值，后两个分别是我们在ofFloat(startValue,endValue)传进来的。而第一个值fraction呢？它其实是一个当前动画执行进度的这么一个参数。所以，上面evaluator方法就很明白了。就是fraction在动画执行过程中是变化的执行进度，假如现在开始值是0，结束值是100，动画执行了50%。那么此时返回的值就应该是<strong>0 + 0.5 * （100 - 0）= 50</strong>。所以，TypeEvaluator就是<strong>执行如何从初始值 过渡到 结束值 的逻辑</strong>。那么，这个变化的fraction从哪里来呢？这就要用到Interpolator了。我们后面介绍。</p>
@@ -560,6 +561,10 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">dp、sp、px</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Animation</a>
               </li>
              
@@ -569,10 +574,6 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Property Animation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">dp、sp、px</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -588,6 +589,10 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">BroadcastReceiver</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">width & height</a>
               </li>
              
@@ -596,15 +601,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">BroadcastReceiver</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Jsoup</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -679,7 +680,7 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
     
     	<section class="tools-section tools-section-me" q-show="aboutme">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">我们努力，只为这个世界更美好！</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">Kevin Jern，&lt;br&gt;一名在校大学生，理想主义以及完美主义者&lt;br&gt;&lt;br&gt;热爱科技，热爱技术，&lt;br/&gt;目前是一名小白Android Developer&lt;br/&gt;&lt;br/&gt;竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。&lt;br&gt;回首向来萧瑟处，归去，也无风雨也无晴。</div>
   	  	
     	</section>
     

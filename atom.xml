@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://KevinJe.github.io/"/>
-  <updated>2017-09-05T12:36:25.581Z</updated>
+  <updated>2017-09-22T12:57:56.348Z</updated>
   <id>https://KevinJe.github.io/</id>
   
   <author>
@@ -20,10 +20,11 @@
     <link href="https://KevinJe.github.io/2017/09/05/Android%E4%B8%AD%E7%9A%84%E5%8A%A8%E7%94%BB%E4%BA%8C%E4%B9%8B%E4%BD%BF%E7%94%A8%E8%BF%9B%E9%98%B6/"/>
     <id>https://KevinJe.github.io/2017/09/05/Android中的动画二之使用进阶/</id>
     <published>2017-09-05T12:23:56.000Z</published>
-    <updated>2017-09-05T12:36:25.581Z</updated>
+    <updated>2017-09-22T12:57:56.348Z</updated>
     
     <content type="html"><![CDATA[<p>上一篇文章，大概介绍了一下View Animation以及Property Animation的使用。这一篇，在简单使用的基础之上，进行一点高级的技巧。</p>
 <h4 id="TypeEvaluator"><a href="#TypeEvaluator" class="headerlink" title="TypeEvaluator"></a>TypeEvaluator</h4><p>当我们使用ValueAnimator或者ObjectAnimator时，会有一个ofObject()方法和setEvaluator()。在这个方法中是有一个TypeEvaluator参数的。。那么这个TypeEvaluator的作用到底是什么呢？我们在使用ValueAnimator.ofFloat()时是会向其中传入开始值以及结束值的。然后系统就会帮助我们平滑计算出整个过程的数值。</p>
+<a id="more"></a>
 <p>我们可以看一下系统中的实现，系统中其实实现了几个TypeEvaluator。当我们使用ofFloat()时调用的默认是FloatEvaluator。使用ofInt()默认的是IntEvaluator。使用ofArgb()默认的是ArgbEvaluator。</p>
 <figure class="highlight zephir"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * This evaluator can be used to perform type interpolation between float values.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FloatEvaluator</span> <span class="keyword">implements</span> <span class="title">TypeEvaluator</span>&lt;<span class="title">Number</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * This function returns the result of linearly interpolating the start and end values, with</div><div class="line">     * fraction representing the proportion between the start and end values. The</div><div class="line">     * calculation is a simple parametric calculation: result = x0 + t * (v1 - v0),</div><div class="line">     * where x0 is startValue, x1 is endValue,and t is fraction.</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> fraction   The fraction from the starting to the ending values</div><div class="line">     * <span class="doctag">@param</span> startValue The start value; should be of type float or Float</div><div class="line">     * <span class="doctag">@param</span> endValue   The end value; should be of type float or Float</div><div class="line">     * <span class="doctag">@return</span> A linear interpolation between the start and end values, given the fraction parameter.</div><div class="line">     */</div><div class="line">    <span class="keyword">public</span> <span class="keyword">Float</span> evaluate(<span class="keyword">float</span> fraction, Number startValue, Number endValue) &#123;</div><div class="line">        <span class="comment">//开始值</span></div><div class="line">        <span class="keyword">float</span> startFloat = startValue.floatValue();</div><div class="line">        <span class="comment">//开始值 + 当前进度 *（结束值 - 开始值）</span></div><div class="line">        <span class="keyword">return</span> startFloat + fraction * (endValue.floatValue() - startFloat);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>可以看到FloatEvaluator实现了TypeEvaluator，并且TypeEvaluator其中只有一个方法<code>evaluate(float fraction, Number startValue, Number endValue)</code>。这个方法中有三个值，后两个分别是我们在ofFloat(startValue,endValue)传进来的。而第一个值fraction呢？它其实是一个当前动画执行进度的这么一个参数。所以，上面evaluator方法就很明白了。就是fraction在动画执行过程中是变化的执行进度，假如现在开始值是0，结束值是100，动画执行了50%。那么此时返回的值就应该是<strong>0 + 0.5 * （100 - 0）= 50</strong>。所以，TypeEvaluator就是<strong>执行如何从初始值 过渡到 结束值 的逻辑</strong>。那么，这个变化的fraction从哪里来呢？这就要用到Interpolator了。我们后面介绍。</p>
@@ -115,7 +116,7 @@
     <summary type="html">
     
       &lt;p&gt;上一篇文章，大概介绍了一下View Animation以及Property Animation的使用。这一篇，在简单使用的基础之上，进行一点高级的技巧。&lt;/p&gt;
-&lt;h4 id=&quot;TypeEvaluator&quot;&gt;&lt;a href=&quot;#TypeEvaluator&quot; class=&quot;h
+&lt;h4 id=&quot;TypeEvaluator&quot;&gt;&lt;a href=&quot;#TypeEvaluator&quot; class=&quot;headerlink&quot; title=&quot;TypeEvaluator&quot;&gt;&lt;/a&gt;TypeEvaluator&lt;/h4&gt;&lt;p&gt;当我们使用ValueAnimator或者ObjectAnimator时，会有一个ofObject()方法和setEvaluator()。在这个方法中是有一个TypeEvaluator参数的。。那么这个TypeEvaluator的作用到底是什么呢？我们在使用ValueAnimator.ofFloat()时是会向其中传入开始值以及结束值的。然后系统就会帮助我们平滑计算出整个过程的数值。&lt;/p&gt;
     
     </summary>
     
@@ -141,9 +142,10 @@
     <link href="https://KevinJe.github.io/2017/09/03/Android%E4%B8%AD%E7%9A%84%E5%8A%A8%E7%94%BB%E4%B8%80%E4%B9%8B%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/"/>
     <id>https://KevinJe.github.io/2017/09/03/Android中的动画一之基本使用/</id>
     <published>2017-09-03T11:45:10.000Z</published>
-    <updated>2017-09-03T12:15:20.306Z</updated>
+    <updated>2017-09-22T12:57:46.758Z</updated>
     
     <content type="html"><![CDATA[<p>在一个App中，良好的交互体验无疑是很重要的一部分，而动画正是在交互之中起到了重要的作用。在Android中的动画，第一种是View Animation，也就是视图动画。第二种是Property Animation，即属性动画，还有SVG动画。而Property Animation是Google在Android3.0之后才推出的。在这之前View Animation是用的最多的。而在推出功能更加强大的Property Animation之后，View Animation用的就不再那么多了。View Animation最大的不足就是不具有交互性，虽然有视觉上的动画效果。但是假如我们让一个Button做平移操作，之后这个Button的点击事件的位置还是在原来的位置上，这就造成了不能用View Animation实现有交互性的操作。而Property Animation则是弥补了这一缺陷。</p>
+<a id="more"></a>
 <h3 id="View-Animation"><a href="#View-Animation" class="headerlink" title="View Animation"></a>View Animation</h3><p>View Animation的用法比较简单，大概有以下几种动画类型。</p>
 <h4 id="透明度动画"><a href="#透明度动画" class="headerlink" title="透明度动画"></a>透明度动画</h4><p>就是改变View的透明度的一种动画。</p>
 <figure class="highlight pony"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="type">AlphaAnimation</span> aa = <span class="function"><span class="keyword">new</span> <span class="title">AlphaAnimation</span>(<span class="number">0</span>, <span class="number">1</span>);</span></div><div class="line"><span class="comment">//设置动画时长</span></div><div class="line"><span class="title">aa</span>.<span class="title">setDuration</span>(<span class="number">1000</span>);</div><div class="line"><span class="title">view</span>.<span class="title">startAnimation</span>(aa);</div></pre></td></tr></table></figure>
@@ -279,7 +281,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;在一个App中，良好的交互体验无疑是很重要的一部分，而动画正是在交互之中起到了重要的作用。在Android中的动画，第一种是View Animation，也就是视图动画。第二种是Property Animation，即属性动画，还有SVG动画。而Property Anima
+      &lt;p&gt;在一个App中，良好的交互体验无疑是很重要的一部分，而动画正是在交互之中起到了重要的作用。在Android中的动画，第一种是View Animation，也就是视图动画。第二种是Property Animation，即属性动画，还有SVG动画。而Property Animation是Google在Android3.0之后才推出的。在这之前View Animation是用的最多的。而在推出功能更加强大的Property Animation之后，View Animation用的就不再那么多了。View Animation最大的不足就是不具有交互性，虽然有视觉上的动画效果。但是假如我们让一个Button做平移操作，之后这个Button的点击事件的位置还是在原来的位置上，这就造成了不能用View Animation实现有交互性的操作。而Property Animation则是弥补了这一缺陷。&lt;/p&gt;
     
     </summary>
     
@@ -303,9 +305,10 @@
     <link href="https://KevinJe.github.io/2017/08/23/Android%E6%B5%8B%E9%87%8F%E6%96%87%E6%9C%AC%E7%9A%84%E5%AE%BD%E4%B8%8E%E9%AB%98/"/>
     <id>https://KevinJe.github.io/2017/08/23/Android测量文本的宽与高/</id>
     <published>2017-08-23T09:09:32.000Z</published>
-    <updated>2017-08-23T09:11:13.348Z</updated>
+    <updated>2017-09-22T12:55:42.470Z</updated>
     
     <content type="html"><![CDATA[<p>在自定义View的时候，绘制文字往往需要我们测量出文字的宽高值。以此宽高值，我们才能绘制相应的文字。于是，记录一下经常使用的几种方法。</p>
+<a id="more"></a>
 <h4 id="measureText"><a href="#measureText" class="headerlink" title="measureText"></a>measureText</h4><blockquote>
 <p>Return the width of the text</p>
 </blockquote>
@@ -349,7 +352,6 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <summary type="html">
     
       &lt;p&gt;在自定义View的时候，绘制文字往往需要我们测量出文字的宽高值。以此宽高值，我们才能绘制相应的文字。于是，记录一下经常使用的几种方法。&lt;/p&gt;
-&lt;h4 id=&quot;measureText&quot;&gt;&lt;a href=&quot;#measureText&quot; class=&quot;headerlink&quot; ti
     
     </summary>
     
@@ -371,11 +373,12 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <link href="https://KevinJe.github.io/2017/08/22/%E8%87%AA%E5%AE%9A%E4%B9%89View%E4%B9%8B%E7%AE%80%E6%98%93%E6%97%B6%E9%92%9F/"/>
     <id>https://KevinJe.github.io/2017/08/22/自定义View之简易时钟/</id>
     <published>2017-08-22T09:38:19.000Z</published>
-    <updated>2017-08-22T09:39:21.066Z</updated>
+    <updated>2017-09-22T13:00:36.055Z</updated>
     
     <content type="html"><![CDATA[<p>今天要实现的是自定义View实现一款简易时钟，主要就是练习如何进行自定义View，所以基本上没有什么美感可言。下面，我们就开始了。</p>
 <p><img src="http://upload-images.jianshu.io/upload_images/1602023-a530916976b8ccc9.gif?imageMogr2/auto-orient/strip" alt="简易时钟"></p>
 <p>要实现这款简易时钟，我们还是要先分析出它所包含的元素。就以上面的效果图来说，基本上包括了：最外圈大表盘以及内部中间两个小圆圈，刻度线，刻度文字，表针，数字时间以及上方作者名称。OK，一共就这么多的元素，下面我们就可以开始了。</p>
+<a id="more"></a>
 <p>第一步，绘制表盘以及最中间的两个小圆圈：</p>
 <figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//半径</span></div><div class="line">radius = mWidth / <span class="number">2</span> - <span class="number">20</span>;</div><div class="line"><span class="comment">//坐标移动到中心位置</span></div><div class="line">canvas.translate(mWidth / <span class="number">2</span>, mHeight / <span class="number">2</span>);</div><div class="line"><span class="comment">//绘制表盘</span></div><div class="line">canvas.drawCircle(<span class="number">0</span>, <span class="number">0</span>, radius, mOuterPaint);</div><div class="line"><span class="comment">//绘制中间的两个小圆圈</span></div><div class="line">canvas.drawCircle(<span class="number">0</span>, <span class="number">0</span>, radius / <span class="number">32</span>, mOuterPaint);</div><div class="line">canvas.drawCircle(<span class="number">0</span>, <span class="number">0</span>, radius / <span class="number">64</span>, mOuterPaint);</div></pre></td></tr></table></figure>
 <p>很简单，就是直接绘制三个圆，半径大小不一致罢了。</p>
@@ -403,7 +406,8 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <summary type="html">
     
       &lt;p&gt;今天要实现的是自定义View实现一款简易时钟，主要就是练习如何进行自定义View，所以基本上没有什么美感可言。下面，我们就开始了。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/1602023-
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/1602023-a530916976b8ccc9.gif?imageMogr2/auto-orient/strip&quot; alt=&quot;简易时钟&quot;&gt;&lt;/p&gt;
+&lt;p&gt;要实现这款简易时钟，我们还是要先分析出它所包含的元素。就以上面的效果图来说，基本上包括了：最外圈大表盘以及内部中间两个小圆圈，刻度线，刻度文字，表针，数字时间以及上方作者名称。OK，一共就这么多的元素，下面我们就可以开始了。&lt;/p&gt;
     
     </summary>
     
@@ -423,11 +427,12 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <link href="https://KevinJe.github.io/2017/08/21/%E8%87%AA%E5%AE%9A%E4%B9%89View%E4%B9%8B%E5%AD%97%E6%AF%8D%E7%B4%A2%E5%BC%95/"/>
     <id>https://KevinJe.github.io/2017/08/21/自定义View之字母索引/</id>
     <published>2017-08-21T13:08:32.000Z</published>
-    <updated>2017-08-21T13:13:46.504Z</updated>
+    <updated>2017-09-22T13:00:50.046Z</updated>
     
     <content type="html"><![CDATA[<p>在Android中，字母索引这一设计在很多App中都有体现。手机联系人、微信、支付宝等在联系人一栏都会有这种设计。这种设计的便捷之处就是可以快捷的查找联系人。所以，我们今天也来打造这么一个自定义View的效果。注意，这里仅仅是模仿UI效果，不会实现功能。</p>
 <p><img src="http://upload-images.jianshu.io/upload_images/1602023-7286240a2d48c2d7.gif?imageMogr2/auto-orient/strip" alt="字母索引"></p>
 <p>这里只是谈一下实现的思路，不再详细的说明各个流程。详细的流程请看上两篇自定义View的文章，那两篇我流程写的很详细。</p>
+<a id="more"></a>
 <p>由于现在只想要这个IndexBar显示的宽度为字母的宽度+padding。也就是在这里我们的布局width为wrap_content，而height为match_parent。所以，在绘制竖排竖排字母前，我们还是要测量一下View。</p>
 <p><code>onMeasure()</code>中：</p>
 <figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">@Override</div><div class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> onMeasure(<span class="built_in">int</span> widthMeasureSpec, <span class="built_in">int</span> heightMeasureSpec) &#123;</div><div class="line">        <span class="keyword">super</span>.onMeasure(widthMeasureSpec, heightMeasureSpec);</div><div class="line">        <span class="built_in">int</span> <span class="built_in">height</span> = MeasureSpec.getSize(heightMeasureSpec);</div><div class="line">        <span class="comment">//测量文字宽度</span></div><div class="line">        mTextWidth = (<span class="built_in">int</span>) mPaint.measureText(<span class="string">"A"</span>);</div><div class="line">        <span class="comment">//view的宽 = 左边padding + 右边padding　+ 文字大小</span></div><div class="line">        <span class="built_in">int</span> <span class="built_in">width</span> = getPaddingLeft() + getPaddingRight() + mTextWidth;</div><div class="line">        setMeasuredDimension(<span class="built_in">width</span>, <span class="built_in">height</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
@@ -455,7 +460,8 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <summary type="html">
     
       &lt;p&gt;在Android中，字母索引这一设计在很多App中都有体现。手机联系人、微信、支付宝等在联系人一栏都会有这种设计。这种设计的便捷之处就是可以快捷的查找联系人。所以，我们今天也来打造这么一个自定义View的效果。注意，这里仅仅是模仿UI效果，不会实现功能。&lt;/p&gt;
-&lt;p&gt;&lt;i
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/1602023-7286240a2d48c2d7.gif?imageMogr2/auto-orient/strip&quot; alt=&quot;字母索引&quot;&gt;&lt;/p&gt;
+&lt;p&gt;这里只是谈一下实现的思路，不再详细的说明各个流程。详细的流程请看上两篇自定义View的文章，那两篇我流程写的很详细。&lt;/p&gt;
     
     </summary>
     
@@ -475,12 +481,14 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <link href="https://KevinJe.github.io/2017/08/21/Android%E4%B8%ADdp%E3%80%81sp%E4%B8%8Epx%E4%B9%8B%E9%97%B4%E7%9A%84%E6%8D%A2%E7%AE%97/"/>
     <id>https://KevinJe.github.io/2017/08/21/Android中dp、sp与px之间的换算/</id>
     <published>2017-08-21T08:11:01.000Z</published>
-    <updated>2017-08-21T08:13:36.559Z</updated>
+    <updated>2017-09-22T12:58:10.053Z</updated>
     
     <content type="html"><![CDATA[<p>在Android中我们常见的尺寸单位有dp、sp、px。</p>
 <ul>
-<li><p>px<br>通常我们会以手机对角线的长度来定义吋。比如：5.5吋，5.7吋。<br>而分辨率则是手机的像素点数。如：1920*1080，就是高1920个像素，宽1080像素。像素点数就决定我们屏幕的细腻程度，现在有的机器已经上了2k的屏幕了。而这里的像素点数的单位就是px。</p>
-</li>
+<li>px<br>通常我们会以手机对角线的长度来定义吋。比如：5.5吋，5.7吋。<br>而分辨率则是手机的像素点数。如：1920*1080，就是高1920个像素，宽1080像素。像素点数就决定我们屏幕的细腻程度，现在有的机器已经上了2k的屏幕了。而这里的像素点数的单位就是px。</li>
+</ul>
+<a id="more"></a>
+<ul>
 <li><p>dp<br>但是Android设备的屏幕大小不，这就对屏幕设配增加了难度。所以，为了满足不同分辨率的设备。Android使用了dp，dp是一种相对单位（根据屏幕的像素密度，也就是每英寸像素数的不同而调整），能够尽量保证相同数值的dp长度在不同的设备上显示的实际尺寸大致一样。</p>
 </li>
 <li><p>sp<br>同样的，sp是针对于文字的一种相对尺寸单位，其也会根据屏幕的像素密度的不同而调整，并考虑了字体不同的影响。</p>
@@ -539,7 +547,8 @@ float width = Layout.getDesiredWidth(str,textPaint);
     
       &lt;p&gt;在Android中我们常见的尺寸单位有dp、sp、px。&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;px&lt;br&gt;通常我们会以手机对角线的长度来定义吋。比如：5.5吋，5.7吋。&lt;br&gt;而分辨率则是手机的像素点数。如：1920*1080，就是高1920个像素，宽1080像素。像素点数就
+&lt;li&gt;px&lt;br&gt;通常我们会以手机对角线的长度来定义吋。比如：5.5吋，5.7吋。&lt;br&gt;而分辨率则是手机的像素点数。如：1920*1080，就是高1920个像素，宽1080像素。像素点数就决定我们屏幕的细腻程度，现在有的机器已经上了2k的屏幕了。而这里的像素点数的单位就是px。&lt;/li&gt;
+&lt;/ul&gt;
     
     </summary>
     
@@ -557,11 +566,12 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <link href="https://KevinJe.github.io/2017/08/20/%E8%87%AA%E5%AE%9A%E4%B9%89View%E4%B9%8B%E8%BF%90%E5%8A%A8%E6%AD%A5%E6%95%B0/"/>
     <id>https://KevinJe.github.io/2017/08/20/自定义View之运动步数/</id>
     <published>2017-08-20T12:28:14.000Z</published>
-    <updated>2017-08-20T12:29:15.451Z</updated>
+    <updated>2017-09-22T13:00:26.503Z</updated>
     
     <content type="html"><![CDATA[<p>上一篇中介绍了如何实现自定义View的流程。那么，在这一篇中我们就动手打造一个简单的运动步数的自定义View。可以看一下gif图展示了本次的运动步数的效果。</p>
 <p><img src="http://upload-images.jianshu.io/upload_images/1602023-d4107cb7567beee5.gif?imageMogr2/auto-orient/strip" alt="运动步数"></p>
 <p>这里的效果，我想大部分人都见过。下面来看一下具体的实现过程。</p>
+<a id="more"></a>
 <h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>通过gif图，我们可以对上图进行拆解。图中一共四个元素。分别是：最底层的弧线、动态显示的步数弧线、记录当前步数的文字、“步数”文字。整个拆解之后，就很容易了，我们只需要一步一步的绘制，就能得到效果了。至于动态的显示步数，则需要用到属性动画来处理。下面我们来一步一步实现。</p>
 <h4 id="自定义属性"><a href="#自定义属性" class="headerlink" title="自定义属性"></a>自定义属性</h4><p>在values目录下新建attrs.xml文件。在其中定义自己用得上的属性。</p>
 <figure class="highlight sqf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;declare-styleable <span class="built_in">name</span>=<span class="string">"StepsView"</span>&gt;</div><div class="line">        &lt;attr <span class="built_in">name</span>=<span class="string">"radius"</span> <span class="built_in">format</span>=<span class="string">"dimension"</span>/&gt;</div><div class="line">        &lt;attr <span class="built_in">name</span>=<span class="string">"bottomPaintColor"</span> <span class="built_in">format</span>=<span class="string">"color|reference"</span>/&gt;</div><div class="line">        &lt;attr <span class="built_in">name</span>=<span class="string">"stepsPaintColor"</span> <span class="built_in">format</span>=<span class="string">"color|reference"</span>/&gt;</div><div class="line">        &lt;attr <span class="built_in">name</span>=<span class="string">"startAngle"</span> <span class="built_in">format</span>=<span class="string">"integer"</span>/&gt;</div><div class="line">        &lt;attr <span class="built_in">name</span>=<span class="string">"sweepAngle"</span> <span class="built_in">format</span>=<span class="string">"integer"</span>/&gt;</div><div class="line">        &lt;attr <span class="built_in">name</span>=<span class="string">"paintWidth"</span> <span class="built_in">format</span>=<span class="string">"integer"</span>/&gt;</div><div class="line">    &lt;/declare-styleable&gt;</div></pre></td></tr></table></figure>
@@ -606,7 +616,8 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <summary type="html">
     
       &lt;p&gt;上一篇中介绍了如何实现自定义View的流程。那么，在这一篇中我们就动手打造一个简单的运动步数的自定义View。可以看一下gif图展示了本次的运动步数的效果。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_im
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/1602023-d4107cb7567beee5.gif?imageMogr2/auto-orient/strip&quot; alt=&quot;运动步数&quot;&gt;&lt;/p&gt;
+&lt;p&gt;这里的效果，我想大部分人都见过。下面来看一下具体的实现过程。&lt;/p&gt;
     
     </summary>
     
@@ -626,10 +637,11 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <link href="https://KevinJe.github.io/2017/08/20/%E8%87%AA%E5%AE%9A%E4%B9%89View%E4%B9%8B%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/"/>
     <id>https://KevinJe.github.io/2017/08/20/自定义View之基础部分/</id>
     <published>2017-08-20T11:44:02.000Z</published>
-    <updated>2017-08-20T11:58:16.056Z</updated>
+    <updated>2017-09-22T12:56:44.737Z</updated>
     
     <content type="html"><![CDATA[<p>最近，一直再看《Android群英传》，于是打算将最近的所经历的记录下来。</p>
 <h2 id="View的测量"><a href="#View的测量" class="headerlink" title="View的测量"></a>View的测量</h2><p>想要实现自定义View的效果，我们首先需要进行的就是View的测量了。当然，这不是必须要去做的，只是大部分情况下会进行的一个操作。就像现实生活中，我们要去裁剪，也是需要先测量一下长和宽。在Android中通过继承View类，重写其<code>onMeasure(int widthMeasureSpec, int heightMeasureSpec)</code>方法。系统提供了一个<code>MeasureSpec</code>类，帮助我们进行View的测量。<code>MeasureSpec</code>是一个32位的int值，其中高两位为测量模式，低30位是测量的大小。这里，我们只需要关注一下测量的模式。</p>
+<a id="more"></a>
 <h3 id="测量模式"><a href="#测量模式" class="headerlink" title="测量模式"></a>测量模式</h3><ul>
 <li>EXACTLY</li>
 </ul>
@@ -680,7 +692,7 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <summary type="html">
     
       &lt;p&gt;最近，一直再看《Android群英传》，于是打算将最近的所经历的记录下来。&lt;/p&gt;
-&lt;h2 id=&quot;View的测量&quot;&gt;&lt;a href=&quot;#View的测量&quot; class=&quot;headerlink&quot; title=&quot;View的测量&quot;&gt;&lt;/a&gt;View的测量&lt;/h2&gt;&lt;p&gt;想要实现自
+&lt;h2 id=&quot;View的测量&quot;&gt;&lt;a href=&quot;#View的测量&quot; class=&quot;headerlink&quot; title=&quot;View的测量&quot;&gt;&lt;/a&gt;View的测量&lt;/h2&gt;&lt;p&gt;想要实现自定义View的效果，我们首先需要进行的就是View的测量了。当然，这不是必须要去做的，只是大部分情况下会进行的一个操作。就像现实生活中，我们要去裁剪，也是需要先测量一下长和宽。在Android中通过继承View类，重写其&lt;code&gt;onMeasure(int widthMeasureSpec, int heightMeasureSpec)&lt;/code&gt;方法。系统提供了一个&lt;code&gt;MeasureSpec&lt;/code&gt;类，帮助我们进行View的测量。&lt;code&gt;MeasureSpec&lt;/code&gt;是一个32位的int值，其中高两位为测量模式，低30位是测量的大小。这里，我们只需要关注一下测量的模式。&lt;/p&gt;
     
     </summary>
     
@@ -700,9 +712,10 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <link href="https://KevinJe.github.io/2017/07/27/%E5%85%B3%E4%BA%8EAndroid7-0FileProvider%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
     <id>https://KevinJe.github.io/2017/07/27/关于Android7-0FileProvider的使用/</id>
     <published>2017-07-27T08:31:57.000Z</published>
-    <updated>2017-07-27T08:38:04.969Z</updated>
+    <updated>2017-09-22T12:57:31.607Z</updated>
     
     <content type="html"><![CDATA[<p>就在昨天，手机接收到Android7.0的推送，我也是第一时间进行了更新。体验了一番，应用的安装速度确实是得到了提高。然后，写了图片选择的小demo，发现再Android7.0上会出现问题。查了一下，发现是Android7.0的一个新特性，将解决办法记录一下。</p>
+<a id="more"></a>
 <p>这里模仿一下上传头像的过程，既可以拍照上传，也可以从图库中直接选择。然后就是一个裁切的动作。在Android7.0以前可以这样写：</p>
 <h3 id="Android-7-0-以前"><a href="#Android-7-0-以前" class="headerlink" title="Android 7.0 以前"></a>Android 7.0 以前</h3><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">void</span> <span class="title">takePhoto</span><span class="params">()</span> </span>&#123;</div><div class="line">       mOutputImage = <span class="keyword">new</span> File(Environment.getExternalStorageDirectory(), <span class="string">"/MyImage/"</span> + System.currentTimeMillis() + <span class="string">".jpg"</span>);</div><div class="line">       <span class="keyword">if</span> (!mOutputImage.getParentFile().exists()) &#123;</div><div class="line">           mOutputImage.getParentFile().mkdirs();</div><div class="line">       &#125;</div><div class="line">       imageUri = Uri.fromFile(mOutputImage);</div><div class="line">       Intent intent = <span class="keyword">new</span> Intent(MediaStore.ACTION_IMAGE_CAPTURE);</div><div class="line">       intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);</div><div class="line">       startActivityForResult(intent, TAKE_PHOTO);</div><div class="line">   &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">void</span> <span class="title">choosePhoto</span><span class="params">()</span> </span>&#123;</div><div class="line">       <span class="keyword">if</span> (ContextCompat.checkSelfPermission(MainActivity.<span class="keyword">this</span>, Manifest.permission</div><div class="line">               .WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) &#123;</div><div class="line">           ActivityCompat.requestPermissions(MainActivity.<span class="keyword">this</span>, <span class="keyword">new</span> String[]&#123;</div><div class="line">                   Manifest.permission.WRITE_EXTERNAL_STORAGE</div><div class="line">           &#125;, <span class="number">1</span>);</div><div class="line">       &#125; <span class="keyword">else</span> &#123;</div><div class="line">           openAlbum();</div><div class="line">       &#125;</div><div class="line">   &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">void</span> <span class="title">openAlbum</span><span class="params">()</span> </span>&#123;</div><div class="line">       Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_PICK);</div><div class="line">       intent.setType(<span class="string">"image/*"</span>);</div><div class="line">       startActivityForResult(intent, CHOOSE_PHOTO);</div><div class="line">   &#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="keyword">protected</span> <span class="function"><span class="keyword">void</span> <span class="title">onActivityResult</span><span class="params">(<span class="keyword">int</span> requestCode, <span class="keyword">int</span> resultCode, Intent data)</span> </span>&#123;</div><div class="line">       <span class="keyword">switch</span> (requestCode) &#123;</div><div class="line">           <span class="keyword">case</span> TAKE_PHOTO:</div><div class="line">               <span class="keyword">if</span> (resultCode == RESULT_OK) &#123;</div><div class="line">                   cropImage(imageUri);</div><div class="line">               &#125;</div><div class="line">               <span class="keyword">break</span>;</div><div class="line">           <span class="keyword">case</span> CHOOSE_PHOTO:</div><div class="line">               <span class="keyword">if</span> (resultCode == RESULT_OK) &#123;</div><div class="line">                   imageUri = data.getData();</div><div class="line">                   cropImage(imageUri);</div><div class="line">               &#125;</div><div class="line">               <span class="keyword">break</span>;</div><div class="line">           <span class="keyword">case</span> CROP_PHOTO:</div><div class="line">               pictrue.setImageURI(imageUri);</div><div class="line">               <span class="keyword">break</span>;</div><div class="line">           <span class="keyword">default</span>:</div><div class="line">       &#125;</div><div class="line">   &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="keyword">void</span> cropImage(Uri uri) &#123;</div><div class="line">       Intent intent = <span class="keyword">new</span> Intent(<span class="string">"com.android.camera.action.CROP"</span>);</div><div class="line">       intent.setDataAndType(uri, <span class="string">"image/*"</span>);</div><div class="line">       intent.putExtra(<span class="string">"crop"</span>, <span class="string">"true"</span>);</div><div class="line">       intent.putExtra(<span class="string">"aspectX"</span>, <span class="number">1</span>);</div><div class="line">       intent.putExtra(<span class="string">"aspectY"</span>, <span class="number">1</span>);</div><div class="line">       intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);</div><div class="line">       startActivityForResult(intent, CROP_PHOTO);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
 <p>上面choosePhoto()中进行了运行时权限的处理，以防止在Android6.0上出现问题。然后一切很简单了，就是调用系统的相机以及相册，然后剪切，最后将剪切后的图片设置到一个ImageView中。在Android7.0以前上面的代码是没有问题的。但是，如果将上述代码运行在7.0以上的设备中就会报错了。</p>
@@ -746,7 +759,6 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <summary type="html">
     
       &lt;p&gt;就在昨天，手机接收到Android7.0的推送，我也是第一时间进行了更新。体验了一番，应用的安装速度确实是得到了提高。然后，写了图片选择的小demo，发现再Android7.0上会出现问题。查了一下，发现是Android7.0的一个新特性，将解决办法记录一下。&lt;/p&gt;
-&lt;p
     
     </summary>
     
@@ -764,13 +776,14 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <link href="https://KevinJe.github.io/2017/06/06/%E6%80%80%E6%A2%A6%E6%83%B3%EF%BC%8C%E8%87%B4%E8%BF%9C%E6%96%B9%EF%BC%81/"/>
     <id>https://KevinJe.github.io/2017/06/06/怀梦想，致远方！/</id>
     <published>2017-06-06T13:10:43.000Z</published>
-    <updated>2017-06-06T13:30:32.067Z</updated>
+    <updated>2017-09-22T12:57:22.979Z</updated>
     
     <content type="html"><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=26361010&auto=1&height=66"></iframe>
 
 
 <p><img src="http://upload-images.jianshu.io/upload_images/1602023-83eb730ffd8e7e4d.jpg?imageMogr2/auto-orient/strip%7CimageView2/1/w/500" alt="怀梦想，致远方！"></p>
 <p>前几天，随机播放到了这首《光阴的故事》。一想，才知道好长时间没有听过这首歌曲了，一直在我的歌单中沉睡。然后，又泛起一阵回忆。是啊，又到一年高考时，内心久久不能平静。初听这首《光阴的故事》是在《中国合伙人》这部电影。当然，这首歌曲是改遍的，原唱是罗大佑。记得那时还是在高中，看到的这部电影，主题曲就是《光阴的故事》。演唱的就是三个主角，黄晓明、邓超、佟大为。这部电影非常的不错，看的时候也是热血澎湃。想象着，自己什么时候也能达到那种高度。那种年轻人的朝气，那一批有梦想、懂得上进、努力又勤奋的年轻人，深深地打动了我。当时看，真的有心灵震撼的感觉。那时候，思想还是挺单一的，那还是一段青春的回忆。时间真快啊，一年又一年。距离那年，也早已经过去了四五年了，真是一梦匆匆四五年。</p>
+<a id="more"></a>
 <p>昨天，我姐姐给我打电话，问我放不放假。我便问她什么假啊。她说，高考，你们不放假吗？她这么一问，高考放假早都是过去式了。如今，再也没有机会了。要是能回去，就好了，我自己是怎么想的。只是，岁月不饶人，也没有故事中会有的时空穿梭机。时间真的是一把杀猪刀，无情地在脸上刻上叫做岁月的皱纹，然后，就这么老了。</p>
 <p>明天，又是一年一度的高考。高考对于自己来说，还是挺有意义的，值得回忆的。今天，看到俞敏洪也在说虽然自己参加了三次高考最后上了北京大学，但自己并不仇恨高考，自己喜爱高考。毕竟，曾经在最美好的年纪里为了一件事心无旁骛，幻想着有一天踏入大学的校园。那也是青春中值得纪念的事情啊。如今，当初的那些小小的梦想早已经实现。我也早就已经踏入了大学的校园。可是，再也找不回那段青葱的岁月，那段执着的青春插曲。那段时光，就这样随着高考的结束而终结。我曾想着快快长大，拥抱外面的世界。如今，一眨眼，二十几岁了。依然，迷茫如少年，彷徨如当年。</p>
 <p>从来到大学到现在可能真的没有什么进步吧。唯一在进步的可能也只有年纪在一直增长。眼看又一年的高考在即，又一年过去了。自己总想追随时间的脚步，可是无法跟随。一年又一年，我们在这一年又一年中渐渐地长大了。想的事情也多了，自己的责任也大了，承担的也多了。才发现，长大还真不一定时间好事情。曾经，自己那样的渴望长大，现在却有些怕了。但是，生活仍在继续。时间告诉我跟住它的脚步，向前再向前。</p>
@@ -783,7 +796,11 @@ float width = Layout.getDesiredWidth(str,textPaint);
     
     <summary type="html">
     
-      &lt;iframe frameborder=&quot;no&quot; border=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; width=&quot;330&quot; height=&quot;86&quot; src=&quot;//music.163.com/outchain/player?type=2&amp;id=
+      &lt;iframe frameborder=&quot;no&quot; border=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; width=330 height=86 src=&quot;//music.163.com/outchain/player?type=2&amp;id=26361010&amp;auto=1&amp;height=66&quot;&gt;&lt;/iframe&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/1602023-83eb730ffd8e7e4d.jpg?imageMogr2/auto-orient/strip%7CimageView2/1/w/500&quot; alt=&quot;怀梦想，致远方！&quot;&gt;&lt;/p&gt;
+&lt;p&gt;前几天，随机播放到了这首《光阴的故事》。一想，才知道好长时间没有听过这首歌曲了，一直在我的歌单中沉睡。然后，又泛起一阵回忆。是啊，又到一年高考时，内心久久不能平静。初听这首《光阴的故事》是在《中国合伙人》这部电影。当然，这首歌曲是改遍的，原唱是罗大佑。记得那时还是在高中，看到的这部电影，主题曲就是《光阴的故事》。演唱的就是三个主角，黄晓明、邓超、佟大为。这部电影非常的不错，看的时候也是热血澎湃。想象着，自己什么时候也能达到那种高度。那种年轻人的朝气，那一批有梦想、懂得上进、努力又勤奋的年轻人，深深地打动了我。当时看，真的有心灵震撼的感觉。那时候，思想还是挺单一的，那还是一段青春的回忆。时间真快啊，一年又一年。距离那年，也早已经过去了四五年了，真是一梦匆匆四五年。&lt;/p&gt;
     
     </summary>
     
@@ -807,11 +824,12 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <link href="https://KevinJe.github.io/2017/06/04/%E5%A6%82%E4%BD%95%E8%8E%B7%E5%BE%97%E7%B2%BE%E5%BD%A9%E4%BA%BA%E7%94%9F/"/>
     <id>https://KevinJe.github.io/2017/06/04/如何获得精彩人生/</id>
     <published>2017-06-04T12:35:05.000Z</published>
-    <updated>2017-06-04T13:12:55.853Z</updated>
+    <updated>2017-09-22T12:57:01.319Z</updated>
     
     <content type="html"><![CDATA[<p><a href="https://www.youtube.com/watch?v=jY1eNlL6NKs" target="_blank" rel="external">Charlie Munger USC Law Commencement Speech - May 2007</a></p>
 <pre><code>chapter 1
 </code></pre><p>这几天，我反复在看查理芒格在南加州大学的演讲。看得我就有些难受，可能有些人不认识查理。他其实就是投资大师沃伦巴菲特的合伙人，他们和巴菲特共同管理伯克希尔哈撒韦公司。伯克希尔哈撒韦，我们都知道，是人类迄今为止在大额长期投资方面最成功的公司。几十年间市值涨了13000多倍，现在伯克希尔的股票一股已经达到了250000美元。其实，我对名人一般不感冒，除非是我特别特别崇拜的。因为，就像传记一样，我认为大多数传记都没什么实话。都是出名了之后为自己洗白嘛，编造一些传奇的经历。其实，这也是在激励大众，但是我认为这就是忽悠群众的东西。但我觉得像查理这么大年纪的人，也不会再说什么大话。这篇演讲是在2007年5月23日在南加州大学法学院毕业典礼上发表的，当时他已经是84岁的高龄了。这么算下来，他今年都已经93岁了。就在前几天的5月6日，他竟然还是和巴菲特一起出席了伯克希尔的股东大会，那可是一个93岁的老人了。而且，巴菲特也已经有86岁了。所以，这有可能是他主持的最后一次股东大会。像他们这种人真的是一个成功的人，又有钱，身体又好。像我们，可能到了80、90岁，神智都有可能不清醒了。但人家，还是那么的睿智，那么精力充沛。</p>
+<a id="more"></a>
 <p>这几天我就一直在看他的这次演讲，我也不知道看了多少遍。反正，只要我一闲下来，就会翻出他的演讲。他的演讲，其实没什么大道理。一点也不像我们这里的成功人士讲的那些大道理。他讲的都是一些与我们生活相关的小事，以及他的人生态度。我就越看就越觉得有道理，就是感觉对自己太有启发了。就像他自己说的那样，未必对每个人而言都是完美的，但它们中许多是具备普遍的价值。比如，对待生活中的得到与失去。他的态度是：</p>
 <blockquote>
 <p>要想得到你想要的某样东西，最可靠的办法是让你自己配得上它。</p>
@@ -865,7 +883,9 @@ float width = Layout.getDesiredWidth(str,textPaint);
     
     <summary type="html">
     
-      &lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=jY1eNlL6NKs&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Charlie Munger USC Law Commencement Speech - May 200
+      &lt;p&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=jY1eNlL6NKs&quot;&gt;Charlie Munger USC Law Commencement Speech - May 2007&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;chapter 1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这几天，我反复在看查理芒格在南加州大学的演讲。看得我就有些难受，可能有些人不认识查理。他其实就是投资大师沃伦巴菲特的合伙人，他们和巴菲特共同管理伯克希尔哈撒韦公司。伯克希尔哈撒韦，我们都知道，是人类迄今为止在大额长期投资方面最成功的公司。几十年间市值涨了13000多倍，现在伯克希尔的股票一股已经达到了250000美元。其实，我对名人一般不感冒，除非是我特别特别崇拜的。因为，就像传记一样，我认为大多数传记都没什么实话。都是出名了之后为自己洗白嘛，编造一些传奇的经历。其实，这也是在激励大众，但是我认为这就是忽悠群众的东西。但我觉得像查理这么大年纪的人，也不会再说什么大话。这篇演讲是在2007年5月23日在南加州大学法学院毕业典礼上发表的，当时他已经是84岁的高龄了。这么算下来，他今年都已经93岁了。就在前几天的5月6日，他竟然还是和巴菲特一起出席了伯克希尔的股东大会，那可是一个93岁的老人了。而且，巴菲特也已经有86岁了。所以，这有可能是他主持的最后一次股东大会。像他们这种人真的是一个成功的人，又有钱，身体又好。像我们，可能到了80、90岁，神智都有可能不清醒了。但人家，还是那么的睿智，那么精力充沛。&lt;/p&gt;
     
     </summary>
     
@@ -885,9 +905,10 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <link href="https://KevinJe.github.io/2017/06/03/%E4%BD%BF%E7%94%A8jsoup%E8%A7%A3%E6%9E%90%E4%BD%A0%E6%83%B3%E8%A6%81%E7%9A%84%E5%86%85%E5%AE%B9/"/>
     <id>https://KevinJe.github.io/2017/06/03/使用jsoup解析你想要的内容/</id>
     <published>2017-06-03T09:52:23.000Z</published>
-    <updated>2017-06-03T10:10:35.814Z</updated>
+    <updated>2017-09-22T12:56:27.950Z</updated>
     
     <content type="html"><![CDATA[<p>有些时候，我们做APP时，也许会为没有相应的API而发愁。看到某些网站上某些内容很好，却没有办法获取到。最近，接触到了jsoup，用它就可以轻松获取到网站上的内容了。jsoup是什么呢？jsoup 是一款<a href="http://lib.csdn.net/base/javase" target="_blank" rel="external">Java</a> 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于<a href="http://lib.csdn.net/base/jquery" target="_blank" rel="external">jQuery</a>的操作方法来取出和操作数据。</p>
+<a id="more"></a>
 <p>jsoup的主要功能如下：</p>
 <ol>
 <li>从一个URL，文件或字符串中解析HTML；</li>
@@ -948,7 +969,7 @@ float width = Layout.getDesiredWidth(str,textPaint);
     
     <summary type="html">
     
-      &lt;p&gt;有些时候，我们做APP时，也许会为没有相应的API而发愁。看到某些网站上某些内容很好，却没有办法获取到。最近，接触到了jsoup，用它就可以轻松获取到网站上的内容了。jsoup是什么呢？jsoup 是一款&lt;a href=&quot;http://lib.csdn.net/base/j
+      &lt;p&gt;有些时候，我们做APP时，也许会为没有相应的API而发愁。看到某些网站上某些内容很好，却没有办法获取到。最近，接触到了jsoup，用它就可以轻松获取到网站上的内容了。jsoup是什么呢？jsoup 是一款&lt;a href=&quot;http://lib.csdn.net/base/javase&quot;&gt;Java&lt;/a&gt; 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于&lt;a href=&quot;http://lib.csdn.net/base/jquery&quot;&gt;jQuery&lt;/a&gt;的操作方法来取出和操作数据。&lt;/p&gt;
     
     </summary>
     
@@ -966,13 +987,14 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <link href="https://KevinJe.github.io/2017/03/18/%E5%A4%A7%E5%AD%A6%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/"/>
     <id>https://KevinJe.github.io/2017/03/18/大学那些事儿/</id>
     <published>2017-03-18T02:27:40.000Z</published>
-    <updated>2017-06-03T10:09:47.355Z</updated>
+    <updated>2017-09-22T12:57:40.258Z</updated>
     
     <content type="html"><![CDATA[<blockquote>
 <p>开头，先放上我最喜欢的BGM，是链接到Youtube的。Youtube，已经被墙了，需要翻墙才能看到。什么？不会翻墙，好吧，真是我国的合格好公民。老哥，那你只能自己想办法，或者选择不看了。毕竟，你不一定喜欢。<br><a href="https://www.youtube.com/watch?v=qycqF1CWcXg" target="_blank" rel="external">Background Music Instrumentals - relaxdaily - B-Sides N°1</a></p>
 </blockquote>
 <p><img src="http://upload-images.jianshu.io/upload_images/1602023-6af41d4eb6747767.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/420" alt="追梦者"></p>
 <p>我博客的上一篇文章，同时也是我博客的第一篇文章，被我投稿到了互联网的专题，没想到有幸被收录了。这令我很是高兴，对我来说更是一种激励吧。但令我更没有想到的是，在我着手写这篇文章时，我的上一篇文章已经有100左右的阅读量了。在网络上，有这么多的人看我的文章，这还是第一次。所以，更是给了我，很大的激励作用。不光是阅读量创下了历史记录，评论量也创造了我的历史。其中评论最多的就是鼓励我了，在此，对各位的帮助、鼓励表示由衷的感激。同时，上篇文章还有一人赞赏，这也是我有史以来，得到的第一次赞赏。我同样知道是在鼓励我，真的谢谢。我以前的时候也不怎么写作，所以写的文章难免思维混乱。但，这里是我自己的博客，我可以想写些什么就写些什么吧。</p>
+<a id="more"></a>
 <p>最近，我一直在复习Android基础知识，打算着整理一篇文章出来。但是，自从我写完上次文章以来，我发现我的写作热情一直未退去。总想着写点什么东西。毕竟这里是我的博客，我可以任意的写作。今天，就来说说我自己为何学习Andriod。虽然我还是比较的菜，我的故事显然也不是什么励志的故事。现在人们不都是喜欢看鸡汤文嘛，但我的故事可能就离鸡汤文比较远了，毕竟我现在真的什么也没有。在这里写出来，也是想留给自己以后来看吧。不知道，几年后者几十年后的自己再看到这些会不会有一些不一样的感受呢！</p>
 <p>本人是一名，非985、非211工程的全国二流大学的一名非计算机专业的在校大学生，也就是常说的非科班出身。看到这里，你就会知道了，我的故事也不会是什么励志的，也不是什么所谓的逆袭。这些我显然都不贴边。至于，为什么来到这里学习，完全是误打误撞，有些我自己还没有想明白。但我能知道的就是我来到这里确确实实的是后悔了。首先，先不谈论学校方面，就谈选专业方面，我可能就完全的失败了。现在学的专业，我真的是不怎么喜欢，可以说，也没有什么兴趣。我想，来到这里的大部分人也都如此。我不相信在刚刚经历了高考的一些17、18岁的少年真的想明白了自己想要什么吗？反正我那个时候是不知道自己想要什么的，也不清楚未来该做些什么。就这样，填了高考志愿来到了这个学校。简直就是一个笑话一样，但我也不相信就我一个人会犯这样的笑话。我想在这种考试制度下肯定会有许多人和我有着类似的经历。但是没有办法，要么回去，要么回来。</p>
 <p>所以，在我心中一直都有一个心结，那就是我不如退学算了。这种想法一直都在我心中，只是我没有办法和父母说出来。没有任何办法，虽然我向来是向往自由主义的。但是，我的骨子里毕竟还是传统的。虽然，我的父母对我是很开放的。但，毕竟他们的骨子里，还是和今天的中国父母没有什么区别。他们也很看重知识，他们不知道你在学校做了什么，反正，他们知道的就是，你只要在学校就能学到知识。所以，虽然我早就有退学的心思了。但是，对我而言，我是更不想伤害到我的父母的。也许他们会同意我这么做，但并不会是开心的同意。显然，这对他们的伤害更大。所以，我也始终没能开口去说出。其次，我肯定是没有乔布斯、比尔盖茨的才能的，人家的理想是改变世界。最后，也确实是改变了世界。虽然人家退学了，但是人家有才能啊，像我这样的什么也没有，显然就真的是很可悲。有时候，想想我自己，我真的是感觉很可怕。十几年都在读书了，到头一来，可能什么也不会做。这真的是很可悲，可悲到想哭的勇气都没有了，也简直是无法想象的事实。所以，我也不知道我的路在何方。人家都说，路在脚下，可是我连脚下的路都不熟悉，我怎么走向远方呢。我还在一直的困惑，此时已是2016年的3月。</p>
@@ -1005,7 +1027,10 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <summary type="html">
     
       &lt;blockquote&gt;
-&lt;p&gt;开头，先放上我最喜欢的BGM，是链接到Youtube的。Youtube，已经被墙了，需要翻墙才能看到。什么？不会翻墙，好吧，真是我国的合格好公民。老哥，那你只能自己想办法，或者选择不看了。毕竟，你不一定喜欢。&lt;br&gt;&lt;a href=&quot;https:/
+&lt;p&gt;开头，先放上我最喜欢的BGM，是链接到Youtube的。Youtube，已经被墙了，需要翻墙才能看到。什么？不会翻墙，好吧，真是我国的合格好公民。老哥，那你只能自己想办法，或者选择不看了。毕竟，你不一定喜欢。&lt;br&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=qycqF1CWcXg&quot;&gt;Background Music Instrumentals - relaxdaily - B-Sides N°1&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/1602023-6af41d4eb6747767.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/420&quot; alt=&quot;追梦者&quot;&gt;&lt;/p&gt;
+&lt;p&gt;我博客的上一篇文章，同时也是我博客的第一篇文章，被我投稿到了互联网的专题，没想到有幸被收录了。这令我很是高兴，对我来说更是一种激励吧。但令我更没有想到的是，在我着手写这篇文章时，我的上一篇文章已经有100左右的阅读量了。在网络上，有这么多的人看我的文章，这还是第一次。所以，更是给了我，很大的激励作用。不光是阅读量创下了历史记录，评论量也创造了我的历史。其中评论最多的就是鼓励我了，在此，对各位的帮助、鼓励表示由衷的感激。同时，上篇文章还有一人赞赏，这也是我有史以来，得到的第一次赞赏。我同样知道是在鼓励我，真的谢谢。我以前的时候也不怎么写作，所以写的文章难免思维混乱。但，这里是我自己的博客，我可以想写些什么就写些什么吧。&lt;/p&gt;
     
     </summary>
     
@@ -1025,10 +1050,11 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <link href="https://KevinJe.github.io/2017/03/10/Android%E4%B9%8B%E6%97%852-Android%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6%E4%B9%8BBroadcastReceiver%E7%AF%87/"/>
     <id>https://KevinJe.github.io/2017/03/10/Android之旅2-Android四大组件之BroadcastReceiver篇/</id>
     <published>2017-03-10T13:20:57.000Z</published>
-    <updated>2017-03-10T13:43:57.275Z</updated>
+    <updated>2017-09-22T12:58:19.149Z</updated>
     
     <content type="html"><![CDATA[<p>今天继续我们的Android之旅，上一篇写了Android四大组件之一的Activity的知识。今天，我们继续来复习Andorid四大组件之一的BroadcastReceiver。</p>
 <p>何为BroadcastReceiver呢？其实从字面就可以看出了，就是广播接收者。那这个广播的作用是什么呢？其实Android中的广播机制和现实中的广播没有什么差别。想一想现实中的广播，是不是有通知消息的用途啊。同样，Android中的广播机制也与此是类似的作用。即，通过发送广播通知系统中的某些组件该干什么了。这干什么的逻辑完全在于你自己想实现什么功能。当然，既然可以发送广播，一定也是有接受广播的功能的。</p>
+<a id="more"></a>
 <p>在Android中广播有两种类型，标准广播和有序广播。</p>
 <p>标准广播（<strong>Normal broadcasts</strong>，发送方式：Context.sendBroadacst()），这是一种完全异步执行的广播，广播发出后，没有确定的顺序，广播接收者通常会在同一个时刻接收到这条广播消息。这通常意味着是高效的，但也意味着，在广播发出后是无法进行截断的。</p>
 <p>有序广播（<strong>Ordered broadcasts</strong>，发送方式：Context.sendOrderedBroadcast()）,这是一种同步执行的广播，广播发出后，在同一时刻，只会有一个广播接收者接收到这一条广播。每一个广播接收者都是按顺序进行执行的。所以，前一个广播接收者既可以将这条广播传递出去，也可以完全的截断广播，使下一个广播接收者无法接收到广播。可以在AndroidManifest.xml文件中<receiver>标签下设置 android:priority属性，来匹配优先级，优先级越高，就越早接收到广播。</receiver></p>
@@ -1096,7 +1122,7 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <summary type="html">
     
       &lt;p&gt;今天继续我们的Android之旅，上一篇写了Android四大组件之一的Activity的知识。今天，我们继续来复习Andorid四大组件之一的BroadcastReceiver。&lt;/p&gt;
-&lt;p&gt;何为BroadcastReceiver呢？其实从字面就可以看出了，就是广播接收
+&lt;p&gt;何为BroadcastReceiver呢？其实从字面就可以看出了，就是广播接收者。那这个广播的作用是什么呢？其实Android中的广播机制和现实中的广播没有什么差别。想一想现实中的广播，是不是有通知消息的用途啊。同样，Android中的广播机制也与此是类似的作用。即，通过发送广播通知系统中的某些组件该干什么了。这干什么的逻辑完全在于你自己想实现什么功能。当然，既然可以发送广播，一定也是有接受广播的功能的。&lt;/p&gt;
     
     </summary>
     
@@ -1114,10 +1140,11 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <link href="https://KevinJe.github.io/2017/03/10/Android%E4%B9%8B%E6%97%851-Android%E5%9B%9B%E5%A4%A7%E7%BB%84%E4%BB%B6%E4%B9%8BActivity%E7%AF%87/"/>
     <id>https://KevinJe.github.io/2017/03/10/Android之旅1-Android四大组件之Activity篇/</id>
     <published>2017-03-10T13:18:14.000Z</published>
-    <updated>2017-03-10T13:34:05.240Z</updated>
+    <updated>2017-09-22T12:55:14.763Z</updated>
     
     <content type="html"><![CDATA[<p>关于为什么要写属于自己的博客，我在前一篇文章中也提到了。主要是归纳自己这一个时期所学到的知识，帮助自己更好的理解，同时一旦忘了某一处，还可以有个地方快速的查到。我也打算在写这些博客期间，将官方文档回顾一遍。然后，还有自己的Java方面也会一起回顾一遍，毕竟自己的Java功底薄弱啊。虽然，我的英文水平很渣，但我相信我会坚持下去的。总之，写博客是一种好的习惯，希望自己可以一直坚持下去。</p>
 <p>本篇作为Android的开篇，自然就会写最常见的组件Activity了。</p>
+<a id="more"></a>
 <blockquote>
 <p>一.Activity的基本使用</p>
 <pre><code>1. 创建Activity
@@ -1244,7 +1271,8 @@ float width = Layout.getDesiredWidth(str,textPaint);
     
     <summary type="html">
     
-      &lt;p&gt;关于为什么要写属于自己的博客，我在前一篇文章中也提到了。主要是归纳自己这一个时期所学到的知识，帮助自己更好的理解，同时一旦忘了某一处，还可以有个地方快速的查到。我也打算在写这些博客期间，将官方文档回顾一遍。然后，还有自己的Java方面也会一起回顾一遍，毕竟自己的Java功底
+      &lt;p&gt;关于为什么要写属于自己的博客，我在前一篇文章中也提到了。主要是归纳自己这一个时期所学到的知识，帮助自己更好的理解，同时一旦忘了某一处，还可以有个地方快速的查到。我也打算在写这些博客期间，将官方文档回顾一遍。然后，还有自己的Java方面也会一起回顾一遍，毕竟自己的Java功底薄弱啊。虽然，我的英文水平很渣，但我相信我会坚持下去的。总之，写博客是一种好的习惯，希望自己可以一直坚持下去。&lt;/p&gt;
+&lt;p&gt;本篇作为Android的开篇，自然就会写最常见的组件Activity了。&lt;/p&gt;
     
     </summary>
     
@@ -1262,13 +1290,14 @@ float width = Layout.getDesiredWidth(str,textPaint);
     <link href="https://KevinJe.github.io/2017/03/10/hello-world/"/>
     <id>https://KevinJe.github.io/2017/03/10/hello-world/</id>
     <published>2017-03-10T12:45:08.000Z</published>
-    <updated>2017-04-07T15:54:50.242Z</updated>
+    <updated>2017-09-22T12:57:12.135Z</updated>
     
     <content type="html"><![CDATA[<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=22829933&auto=1&height=66"></iframe>
 
 
 <p><img src="http://upload-images.jianshu.io/upload_images/1602023-8bfbf95bb96b95cd.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/320" alt="诗与远方"></p>
 <p>2016年6月的某一天，对于别人来说可能平淡无奇，但对于我而言，意义很大。这一天，我成功的在terminal中打印出了<code>Hello World</code>。对计算机编程感兴趣的人可能已经知道了我正在做什么。没错，向世界致敬，<code>Hello World</code>。世界，我来了。从这一天开始，我开始了学习Java的旅程，也是我自学Android走出的第一步。彼时，距离Android发布已经满8年了。而我，作为一个初学者，一切才刚刚开始……</p>
+<a id="more"></a>
 <p>现在的时间是2016年的10月末了，这么算下来，自学的时间也有四个月到五个月了吧。在这期间，一路的跌跌撞撞，其中充满了各种的坎坷。但好在，我坚持下来了。其中的个中滋味，也许只有自己才能知道。在这过程中，我也曾无数次的质问过自己还应不应该走下去。但每当我做出一个界面或者是修复了一个在别人眼中或许都不值得一提的bug，我却感觉到了从未有过的欢乐。也许这就是兴趣吧！虽然我现在仍然是一个编程白痴，但我还是决定学习计算机。在经历了无数次的类似的经历，我也算是有了一点Android基础。当然，这也是很令我感到兴奋的。所以，我更加的坚定了自学Android的信念。</p>
 <p>虽然是有了一些Android的基础，但是随着学习的深入，仍然会感到很多的力不从心。有些时候，我是不知道自己下一步该做些什么的。这个问题一直也是困扰了我很长时间的。毕竟我是从一个编程白痴一点一点走过来的。在学习的方法技巧上，也有许多不好的习惯，这些都是需要我以后去改变的。所以，我决定搭建一个博客来对自己所学到的知识进行总结、归纳、演绎。</p>
 <p>其实想搭建一个自己的blog这个想法，从我开始自学Android开始就一直在我脑海中酝酿。当然，我还是最希望自己搭建一个属于自己的blog。但是我毕竟也是从一个编程白痴走过来的，我也发现搭建一个自己的博客成本还是很高的。这个愿望就留到以后来折腾吧。所以，我在简书开通了自己的博客。</p>
@@ -1288,7 +1317,11 @@ float width = Layout.getDesiredWidth(str,textPaint);
     
     <summary type="html">
     
-      &lt;iframe frameborder=&quot;no&quot; border=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; width=&quot;330&quot; height=&quot;86&quot; src=&quot;//music.163.com/outchain/player?type=2&amp;id=
+      &lt;iframe frameborder=&quot;no&quot; border=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; width=330 height=86 src=&quot;//music.163.com/outchain/player?type=2&amp;id=22829933&amp;auto=1&amp;height=66&quot;&gt;&lt;/iframe&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;http://upload-images.jianshu.io/upload_images/1602023-8bfbf95bb96b95cd.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/320&quot; alt=&quot;诗与远方&quot;&gt;&lt;/p&gt;
+&lt;p&gt;2016年6月的某一天，对于别人来说可能平淡无奇，但对于我而言，意义很大。这一天，我成功的在terminal中打印出了&lt;code&gt;Hello World&lt;/code&gt;。对计算机编程感兴趣的人可能已经知道了我正在做什么。没错，向世界致敬，&lt;code&gt;Hello World&lt;/code&gt;。世界，我来了。从这一天开始，我开始了学习Java的旅程，也是我自学Android走出的第一步。彼时，距离Android发布已经满8年了。而我，作为一个初学者，一切才刚刚开始……&lt;/p&gt;
     
     </summary>
     

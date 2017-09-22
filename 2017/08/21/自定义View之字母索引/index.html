@@ -10,24 +10,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="在Android中，字母索引这一设计在很多App中都有体现。手机联系人、微信、支付宝等在联系人一栏都会有这种设计。这种设计的便捷之处就是可以快捷的查找联系人。所以，我们今天也来打造这么一个自定义View的效果。注意，这里仅仅是模仿UI效果，不会实现功能。
 
-这里只是谈一下实现的思路，不再详细的说明各个流程。详细的流程请看上两篇自定义View的文章，那两篇我流程写的很详细。
-由于现在只想要这个Ind">
+这里只是谈一下实现的思路，不再详细的说明各个流程。详细的流程请看上两篇自定义View的文章，那两篇我流程写的很详细。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="自定义View之字母索引">
 <meta property="og:url" content="https://KevinJe.github.io/2017/08/21/自定义View之字母索引/index.html">
 <meta property="og:site_name" content="Kevin Jern">
 <meta property="og:description" content="在Android中，字母索引这一设计在很多App中都有体现。手机联系人、微信、支付宝等在联系人一栏都会有这种设计。这种设计的便捷之处就是可以快捷的查找联系人。所以，我们今天也来打造这么一个自定义View的效果。注意，这里仅仅是模仿UI效果，不会实现功能。
 
-这里只是谈一下实现的思路，不再详细的说明各个流程。详细的流程请看上两篇自定义View的文章，那两篇我流程写的很详细。
-由于现在只想要这个Ind">
+这里只是谈一下实现的思路，不再详细的说明各个流程。详细的流程请看上两篇自定义View的文章，那两篇我流程写的很详细。">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1602023-7286240a2d48c2d7.gif?imageMogr2/auto-orient/strip">
-<meta property="og:updated_time" content="2017-08-21T13:13:46.504Z">
+<meta property="og:updated_time" content="2017-09-22T13:00:50.046Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="自定义View之字母索引">
 <meta name="twitter:description" content="在Android中，字母索引这一设计在很多App中都有体现。手机联系人、微信、支付宝等在联系人一栏都会有这种设计。这种设计的便捷之处就是可以快捷的查找联系人。所以，我们今天也来打造这么一个自定义View的效果。注意，这里仅仅是模仿UI效果，不会实现功能。
 
-这里只是谈一下实现的思路，不再详细的说明各个流程。详细的流程请看上两篇自定义View的文章，那两篇我流程写的很详细。
-由于现在只想要这个Ind">
+这里只是谈一下实现的思路，不再详细的说明各个流程。详细的流程请看上两篇自定义View的文章，那两篇我流程写的很详细。">
 <meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1602023-7286240a2d48c2d7.gif?imageMogr2/auto-orient/strip">
   
     <link rel="alternative" href="/atom.xml" title="Kevin Jern" type="application/atom+xml">
@@ -191,6 +188,7 @@
         <p>在Android中，字母索引这一设计在很多App中都有体现。手机联系人、微信、支付宝等在联系人一栏都会有这种设计。这种设计的便捷之处就是可以快捷的查找联系人。所以，我们今天也来打造这么一个自定义View的效果。注意，这里仅仅是模仿UI效果，不会实现功能。</p>
 <p><img src="http://upload-images.jianshu.io/upload_images/1602023-7286240a2d48c2d7.gif?imageMogr2/auto-orient/strip" alt="字母索引"></p>
 <p>这里只是谈一下实现的思路，不再详细的说明各个流程。详细的流程请看上两篇自定义View的文章，那两篇我流程写的很详细。</p>
+<a id="more"></a>
 <p>由于现在只想要这个IndexBar显示的宽度为字母的宽度+padding。也就是在这里我们的布局width为wrap_content，而height为match_parent。所以，在绘制竖排竖排字母前，我们还是要测量一下View。</p>
 <p><code>onMeasure()</code>中：</p>
 <figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">@Override</div><div class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> onMeasure(<span class="built_in">int</span> widthMeasureSpec, <span class="built_in">int</span> heightMeasureSpec) &#123;</div><div class="line">        <span class="keyword">super</span>.onMeasure(widthMeasureSpec, heightMeasureSpec);</div><div class="line">        <span class="built_in">int</span> <span class="built_in">height</span> = MeasureSpec.getSize(heightMeasureSpec);</div><div class="line">        <span class="comment">//测量文字宽度</span></div><div class="line">        mTextWidth = (<span class="built_in">int</span>) mPaint.measureText(<span class="string">"A"</span>);</div><div class="line">        <span class="comment">//view的宽 = 左边padding + 右边padding　+ 文字大小</span></div><div class="line">        <span class="built_in">int</span> <span class="built_in">width</span> = getPaddingLeft() + getPaddingRight() + mTextWidth;</div><div class="line">        setMeasuredDimension(<span class="built_in">width</span>, <span class="built_in">height</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
@@ -496,6 +494,10 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">dp、sp、px</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Animation</a>
               </li>
              
@@ -505,10 +507,6 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Property Animation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">dp、sp、px</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -524,6 +522,10 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">BroadcastReceiver</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">width & height</a>
               </li>
              
@@ -532,15 +534,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">BroadcastReceiver</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Jsoup</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -615,7 +613,7 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
     
     	<section class="tools-section tools-section-me" q-show="aboutme">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">我们努力，只为这个世界更美好！</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">Kevin Jern，&lt;br&gt;一名在校大学生，理想主义以及完美主义者&lt;br&gt;&lt;br&gt;热爱科技，热爱技术，&lt;br/&gt;目前是一名小白Android Developer&lt;br/&gt;&lt;br/&gt;竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。&lt;br&gt;回首向来萧瑟处，归去，也无风雨也无晴。</div>
   	  	
     	</section>
     

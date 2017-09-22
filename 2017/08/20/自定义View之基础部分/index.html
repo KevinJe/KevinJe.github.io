@@ -16,7 +16,7 @@ View的测量想要实现自定义View的效果，我们首先需要进行的就
 <meta property="og:site_name" content="Kevin Jern">
 <meta property="og:description" content="最近，一直再看《Android群英传》，于是打算将最近的所经历的记录下来。
 View的测量想要实现自定义View的效果，我们首先需要进行的就是View的测量了。当然，这不是必须要去做的，只是大部分情况下会进行的一个操作。就像现实生活中，我们要去裁剪，也是需要先测量一下长和宽。在Android中通过继承View类，重写其onMeasure(int widthMeasureSpec, int heig">
-<meta property="og:updated_time" content="2017-08-20T11:58:16.056Z">
+<meta property="og:updated_time" content="2017-09-22T12:56:44.737Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="自定义View之基础部分">
 <meta name="twitter:description" content="最近，一直再看《Android群英传》，于是打算将最近的所经历的记录下来。
@@ -182,6 +182,7 @@ View的测量想要实现自定义View的效果，我们首先需要进行的就
       
         <p>最近，一直再看《Android群英传》，于是打算将最近的所经历的记录下来。</p>
 <h2 id="View的测量"><a href="#View的测量" class="headerlink" title="View的测量"></a>View的测量</h2><p>想要实现自定义View的效果，我们首先需要进行的就是View的测量了。当然，这不是必须要去做的，只是大部分情况下会进行的一个操作。就像现实生活中，我们要去裁剪，也是需要先测量一下长和宽。在Android中通过继承View类，重写其<code>onMeasure(int widthMeasureSpec, int heightMeasureSpec)</code>方法。系统提供了一个<code>MeasureSpec</code>类，帮助我们进行View的测量。<code>MeasureSpec</code>是一个32位的int值，其中高两位为测量模式，低30位是测量的大小。这里，我们只需要关注一下测量的模式。</p>
+<a id="more"></a>
 <h3 id="测量模式"><a href="#测量模式" class="headerlink" title="测量模式"></a>测量模式</h3><ul>
 <li>EXACTLY</li>
 </ul>
@@ -510,6 +511,10 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">dp、sp、px</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Animation</a>
               </li>
              
@@ -519,10 +524,6 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Property Animation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">dp、sp、px</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -538,6 +539,10 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">BroadcastReceiver</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">width & height</a>
               </li>
              
@@ -546,15 +551,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">BroadcastReceiver</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Jsoup</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -629,7 +630,7 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
     
     	<section class="tools-section tools-section-me" q-show="aboutme">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">我们努力，只为这个世界更美好！</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">Kevin Jern，&lt;br&gt;一名在校大学生，理想主义以及完美主义者&lt;br&gt;&lt;br&gt;热爱科技，热爱技术，&lt;br/&gt;目前是一名小白Android Developer&lt;br/&gt;&lt;br/&gt;竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。&lt;br&gt;回首向来萧瑟处，归去，也无风雨也无晴。</div>
   	  	
     	</section>
     

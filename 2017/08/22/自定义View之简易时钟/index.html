@@ -10,24 +10,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="今天要实现的是自定义View实现一款简易时钟，主要就是练习如何进行自定义View，所以基本上没有什么美感可言。下面，我们就开始了。
 
-要实现这款简易时钟，我们还是要先分析出它所包含的元素。就以上面的效果图来说，基本上包括了：最外圈大表盘以及内部中间两个小圆圈，刻度线，刻度文字，表针，数字时间以及上方作者名称。OK，一共就这么多的元素，下面我们就可以开始了。
-第一步，绘制表盘以及最中间的两个小圆圈：">
+要实现这款简易时钟，我们还是要先分析出它所包含的元素。就以上面的效果图来说，基本上包括了：最外圈大表盘以及内部中间两个小圆圈，刻度线，刻度文字，表针，数字时间以及上方作者名称。OK，一共就这么多的元素，下面我们就可以开始了。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="自定义View之简易时钟">
 <meta property="og:url" content="https://KevinJe.github.io/2017/08/22/自定义View之简易时钟/index.html">
 <meta property="og:site_name" content="Kevin Jern">
 <meta property="og:description" content="今天要实现的是自定义View实现一款简易时钟，主要就是练习如何进行自定义View，所以基本上没有什么美感可言。下面，我们就开始了。
 
-要实现这款简易时钟，我们还是要先分析出它所包含的元素。就以上面的效果图来说，基本上包括了：最外圈大表盘以及内部中间两个小圆圈，刻度线，刻度文字，表针，数字时间以及上方作者名称。OK，一共就这么多的元素，下面我们就可以开始了。
-第一步，绘制表盘以及最中间的两个小圆圈：">
+要实现这款简易时钟，我们还是要先分析出它所包含的元素。就以上面的效果图来说，基本上包括了：最外圈大表盘以及内部中间两个小圆圈，刻度线，刻度文字，表针，数字时间以及上方作者名称。OK，一共就这么多的元素，下面我们就可以开始了。">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1602023-a530916976b8ccc9.gif?imageMogr2/auto-orient/strip">
-<meta property="og:updated_time" content="2017-08-22T09:39:21.066Z">
+<meta property="og:updated_time" content="2017-09-22T13:00:36.055Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="自定义View之简易时钟">
 <meta name="twitter:description" content="今天要实现的是自定义View实现一款简易时钟，主要就是练习如何进行自定义View，所以基本上没有什么美感可言。下面，我们就开始了。
 
-要实现这款简易时钟，我们还是要先分析出它所包含的元素。就以上面的效果图来说，基本上包括了：最外圈大表盘以及内部中间两个小圆圈，刻度线，刻度文字，表针，数字时间以及上方作者名称。OK，一共就这么多的元素，下面我们就可以开始了。
-第一步，绘制表盘以及最中间的两个小圆圈：">
+要实现这款简易时钟，我们还是要先分析出它所包含的元素。就以上面的效果图来说，基本上包括了：最外圈大表盘以及内部中间两个小圆圈，刻度线，刻度文字，表针，数字时间以及上方作者名称。OK，一共就这么多的元素，下面我们就可以开始了。">
 <meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1602023-a530916976b8ccc9.gif?imageMogr2/auto-orient/strip">
   
     <link rel="alternative" href="/atom.xml" title="Kevin Jern" type="application/atom+xml">
@@ -191,6 +188,7 @@
         <p>今天要实现的是自定义View实现一款简易时钟，主要就是练习如何进行自定义View，所以基本上没有什么美感可言。下面，我们就开始了。</p>
 <p><img src="http://upload-images.jianshu.io/upload_images/1602023-a530916976b8ccc9.gif?imageMogr2/auto-orient/strip" alt="简易时钟"></p>
 <p>要实现这款简易时钟，我们还是要先分析出它所包含的元素。就以上面的效果图来说，基本上包括了：最外圈大表盘以及内部中间两个小圆圈，刻度线，刻度文字，表针，数字时间以及上方作者名称。OK，一共就这么多的元素，下面我们就可以开始了。</p>
+<a id="more"></a>
 <p>第一步，绘制表盘以及最中间的两个小圆圈：</p>
 <figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//半径</span></div><div class="line">radius = mWidth / <span class="number">2</span> - <span class="number">20</span>;</div><div class="line"><span class="comment">//坐标移动到中心位置</span></div><div class="line">canvas.translate(mWidth / <span class="number">2</span>, mHeight / <span class="number">2</span>);</div><div class="line"><span class="comment">//绘制表盘</span></div><div class="line">canvas.drawCircle(<span class="number">0</span>, <span class="number">0</span>, radius, mOuterPaint);</div><div class="line"><span class="comment">//绘制中间的两个小圆圈</span></div><div class="line">canvas.drawCircle(<span class="number">0</span>, <span class="number">0</span>, radius / <span class="number">32</span>, mOuterPaint);</div><div class="line">canvas.drawCircle(<span class="number">0</span>, <span class="number">0</span>, radius / <span class="number">64</span>, mOuterPaint);</div></pre></td></tr></table></figure>
 <p>很简单，就是直接绘制三个圆，半径大小不一致罢了。</p>
@@ -496,6 +494,10 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">dp、sp、px</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Animation</a>
               </li>
              
@@ -505,10 +507,6 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Property Animation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">dp、sp、px</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -524,6 +522,10 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">BroadcastReceiver</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">width & height</a>
               </li>
              
@@ -532,15 +534,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">BroadcastReceiver</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Jsoup</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -615,7 +613,7 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
     
     	<section class="tools-section tools-section-me" q-show="aboutme">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">我们努力，只为这个世界更美好！</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">Kevin Jern，&lt;br&gt;一名在校大学生，理想主义以及完美主义者&lt;br&gt;&lt;br&gt;热爱科技，热爱技术，&lt;br/&gt;目前是一名小白Android Developer&lt;br/&gt;&lt;br/&gt;竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。&lt;br&gt;回首向来萧瑟处，归去，也无风雨也无晴。</div>
   	  	
     	</section>
     

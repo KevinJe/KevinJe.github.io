@@ -8,22 +8,16 @@
   <link rel="dns-prefetch" href="https://KevinJe.github.io">
   <title>关于Android7.0FileProvider的使用 | Kevin Jern</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="就在昨天，手机接收到Android7.0的推送，我也是第一时间进行了更新。体验了一番，应用的安装速度确实是得到了提高。然后，写了图片选择的小demo，发现再Android7.0上会出现问题。查了一下，发现是Android7.0的一个新特性，将解决办法记录一下。
-这里模仿一下上传头像的过程，既可以拍照上传，也可以从图库中直接选择。然后就是一个裁切的动作。在Android7.0以前可以这样写：
-And">
+  <meta name="description" content="就在昨天，手机接收到Android7.0的推送，我也是第一时间进行了更新。体验了一番，应用的安装速度确实是得到了提高。然后，写了图片选择的小demo，发现再Android7.0上会出现问题。查了一下，发现是Android7.0的一个新特性，将解决办法记录一下。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于Android7.0FileProvider的使用">
 <meta property="og:url" content="https://KevinJe.github.io/2017/07/27/关于Android7-0FileProvider的使用/index.html">
 <meta property="og:site_name" content="Kevin Jern">
-<meta property="og:description" content="就在昨天，手机接收到Android7.0的推送，我也是第一时间进行了更新。体验了一番，应用的安装速度确实是得到了提高。然后，写了图片选择的小demo，发现再Android7.0上会出现问题。查了一下，发现是Android7.0的一个新特性，将解决办法记录一下。
-这里模仿一下上传头像的过程，既可以拍照上传，也可以从图库中直接选择。然后就是一个裁切的动作。在Android7.0以前可以这样写：
-And">
-<meta property="og:updated_time" content="2017-07-27T08:38:04.969Z">
+<meta property="og:description" content="就在昨天，手机接收到Android7.0的推送，我也是第一时间进行了更新。体验了一番，应用的安装速度确实是得到了提高。然后，写了图片选择的小demo，发现再Android7.0上会出现问题。查了一下，发现是Android7.0的一个新特性，将解决办法记录一下。">
+<meta property="og:updated_time" content="2017-09-22T12:57:31.607Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于Android7.0FileProvider的使用">
-<meta name="twitter:description" content="就在昨天，手机接收到Android7.0的推送，我也是第一时间进行了更新。体验了一番，应用的安装速度确实是得到了提高。然后，写了图片选择的小demo，发现再Android7.0上会出现问题。查了一下，发现是Android7.0的一个新特性，将解决办法记录一下。
-这里模仿一下上传头像的过程，既可以拍照上传，也可以从图库中直接选择。然后就是一个裁切的动作。在Android7.0以前可以这样写：
-And">
+<meta name="twitter:description" content="就在昨天，手机接收到Android7.0的推送，我也是第一时间进行了更新。体验了一番，应用的安装速度确实是得到了提高。然后，写了图片选择的小demo，发现再Android7.0上会出现问题。查了一下，发现是Android7.0的一个新特性，将解决办法记录一下。">
   
     <link rel="alternative" href="/atom.xml" title="Kevin Jern" type="application/atom+xml">
   
@@ -184,6 +178,7 @@ And">
     <div class="article-entry" itemprop="articleBody">
       
         <p>就在昨天，手机接收到Android7.0的推送，我也是第一时间进行了更新。体验了一番，应用的安装速度确实是得到了提高。然后，写了图片选择的小demo，发现再Android7.0上会出现问题。查了一下，发现是Android7.0的一个新特性，将解决办法记录一下。</p>
+<a id="more"></a>
 <p>这里模仿一下上传头像的过程，既可以拍照上传，也可以从图库中直接选择。然后就是一个裁切的动作。在Android7.0以前可以这样写：</p>
 <h3 id="Android-7-0-以前"><a href="#Android-7-0-以前" class="headerlink" title="Android 7.0 以前"></a>Android 7.0 以前</h3><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">void</span> <span class="title">takePhoto</span><span class="params">()</span> </span>&#123;</div><div class="line">       mOutputImage = <span class="keyword">new</span> File(Environment.getExternalStorageDirectory(), <span class="string">"/MyImage/"</span> + System.currentTimeMillis() + <span class="string">".jpg"</span>);</div><div class="line">       <span class="keyword">if</span> (!mOutputImage.getParentFile().exists()) &#123;</div><div class="line">           mOutputImage.getParentFile().mkdirs();</div><div class="line">       &#125;</div><div class="line">       imageUri = Uri.fromFile(mOutputImage);</div><div class="line">       Intent intent = <span class="keyword">new</span> Intent(MediaStore.ACTION_IMAGE_CAPTURE);</div><div class="line">       intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);</div><div class="line">       startActivityForResult(intent, TAKE_PHOTO);</div><div class="line">   &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">void</span> <span class="title">choosePhoto</span><span class="params">()</span> </span>&#123;</div><div class="line">       <span class="keyword">if</span> (ContextCompat.checkSelfPermission(MainActivity.<span class="keyword">this</span>, Manifest.permission</div><div class="line">               .WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) &#123;</div><div class="line">           ActivityCompat.requestPermissions(MainActivity.<span class="keyword">this</span>, <span class="keyword">new</span> String[]&#123;</div><div class="line">                   Manifest.permission.WRITE_EXTERNAL_STORAGE</div><div class="line">           &#125;, <span class="number">1</span>);</div><div class="line">       &#125; <span class="keyword">else</span> &#123;</div><div class="line">           openAlbum();</div><div class="line">       &#125;</div><div class="line">   &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">void</span> <span class="title">openAlbum</span><span class="params">()</span> </span>&#123;</div><div class="line">       Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_PICK);</div><div class="line">       intent.setType(<span class="string">"image/*"</span>);</div><div class="line">       startActivityForResult(intent, CHOOSE_PHOTO);</div><div class="line">   &#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="keyword">protected</span> <span class="function"><span class="keyword">void</span> <span class="title">onActivityResult</span><span class="params">(<span class="keyword">int</span> requestCode, <span class="keyword">int</span> resultCode, Intent data)</span> </span>&#123;</div><div class="line">       <span class="keyword">switch</span> (requestCode) &#123;</div><div class="line">           <span class="keyword">case</span> TAKE_PHOTO:</div><div class="line">               <span class="keyword">if</span> (resultCode == RESULT_OK) &#123;</div><div class="line">                   cropImage(imageUri);</div><div class="line">               &#125;</div><div class="line">               <span class="keyword">break</span>;</div><div class="line">           <span class="keyword">case</span> CHOOSE_PHOTO:</div><div class="line">               <span class="keyword">if</span> (resultCode == RESULT_OK) &#123;</div><div class="line">                   imageUri = data.getData();</div><div class="line">                   cropImage(imageUri);</div><div class="line">               &#125;</div><div class="line">               <span class="keyword">break</span>;</div><div class="line">           <span class="keyword">case</span> CROP_PHOTO:</div><div class="line">               pictrue.setImageURI(imageUri);</div><div class="line">               <span class="keyword">break</span>;</div><div class="line">           <span class="keyword">default</span>:</div><div class="line">       &#125;</div><div class="line">   &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span> <span class="keyword">void</span> cropImage(Uri uri) &#123;</div><div class="line">       Intent intent = <span class="keyword">new</span> Intent(<span class="string">"com.android.camera.action.CROP"</span>);</div><div class="line">       intent.setDataAndType(uri, <span class="string">"image/*"</span>);</div><div class="line">       intent.putExtra(<span class="string">"crop"</span>, <span class="string">"true"</span>);</div><div class="line">       intent.putExtra(<span class="string">"aspectX"</span>, <span class="number">1</span>);</div><div class="line">       intent.putExtra(<span class="string">"aspectY"</span>, <span class="number">1</span>);</div><div class="line">       intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);</div><div class="line">       startActivityForResult(intent, CROP_PHOTO);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
 <p>上面choosePhoto()中进行了运行时权限的处理，以防止在Android6.0上出现问题。然后一切很简单了，就是调用系统的相机以及相册，然后剪切，最后将剪切后的图片设置到一个ImageView中。在Android7.0以前上面的代码是没有问题的。但是，如果将上述代码运行在7.0以上的设备中就会报错了。</p>
@@ -501,6 +496,10 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">dp、sp、px</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Animation</a>
               </li>
              
@@ -510,10 +509,6 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Property Animation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">dp、sp、px</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -529,6 +524,10 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">BroadcastReceiver</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">width & height</a>
               </li>
              
@@ -537,15 +536,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">BroadcastReceiver</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Jsoup</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -620,7 +615,7 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
     
     	<section class="tools-section tools-section-me" q-show="aboutme">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">我们努力，只为这个世界更美好！</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">Kevin Jern，&lt;br&gt;一名在校大学生，理想主义以及完美主义者&lt;br&gt;&lt;br&gt;热爱科技，热爱技术，&lt;br/&gt;目前是一名小白Android Developer&lt;br/&gt;&lt;br/&gt;竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。&lt;br&gt;回首向来萧瑟处，归去，也无风雨也无晴。</div>
   	  	
     	</section>
     

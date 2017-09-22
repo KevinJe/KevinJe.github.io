@@ -10,24 +10,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="上一篇中介绍了如何实现自定义View的流程。那么，在这一篇中我们就动手打造一个简单的运动步数的自定义View。可以看一下gif图展示了本次的运动步数的效果。
 
-这里的效果，我想大部分人都见过。下面来看一下具体的实现过程。
-开始分析通过gif图，我们可以对上图进行拆解。图中一共四个元素。分别是：最底层的弧线、动态显示的步数弧线、记录当前步数的文字、“步数”文字。整个拆解之后，就很容易了，我们只需要一">
+这里的效果，我想大部分人都见过。下面来看一下具体的实现过程。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="自定义View之运动步数">
 <meta property="og:url" content="https://KevinJe.github.io/2017/08/20/自定义View之运动步数/index.html">
 <meta property="og:site_name" content="Kevin Jern">
 <meta property="og:description" content="上一篇中介绍了如何实现自定义View的流程。那么，在这一篇中我们就动手打造一个简单的运动步数的自定义View。可以看一下gif图展示了本次的运动步数的效果。
 
-这里的效果，我想大部分人都见过。下面来看一下具体的实现过程。
-开始分析通过gif图，我们可以对上图进行拆解。图中一共四个元素。分别是：最底层的弧线、动态显示的步数弧线、记录当前步数的文字、“步数”文字。整个拆解之后，就很容易了，我们只需要一">
+这里的效果，我想大部分人都见过。下面来看一下具体的实现过程。">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1602023-d4107cb7567beee5.gif?imageMogr2/auto-orient/strip">
-<meta property="og:updated_time" content="2017-08-20T12:29:15.451Z">
+<meta property="og:updated_time" content="2017-09-22T13:00:26.503Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="自定义View之运动步数">
 <meta name="twitter:description" content="上一篇中介绍了如何实现自定义View的流程。那么，在这一篇中我们就动手打造一个简单的运动步数的自定义View。可以看一下gif图展示了本次的运动步数的效果。
 
-这里的效果，我想大部分人都见过。下面来看一下具体的实现过程。
-开始分析通过gif图，我们可以对上图进行拆解。图中一共四个元素。分别是：最底层的弧线、动态显示的步数弧线、记录当前步数的文字、“步数”文字。整个拆解之后，就很容易了，我们只需要一">
+这里的效果，我想大部分人都见过。下面来看一下具体的实现过程。">
 <meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1602023-d4107cb7567beee5.gif?imageMogr2/auto-orient/strip">
   
     <link rel="alternative" href="/atom.xml" title="Kevin Jern" type="application/atom+xml">
@@ -191,6 +188,7 @@
         <p>上一篇中介绍了如何实现自定义View的流程。那么，在这一篇中我们就动手打造一个简单的运动步数的自定义View。可以看一下gif图展示了本次的运动步数的效果。</p>
 <p><img src="http://upload-images.jianshu.io/upload_images/1602023-d4107cb7567beee5.gif?imageMogr2/auto-orient/strip" alt="运动步数"></p>
 <p>这里的效果，我想大部分人都见过。下面来看一下具体的实现过程。</p>
+<a id="more"></a>
 <h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>通过gif图，我们可以对上图进行拆解。图中一共四个元素。分别是：最底层的弧线、动态显示的步数弧线、记录当前步数的文字、“步数”文字。整个拆解之后，就很容易了，我们只需要一步一步的绘制，就能得到效果了。至于动态的显示步数，则需要用到属性动画来处理。下面我们来一步一步实现。</p>
 <h4 id="自定义属性"><a href="#自定义属性" class="headerlink" title="自定义属性"></a>自定义属性</h4><p>在values目录下新建attrs.xml文件。在其中定义自己用得上的属性。</p>
 <figure class="highlight sqf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;declare-styleable <span class="built_in">name</span>=<span class="string">"StepsView"</span>&gt;</div><div class="line">        &lt;attr <span class="built_in">name</span>=<span class="string">"radius"</span> <span class="built_in">format</span>=<span class="string">"dimension"</span>/&gt;</div><div class="line">        &lt;attr <span class="built_in">name</span>=<span class="string">"bottomPaintColor"</span> <span class="built_in">format</span>=<span class="string">"color|reference"</span>/&gt;</div><div class="line">        &lt;attr <span class="built_in">name</span>=<span class="string">"stepsPaintColor"</span> <span class="built_in">format</span>=<span class="string">"color|reference"</span>/&gt;</div><div class="line">        &lt;attr <span class="built_in">name</span>=<span class="string">"startAngle"</span> <span class="built_in">format</span>=<span class="string">"integer"</span>/&gt;</div><div class="line">        &lt;attr <span class="built_in">name</span>=<span class="string">"sweepAngle"</span> <span class="built_in">format</span>=<span class="string">"integer"</span>/&gt;</div><div class="line">        &lt;attr <span class="built_in">name</span>=<span class="string">"paintWidth"</span> <span class="built_in">format</span>=<span class="string">"integer"</span>/&gt;</div><div class="line">    &lt;/declare-styleable&gt;</div></pre></td></tr></table></figure>
@@ -513,6 +511,10 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">dp、sp、px</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Animation</a>
               </li>
              
@@ -522,10 +524,6 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Property Animation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">dp、sp、px</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -541,6 +539,10 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">BroadcastReceiver</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">width & height</a>
               </li>
              
@@ -549,15 +551,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">BroadcastReceiver</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Jsoup</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -632,7 +630,7 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
     
     	<section class="tools-section tools-section-me" q-show="aboutme">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">我们努力，只为这个世界更美好！</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">Kevin Jern，&lt;br&gt;一名在校大学生，理想主义以及完美主义者&lt;br&gt;&lt;br&gt;热爱科技，热爱技术，&lt;br/&gt;目前是一名小白Android Developer&lt;br/&gt;&lt;br/&gt;竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。&lt;br&gt;回首向来萧瑟处，归去，也无风雨也无晴。</div>
   	  	
     	</section>
     

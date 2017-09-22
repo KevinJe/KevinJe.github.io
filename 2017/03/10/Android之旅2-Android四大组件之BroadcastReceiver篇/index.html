@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Kevin Jern">
 <meta property="og:description" content="今天继续我们的Android之旅，上一篇写了Android四大组件之一的Activity的知识。今天，我们继续来复习Andorid四大组件之一的BroadcastReceiver。
 何为BroadcastReceiver呢？其实从字面就可以看出了，就是广播接收者。那这个广播的作用是什么呢？其实Android中的广播机制和现实中的广播没有什么差别。想一想现实中的广播，是不是有通知消息的用途啊。同样，">
-<meta property="og:updated_time" content="2017-03-10T13:43:57.275Z">
+<meta property="og:updated_time" content="2017-09-22T12:58:19.149Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android之旅2-Android四大组件之BroadcastReceiver篇">
 <meta name="twitter:description" content="今天继续我们的Android之旅，上一篇写了Android四大组件之一的Activity的知识。今天，我们继续来复习Andorid四大组件之一的BroadcastReceiver。
@@ -182,6 +182,7 @@
       
         <p>今天继续我们的Android之旅，上一篇写了Android四大组件之一的Activity的知识。今天，我们继续来复习Andorid四大组件之一的BroadcastReceiver。</p>
 <p>何为BroadcastReceiver呢？其实从字面就可以看出了，就是广播接收者。那这个广播的作用是什么呢？其实Android中的广播机制和现实中的广播没有什么差别。想一想现实中的广播，是不是有通知消息的用途啊。同样，Android中的广播机制也与此是类似的作用。即，通过发送广播通知系统中的某些组件该干什么了。这干什么的逻辑完全在于你自己想实现什么功能。当然，既然可以发送广播，一定也是有接受广播的功能的。</p>
+<a id="more"></a>
 <p>在Android中广播有两种类型，标准广播和有序广播。</p>
 <p>标准广播（<strong>Normal broadcasts</strong>，发送方式：Context.sendBroadacst()），这是一种完全异步执行的广播，广播发出后，没有确定的顺序，广播接收者通常会在同一个时刻接收到这条广播消息。这通常意味着是高效的，但也意味着，在广播发出后是无法进行截断的。</p>
 <p>有序广播（<strong>Ordered broadcasts</strong>，发送方式：Context.sendOrderedBroadcast()）,这是一种同步执行的广播，广播发出后，在同一时刻，只会有一个广播接收者接收到这一条广播。每一个广播接收者都是按顺序进行执行的。所以，前一个广播接收者既可以将这条广播传递出去，也可以完全的截断广播，使下一个广播接收者无法接收到广播。可以在AndroidManifest.xml文件中<receiver>标签下设置 android:priority属性，来匹配优先级，优先级越高，就越早接收到广播。</receiver></p>
@@ -523,6 +524,10 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">dp、sp、px</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Animation</a>
               </li>
              
@@ -532,10 +537,6 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Property Animation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">dp、sp、px</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -551,6 +552,10 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">BroadcastReceiver</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">width & height</a>
               </li>
              
@@ -559,15 +564,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">BroadcastReceiver</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Jsoup</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -642,7 +643,7 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
     
     	<section class="tools-section tools-section-me" q-show="aboutme">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">我们努力，只为这个世界更美好！</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">Kevin Jern，&lt;br&gt;一名在校大学生，理想主义以及完美主义者&lt;br&gt;&lt;br&gt;热爱科技，热爱技术，&lt;br/&gt;目前是一名小白Android Developer&lt;br/&gt;&lt;br/&gt;竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。&lt;br&gt;回首向来萧瑟处，归去，也无风雨也无晴。</div>
   	  	
     	</section>
     
